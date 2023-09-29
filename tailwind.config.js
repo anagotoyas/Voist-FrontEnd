@@ -12,7 +12,8 @@ export default {
         tertiary:'#FFFCF3',
       },
       fontFamily: {
-        'poppins': ['Poppins', 'sans-serif']
+        'poppins': ['Poppins', 'sans-serif'],
+        'quicksand': ['Quicksand', 'sans-serif']
       },
       backgroundImage: {
         'mancha': "url('/public/Subtract.svg')",
