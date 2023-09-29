@@ -2,12 +2,11 @@
 
 import { LandingPage } from './pages/LandingPage';
 import LoginPage from './pages/LoginPage'
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import NotFound from './pages/NotFound';
 import RegisterPage from './pages/RegisterPage';
-import { useAuth } from './context/AuthContext';
+
 import { HomePage } from './pages/HomePage';
-import { ProtectedRoute } from './components/ProtectedRoute';
 
 
 function App() {
