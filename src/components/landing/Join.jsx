@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 
 export const Join = () => {
@@ -8,9 +9,9 @@ export const Join = () => {
           <h1 className="text-3xl font-bold pb-10 text-center">
             ¿Interesado lo suficiente como para comenzar?
           </h1>
-          <button className="bg-secondary px-6 py-2 rounded-full text-white font-bold">
+          <Link to='/register' className="bg-secondary px-6 py-2 rounded-full text-white font-bold">
             ÚNETE
-          </button>
+          </Link>
         </div>
         <div className="col-span-1 flex justify-center">
           <img

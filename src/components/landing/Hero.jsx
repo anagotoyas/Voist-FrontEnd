@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
@@ -13,9 +14,9 @@ export const Hero = () => {
           retroalimentación excepcional.
         </p>
         <div className="flex items-center justify-center pt-8">
-          <button className="bg-secondary text-white font-bold px-6 py-2 rounded-full text-center">
+          <Link to="/register" className="bg-secondary text-white font-bold px-6 py-2 rounded-full text-center">
             CREA UNA CUENTA
-          </button>
+          </Link>
         </div>
       </div>
       <div className="flex md:items-center justify-center md:col-span-4">

@@ -17,9 +17,10 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const signup = async (data) => {
+    setLoading(true)
     try {
       const res = await axios.post("/signup", data);
       setUser(res.data);
@@ -34,10 +35,13 @@ export function AuthProvider({ children }) {
         console.error();
         setErrors([error.response.data.message]);
       }
+    } finally{
+      setLoading(false)
     }
   };
 
   const signin = async (data) => {
+    setLoading(true)
     try {
       const res = await axios.post("/signin", data);
       setUser(res.data);
@@ -52,6 +56,10 @@ export function AuthProvider({ children }) {
         console.error();
         setErrors([error.response.data.message]);
       }
+    } finally {
+      setIsAuth(true);
+      setLoading(false);
+      console.log('aaaa')
     }
   };
 
@@ -63,18 +71,23 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(()=>{
-    setLoading(true)
+    // setLoading(true)
     if(Cookie.get('token')){
       axios.get('/profile').then(res=>{
         setUser(res.data)
+        console.log(res.data)
         setIsAuth(true)
         setLoading(false)
       }).catch(()=>{
        setUser(null)
        setIsAuth(false)
-       setLoading(false)
+      //  setLoading(false)
 
+      }).finally(()=>{
+        setLoading(false)
       })
+    } else{
+      setLoading(false)
     }
   },[])
 

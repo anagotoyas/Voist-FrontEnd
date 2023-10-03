@@ -29,5 +29,6 @@ export const Nav = () => {
         Iniciar sesión
       </Link>
     </header>
+   
   );
 };

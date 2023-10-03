@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export function Container({ children, className }) {
   return (
-    <div className={`max-w-7xl px-20 mx-auto ${className}`}>
+    <div className={`max-w-7xl px-10 mx-auto ${className}`}>
       {children}
     </div>
   );
