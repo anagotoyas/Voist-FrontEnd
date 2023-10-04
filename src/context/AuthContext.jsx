@@ -57,9 +57,9 @@ export function AuthProvider({ children }) {
         setErrors([error.response.data.message]);
       }
     } finally {
-      setIsAuth(true);
+     
       setLoading(false);
-      console.log('aaaa')
+    
     }
   };
 
@@ -86,9 +86,7 @@ export function AuthProvider({ children }) {
       }).finally(()=>{
         setLoading(false)
       })
-    } else{
-      setLoading(false)
-    }
+    } 
   },[])
 
   return (

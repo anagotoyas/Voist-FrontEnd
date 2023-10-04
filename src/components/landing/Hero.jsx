@@ -14,7 +14,7 @@ export const Hero = () => {
           retroalimentación excepcional.
         </p>
         <div className="flex items-center justify-center pt-8">
-          <Link to="/register" className="bg-secondary text-white font-bold px-6 py-2 rounded-full text-center">
+          <Link to="/register" className="bg-secondary text-white font-bold px-6 py-2 rounded-full text-center hover:bg-orange-400">
             CREA UNA CUENTA
           </Link>
         </div>

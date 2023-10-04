@@ -25,7 +25,7 @@ export const Nav = () => {
       </div>
 
 
-      <Link to="/login" className="bg-primary px-4 mt-3 py-2 rounded-full text-white font-bold text-lg">
+      <Link to="/login" className="bg-primary px-4 mt-3 py-2 rounded-full text-white font-semibold text-lg hover:bg-indigo-400">
         Iniciar sesión
       </Link>
     </header>

@@ -10,6 +10,9 @@ export default {
         primary:'#5271FF',
         secondary:'#FFB905',
         tertiary:'#FFFCF3',
+        grey:'#7D7D7D',
+        darkgray:'#09090A',
+        lightgray:'#F5F5F5'
       },
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],

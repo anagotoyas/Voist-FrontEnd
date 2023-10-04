@@ -8,6 +8,8 @@ export const HomePage = () => {
     // console.log(user)
 
   return (
-    <div>{JSON.stringify(user )}</div>
+    <div>
+      {JSON.stringify(user )}
+      </div>
   )
 }

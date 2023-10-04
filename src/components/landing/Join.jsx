@@ -9,7 +9,7 @@ export const Join = () => {
           <h1 className="text-3xl font-bold pb-10 text-center">
             ¿Interesado lo suficiente como para comenzar?
           </h1>
-          <Link to='/register' className="bg-secondary px-6 py-2 rounded-full text-white font-bold">
+          <Link to='/register' className="bg-secondary px-6 py-2 rounded-full text-white font-bold hover:bg-orange-400">
             ÚNETE
           </Link>
         </div>
