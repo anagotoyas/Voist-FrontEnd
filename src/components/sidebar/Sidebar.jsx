@@ -2,7 +2,6 @@ import { useState } from "react";
 import {
   RiCloudLine,
   RiContactsBookLine,
-  RiFolderLine,
   RiHome5Line,
   RiMenu3Fill,
   RiCloseLine,
@@ -11,7 +10,7 @@ import {
   RiUser3Line,
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { NavPage } from "../NavPage";
 import { useAuth } from "../../context/AuthContext";
 
@@ -20,11 +19,17 @@ export const Sidebar = () => {
 
   
 
-  const { signout } = useAuth();
+  const { signout, user } = useAuth();
+  
+  const navigate = useNavigate();
+  
   
   const salir = (async () => {
-    const res = await signout();
-    console.log(res)
+    await signout();
+    navigate('/login')
+    
+
+    
   });
 
 
@@ -52,15 +57,7 @@ export const Sidebar = () => {
                 Mi unidad
               </Link>
             </li>
-            <li>
-              <Link
-                to="/mis-clases"
-                className="flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl"
-              >
-                <RiFolderLine className="text-lg " />
-                Mis clases
-              </Link>
-            </li>
+          
             <li>
               <Link
                 to="/compartido"
@@ -89,14 +86,14 @@ export const Sidebar = () => {
       >
         {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
       </button>
-      <header className="fixed  w-full xl:pl-[18rem] flex items-center justify-end p-4 pt-8 h-[4rem]">
+      <header className="fixed  w-full xl:pl-[18rem] flex items-center justify-end p-4  h-[4rem] bg-white top-0 py-4 border">
         <Menu as="div">
           <Menu.Button className="flex items-center gap-4 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors  bg-lightgray">
             <img
               src="https://img.freepik.com/foto-gratis/feliz-joven_1098-20869.jpg"
               className="w-6 h-6 object-cover rounded-full"
             />
-            <span className="font-quicksand">Usuarios Apellidos</span>
+            <span className="font-quicksand">{user.name}</span>
             <RiArrowDownSLine />
           </Menu.Button>
           <Transition
@@ -109,13 +106,13 @@ export const Sidebar = () => {
           >
             <Menu.Items
               as="section"
-              className="absolute top-2 right-0 bg-gray-100 w-72 rounded-lg shadow-lg p-4"
+              className="absolute top-2 right-0 bg-gray-100 w-72 rounded-lg shadow-lg p-4 z-100"
             >
               <div>
                 <Menu.Item>
                   <Link
                     href="#"
-                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-white transition-colors text-base font-quicksand"
+                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
                   >
                     <RiUser3Line /> Gestionar cuenta
                   </Link>
@@ -124,7 +121,7 @@ export const Sidebar = () => {
                 <Menu.Item>
                   <button
                     onClick={()=>{salir()}}
-                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-white transition-colors text-base font-quicksand w-full"
+                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors text-base font-quicksand w-full"
                   >
                     <RiLogoutCircleRLine /> Cerrar sesión
                   </button>
@@ -133,9 +130,9 @@ export const Sidebar = () => {
             </Menu.Items>
           </Transition>
         </Menu>
-        <button className="flex items-center gap-4 hover:bg-gray-200 py-2 px-0 lg:px-4 rounded-lg transition-colors"></button>
+      
       </header>
-      <main className="xl:pl-[17rem] p-4 pt-[6rem]  h-screen w-screen">
+      <main className="xl:pl-[17rem] pt-[5rem] p-8">
         <NavPage/>
       </main>
     </div>

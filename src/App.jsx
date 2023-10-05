@@ -5,17 +5,17 @@ import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
 
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { HomePage } from "./pages/HomePage";
+
 import { useAuth } from "./context/AuthContext";
 
 import { Oval } from "react-loader-spinner";
 import { Sidebar } from "./components/sidebar/Sidebar";
-import { MisClases } from "./pages/MisClases";
-import { Compartido } from "./pages/Compartido";
-import { Contactos } from "./pages/Contactos";
+
+import { NavPage } from "./components/NavPage";
 
 function App() {
   const { isAuth, loading } = useAuth();
+  console.log(`is auth app: ${isAuth}`);
 
   if (loading) {
     return (
@@ -51,15 +51,15 @@ function App() {
       <Route
         element={
           <>
-            <Sidebar />
             <ProtectedRoute isAllowed={isAuth} redirectTo="/login" />
           </>
         }
       >
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/mis-clases" element={<MisClases />} />
-        <Route path="/compartido" element={<Compartido />} />
-        <Route path="/contactos" element={<Contactos />} />
+        <Route element={<Sidebar/>}>
+          <Route path="/home" element={<NavPage />} />
+          <Route path="/compartido" element={<NavPage />} />
+          <Route path="/contactos" element={<NavPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<NotFound />} />
