@@ -10,7 +10,7 @@ import {
   RiUser3Line,
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavPage } from "../NavPage";
 import { useAuth } from "../../context/AuthContext";
 
@@ -28,16 +28,17 @@ export const Sidebar = () => {
     await signout();
     navigate('/login')
     
-
-    
   });
+  const location = useLocation();
 
+ 
 
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
+  
   return (
     <div className="min-h-screen">
       <div
@@ -47,11 +48,11 @@ export const Sidebar = () => {
       >
         <div className="">
           <img src="Logo.png" alt="logo" className="m-auto mt-5 w-[9rem]" />
-          <ul className="mt-8 font-quicksand">
+          <ul className={`mt-8 font-quicksand`}>
             <li>
               <Link
                 to="/home"
-                className="flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl"
+                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/home' ? "bg-primary text-white" : "bg-white"}`}
               >
                 <RiHome5Line className="text-xl" />
                 Mi unidad
@@ -61,7 +62,7 @@ export const Sidebar = () => {
             <li>
               <Link
                 to="/compartido"
-                className="flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl"
+                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/compartido' ? "bg-primary text-white" : "bg-white"}`}
               >
                 <RiCloudLine className="text-lg" />
                 Compartido conmigo
@@ -70,7 +71,7 @@ export const Sidebar = () => {
             <li>
               <Link
                 to="/contactos"
-                className="flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl"
+                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/contactos' ? "bg-primary text-white" : "bg-white"}`}
               >
                 <RiContactsBookLine className="text-lg" />
                 Mis contactos

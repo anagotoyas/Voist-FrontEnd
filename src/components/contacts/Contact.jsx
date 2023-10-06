@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 
 export const Contact = (props) => {
   return (
-    <div className="bg-lightgray w-[13rem] h-[10rem] flex items-center justify-center relative p-6 font-quicksand rounded-lg">
+    <div className="bg-lightgray w-[13rem] h-[10rem] flex items-center justify-center relative p-6 font-quicksand rounded-lg -z-10">
         <div className="flex flex-col items-center">
             <img src={`${props.image}`} alt="profile-pic" className="w-[5rem] h-[5rem] object-cover rounded-full" />
             <h5 className="text-gray-500 text-sm pt-1 truncate w-40 text-center">{props.email}</h5>
