@@ -4,13 +4,13 @@ import { File } from "../components/files/File";
 import { DropDownNuevo } from "../components/ui/DropDownNuevo";
 import { RiFilter3Fill } from "react-icons/ri";
 import { SearchBar } from "../components/ui/SearchBar";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 
 
 export const HomePage = () => {
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
   const [isOrdered, setIsOrdered] = useState(false);
   // console.log(user)
 
@@ -113,9 +113,9 @@ export const HomePage = () => {
            
             <Link  to={{
               pathname: "/home/detail-file",
-              search: `?id=${encodeURIComponent(item.title)}`,
+        search: `?id=${encodeURIComponent(item.title)}`,
             }}
-             onClick={() => navigate("/home/detail-file")}>
+             >
               <File title={item.title} date={item.date} type={item.type} />
             </Link>
           ) : (

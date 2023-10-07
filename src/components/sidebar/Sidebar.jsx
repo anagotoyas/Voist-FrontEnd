@@ -89,7 +89,7 @@ export const Sidebar = () => {
       >
         {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
       </button>
-      <header className="fixed  w-full xl:pl-[18rem] flex items-center justify-end p-4  h-[4rem] bg-white top-0 py-4 border">
+      <header className="fixed  w-full xl:pl-[18rem] flex items-center justify-end p-4  h-[4rem] bg-white top-0 py-4 border z-100">
         <Menu as="div">
           <Menu.Button className="flex items-center gap-4 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors  bg-lightgray z-100 static">
             <img
