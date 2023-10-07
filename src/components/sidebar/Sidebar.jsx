@@ -17,6 +17,8 @@ import { useAuth } from "../../context/AuthContext";
 export const Sidebar = () => {
   const [showMenu, setShowMenu] = useState(false);
 
+  const publicUrl = window.location.origin;
+
   
 
   const { signout, user } = useAuth();
@@ -32,7 +34,7 @@ export const Sidebar = () => {
   const location = useLocation();
 
  
-
+  
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
@@ -47,7 +49,7 @@ export const Sidebar = () => {
         }`}
       >
         <div className="">
-          <img src="Logo.png" alt="logo" className="m-auto mt-5 w-[9rem]" />
+          <img src={`${publicUrl}/Logo.png`} alt="Logo" className="m-auto mt-5 w-[9rem]" />
           <ul className={`mt-8 font-quicksand`}>
             <li>
               <Link
@@ -82,16 +84,16 @@ export const Sidebar = () => {
       </div>
       {/* Btn menu */}
       <button
-        className="xl:hidden fixed bottom-6 right-6 bg-primary p-4 text-white rounded-full"
+        className="xl:hidden fixed bottom-6 right-6 bg-primary p-4 text-white rounded-full z-10"
         onClick={toggleMenu}
       >
         {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
       </button>
       <header className="fixed  w-full xl:pl-[18rem] flex items-center justify-end p-4  h-[4rem] bg-white top-0 py-4 border">
         <Menu as="div">
-          <Menu.Button className="flex items-center gap-4 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors  bg-lightgray">
+          <Menu.Button className="flex items-center gap-4 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors  bg-lightgray z-100 static">
             <img
-              src="https://img.freepik.com/foto-gratis/feliz-joven_1098-20869.jpg"
+              src={`${user.gravatar}`}
               className="w-6 h-6 object-cover rounded-full"
             />
             <span className="font-quicksand">{user.name}</span>
@@ -133,7 +135,7 @@ export const Sidebar = () => {
         </Menu>
       
       </header>
-      <main className="xl:pl-[17rem] pt-[5rem] p-8">
+      <main className="xl:pl-[17rem] pt-[5rem] px-8">
         <NavPage/>
       </main>
     </div>

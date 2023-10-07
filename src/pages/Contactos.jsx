@@ -53,7 +53,8 @@ const data = [
   },
   {
     "id": 9,
-    "image": "https://img.freepik.com/free-photo/portrait-smiling-handsome-man-blue-t-shirt_1303-160566.jpg",
+    "image": "https://img.freepik.com/free-photo/beautiful-asian-woman-wearing-denim-overalls-hat-taking-selfie_273609-13365.jpg",
+
     "email": "pedro@gmail.com",
     "name": "Pedro Sánchez"
   },

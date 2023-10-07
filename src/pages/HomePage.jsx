@@ -4,9 +4,13 @@ import { File } from "../components/files/File";
 import { DropDownNuevo } from "../components/ui/DropDownNuevo";
 import { RiFilter3Fill } from "react-icons/ri";
 import { SearchBar } from "../components/ui/SearchBar";
+import { Link, useNavigate } from "react-router-dom";
+
 
 
 export const HomePage = () => {
+
+  const navigate = useNavigate()
   const [isOrdered, setIsOrdered] = useState(false);
   // console.log(user)
 
@@ -103,11 +107,23 @@ export const HomePage = () => {
       </div>
       <SearchBar className="mt-8"/>
       <section className="my-4 pt-4 w-full flex flex-wrap gap-8 justify-center sm:justify-start">
-        {data.map((item)=>(
-
-          <File key={item.id} title={item.title} date={item.date} type={item.type} />
-        
-        ))}
+      {data.map((item) => (
+        <div key={item.id}>
+          {item.type === "file" ? (
+           
+            <Link  to={{
+              pathname: "/home/detail-file",
+              search: `?id=${encodeURIComponent(item.title)}`,
+            }}
+             onClick={() => navigate("/home/detail-file")}>
+              <File title={item.title} date={item.date} type={item.type} />
+            </Link>
+          ) : (
+            // Mostrar una carpeta si el elemento es una carpeta
+            <File title={item.title} date={item.date} type={item.type} />
+          )}
+        </div>
+      ))}
       </section>
     </>
   );

@@ -56,7 +56,10 @@ function App() {
         }
       >
         <Route element={<Sidebar/>}>
-          <Route path="/home" element={<NavPage />} />
+          <Route path="/home" element={<NavPage />} >
+           
+            </Route>
+            <Route path="/home/detail-file" element={<NavPage />} />
           <Route path="/compartido" element={<NavPage />} />
           <Route path="/contactos" element={<NavPage />} />
         </Route>

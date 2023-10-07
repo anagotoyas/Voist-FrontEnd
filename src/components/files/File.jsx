@@ -3,8 +3,15 @@ import PropTypes from "prop-types";
 import { RiDeleteBin6Fill, RiEyeFill, RiFile3Fill, RiFolder3Fill, RiMore2Fill, RiPencilFill } from "react-icons/ri";
 
 export const File = (props) => {
+    const handleItemClick = () => {
+       
+        if (props.onClick) {
+          props.onClick();
+        }
+      };
+
     return (
-        <div className="bg-lightgray w-[18rem] h-[6rem] flex justify-between p-4 font-quicksand rounded-lg hover:bg-gray-200">
+        <div className="bg-lightgray w-[18rem] h-[6rem] flex justify-between p-4 font-quicksand rounded-lg hover:bg-gray-200" onClick={handleItemClick}>
             <div className="flex items-center px-2 justify-center">
                 {props.type === "file" ? (
                     <RiFile3Fill className="text-5xl text-primary" />
@@ -21,14 +28,14 @@ export const File = (props) => {
                         {props.date}
                     </h3>
                 </div>
-
-            <Menu as="div">
-                <Menu.Button className="text-2xl hover:bg-white rounded-full">
-                    <RiMore2Fill />
+            <div className="relative"></div>
+            <Menu as="div" className="">
+                <Menu.Button className="text-2xl hover:bg-white rounded-full -z-100">
+                    <RiMore2Fill className="" />
                 </Menu.Button>
                 <Menu.Items
                     as="section"
-                    className="absolute bg-gray-100 w-60 rounded-lg shadow-lg p-4 ml-auto"
+                    className="right-0 absolute  bg-gray-100 w-60 rounded-lg shadow-lg p-4 ml-auto z-10"
                 >
                     <div>
                         <Menu.Item>
@@ -66,4 +73,5 @@ File.propTypes = {
   title: PropTypes.string,
   date: PropTypes.string,
   type: PropTypes.string,
+  onClick: PropTypes.func
 };
