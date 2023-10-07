@@ -28,14 +28,14 @@ export const File = (props) => {
                         {props.date}
                     </h3>
                 </div>
-            <div className="relative"></div>
+            <div className=""></div>
             <Menu as="div" className="">
-                <Menu.Button className="text-2xl hover:bg-white rounded-full" onClick={handleItemClick}>
+                <Menu.Button className="text-2xl hover:bg-white rounded-full relative">
                     <RiMore2Fill className="" />
                 </Menu.Button>
                 <Menu.Items
                     as="section"
-                    className="right-0 absolute  bg-gray-100 w-60 rounded-lg shadow-lg p-4 ml-auto z-10"
+                    className="right-[12rem] relative  bg-gray-100 w-60 rounded-lg shadow-lg p-4 m-auto z-10"
                 >
                     <div>
                         <Menu.Item>
