@@ -1,8 +1,15 @@
 import axios from "../api/axios";
+// import { useAuth } from "../context/AuthContext";
 
-export const getAllFiles = async (userId) => {
+// export const getUser = () => {
+//   const { user } = useAuth();
+//   return user;
+// };
+
+export const getAllFiles = async () => {
+  
   try {
-    const response = await axios.get(`/all-files/${userId}`);
+    const response = await axios.get(`/all-files/${4}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching files:", error);
@@ -20,9 +27,10 @@ export const getFileById = async (fileId) => {
   }
 };
 
-export const createFile = async (title, userId) => {
+export const createFile = async (title) => {
+ 
   try {
-    const response = await axios.post("/files", { title, user_id: userId });
+    const response = await axios.post("/files", { title });
     return response.data;
   } catch (error) {
     console.error("Error creating file:", error);
@@ -93,9 +101,10 @@ export const saveAudioBlobAsWAV = async (fileId, audioBlob) => {
   }
 };
 
-export const saveAudioFile = async (base64String) => {
+export const saveAudioFile = async (base64String, id) => {
+  
   try {
-    const response = await axios.post("/save-wav", { audioData: base64String },
+    const response = await axios.post("/save-wav", { audioData: base64String, name:id },
     );
     return response.data;
   } catch (error) {

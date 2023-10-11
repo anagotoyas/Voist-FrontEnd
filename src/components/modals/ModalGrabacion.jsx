@@ -2,8 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Input } from "../ui/index";
 import { RiCloseLine } from "react-icons/ri";
-import { saveAudioFile } from "../../services/FileService";
-import audioBufferToWav from "audiobuffer-to-wav";
+import { saveAudioFile, createFile } from "../../services/FileService";
+
 
 export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [recording, setRecording] = useState(false);
@@ -11,31 +11,11 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [isFinished, setIsFinished] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [base64String, setBase64String] = useState("");
+  const [id, setId] = useState(null);
 
   const mediaRecorder = useRef(null);
   const audioStream = useRef(null);
   const canvasRef = useRef(null);
-
-  
-
-  useEffect(() => {
-
-    const api = async()=>{
-      try {
-        const response = await saveAudioFile(base64String);
-        
-        console.log(response);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    api()
-   
-    
-
-    
-
-  }, [base64String]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -147,7 +127,10 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       );
   };
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
+    const { res } = await crearFile();
+    setId(res.id);
+
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       audioStream.current.getTracks().forEach((track) => track.stop());
@@ -174,31 +157,53 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
       reader.readAsDataURL(audioBlob);
 
-     
+      // try {
+      //   const res = await createFile(inputValue)
+      //   console.log(res)
+      // } catch (error) {
+      //   console.log(error)
+      // }
 
-      const blobUrl = URL.createObjectURL(audioBlob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = "audio.wav";
-      link.click();
-      URL.revokeObjectURL(blobUrl);
-
-      console.log(audioBlob);
-
-      // console.log(inputValue);
+      // const blobUrl = URL.createObjectURL(audioBlob);
+      // const link = document.createElement("a");
+      // link.href = blobUrl;
+      // link.download = "audio.wav";
+      // link.click();
+      // URL.revokeObjectURL(blobUrl);
 
       setIsFinished(true);
       setRecording(false);
       setBase64String("");
       setInputValue("");
       onClose();
-
-      console.log("listo");
     };
   };
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
+  };
+
+  useEffect(() => {
+    const api = async (id) => {
+      if (id !== null) {
+        try {
+          await saveAudioFile(base64String, id);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
+    api(id);
+  }, [base64String, id]);
+
+  const crearFile = async () => {
+    try {
+      const res = await createFile(inputValue);
+      return { res };
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -220,9 +225,9 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
         <div className="p-4 flex items-center flex-col">
           <div>
-            <h3 className="text-lg font-medium">
+            <label className="text-lg font-medium">
               {recording ? "Grabando..." : "Ingrese el título de tu grabación"}
-            </h3>
+            </label>
             {!recording && (
               <Input
                 placeholder="Titulo"
