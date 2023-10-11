@@ -2,24 +2,47 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Input } from "../ui/index";
 import { RiCloseLine } from "react-icons/ri";
+import { saveAudioFile } from "../../services/FileService";
+import audioBufferToWav from "audiobuffer-to-wav";
 
 export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
   const [inputValue, setInputValue] = useState("");
+  const [base64String, setBase64String] = useState("");
 
   const mediaRecorder = useRef(null);
   const audioStream = useRef(null);
   const canvasRef = useRef(null);
+
+  
+
+  useEffect(() => {
+
+    const api = async()=>{
+      try {
+        const response = await saveAudioFile(base64String);
+        
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    api()
+   
+    
+
+    
+
+  }, [base64String]);
 
   useEffect(() => {
     if (!isOpen) {
       setRecording(false);
 
       setIsFinished(false);
-      
-     
+
       if (mediaRecorder.current) {
         mediaRecorder.current.ondataavailable = null;
         mediaRecorder.current.onstop = null;
@@ -97,7 +120,6 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       .getUserMedia({ audio: true })
       .then((stream) => {
         audioStream.current = stream;
-      
 
         mediaRecorder.current = new MediaRecorder(stream);
 
@@ -124,55 +146,56 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
         console.error("Error al acceder al micrófono: ", error)
       );
   };
+
   const stopRecording = () => {
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       audioStream.current.getTracks().forEach((track) => track.stop());
     }
-  
-    let chunks = []; // Para almacenar los fragmentos de audio
-  
-    // Escucha el evento ondataavailable para capturar los datos del blob
+
+    let chunks = [];
+
     mediaRecorder.current.ondataavailable = (event) => {
       if (event.data.size > 0) {
         chunks.push(event.data);
       }
     };
-  
-    // Escucha el evento onstop para realizar acciones después de detener la grabación
-    mediaRecorder.current.onstop = () => {
-      // Combina los fragmentos en un solo blob
+
+    mediaRecorder.current.onstop = async () => {
       const audioBlob = new Blob(chunks, { type: "audio/wav" });
-  
-      // Actualiza el estado con el blob final
+
       setAudioBlob(audioBlob);
 
+      const reader = new FileReader();
+
+      reader.onload = function () {
+        setBase64String(reader.result.split(",")[1]);
+      };
+
+      reader.readAsDataURL(audioBlob);
+
+     
+
       const blobUrl = URL.createObjectURL(audioBlob);
-      const link= document.createElement("a");
-      link.href=blobUrl;
-      link.download="audio.wav";
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = "audio.wav";
       link.click();
       URL.revokeObjectURL(blobUrl);
-  
+
       console.log(audioBlob);
-      console.log(inputValue);
-  
+
+      // console.log(inputValue);
+
       setIsFinished(true);
       setRecording(false);
+      setBase64String("");
       setInputValue("");
       onClose();
+
+      console.log("listo");
     };
-  
-   
   };
-  
- 
-  
-  
-  
-  
-
-
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);

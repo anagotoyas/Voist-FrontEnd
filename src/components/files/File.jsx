@@ -30,7 +30,7 @@ export const File = (props) => {
                 </div>
             <div className=""></div>
             <Menu as="div" className="">
-                <Menu.Button className="text-2xl hover:bg-white rounded-full relative">
+                <Menu.Button className="text-2xl hover:bg-white rounded-full">
                     <RiMore2Fill className="" />
                 </Menu.Button>
                 <Menu.Items
