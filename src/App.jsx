@@ -36,7 +36,7 @@ function App() {
     );
   }
 
-  console.log(isAuth);
+  
 
   return (
     <Routes>

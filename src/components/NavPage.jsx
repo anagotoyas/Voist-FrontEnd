@@ -5,9 +5,14 @@ import { Contactos } from "../pages/Contactos";
 import { useAuth } from "../context/AuthContext";
 import { DetailFile } from "../pages/DetailFile";
 
+
 export const NavPage = () => {
+  
+
   const { isAuth } = useAuth();
-  console.log(`is auth: ${isAuth}`);
+  console.log(`is auth app: ${isAuth}`);
+
+  
 
   return (
     <>

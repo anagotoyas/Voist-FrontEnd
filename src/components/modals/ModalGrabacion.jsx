@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import { Input } from "../ui/index";
 import { RiCloseLine } from "react-icons/ri";
 import audioBufferToWav from "audiobuffer-to-wav";
+import { Spin } from "antd";
 
 import { useAuth } from "../../context/AuthContext";
+
 
 export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [recording, setRecording] = useState(false);
@@ -132,6 +134,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   };
 
   const stopRecording = async () => {
+    setIsFinished(true);
     let chunks = [];
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
@@ -165,7 +168,6 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       const nuevoId = res.id;
       setId(nuevoId);
 
-      
       // // Download the WAV file
       // const blobUrl = URL.createObjectURL(audioBlob2);
       // const link = document.createElement("a");
@@ -174,7 +176,6 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       // link.click();
       // URL.revokeObjectURL(blobUrl);
 
-      setIsFinished(true);
       setRecording(false);
       setInputValue("");
 
@@ -188,6 +189,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
   useEffect(() => {
     const guardarFile = async () => {
+      console.log(id);
       if (id !== null) {
         const formData = new FormData();
 
@@ -218,9 +220,11 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
           onClick={onClose}
         />
 
-        <div className="p-4 flex items-center flex-col">
+        <div className="p-4 flex items-center flex-col justify-center h-[15rem]">
+        {isFinished ? <Spin size="small" /> : null}
           <div>
             <label className="text-lg font-medium">
+              
               {recording ? "Grabando..." : "Ingrese el título de tu grabación"}
             </label>
             {!recording && (
@@ -232,6 +236,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
               ></Input>
             )}
           </div>
+
           {!recording && (
             <button
               className={`text-white px-4 py-2 mt-4 border rounded-md ${

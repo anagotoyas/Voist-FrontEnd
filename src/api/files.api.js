@@ -1,7 +1,7 @@
 import axios from "./axios";
 
-export const getAllFiles = async () => {
-  return axios.get(`/all-files`);
+export const getAllFiles = async (userId) => {
+  return axios.get(`/all-files/${userId}`);
 };
 
 export const getFileById = async (fileId) => {
