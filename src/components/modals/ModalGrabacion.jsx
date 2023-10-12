@@ -2,8 +2,9 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Input } from "../ui/index";
 import { RiCloseLine } from "react-icons/ri";
-import { createFile, saveAudioBlobAsWAV } from "../../services/FileService";
 import audioBufferToWav from "audiobuffer-to-wav";
+
+import { useAuth } from "../../context/AuthContext";
 
 export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [recording, setRecording] = useState(false);
@@ -15,6 +16,8 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const mediaRecorder = useRef(null);
   const audioStream = useRef(null);
   const canvasRef = useRef(null);
+
+  const { createFiles, saveAudio } = useAuth();
 
   useEffect(() => {
     if (!isOpen) {
@@ -157,19 +160,12 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       const audioBlob2 = new Blob([wavBlob], { type: "audio/wav" });
       setAudioBlob(audioBlob2);
 
-      const res = await createFile(inputValue);
+      const res = await createFiles(inputValue);
 
       const nuevoId = res.id;
       setId(nuevoId);
 
-      // const formData = new FormData();
-
-      // formData.append("audio", audioBlob2);
-
-      // if(id!==null){
-      //   await saveAudioBlobAsWAV(formData, id);
-      // }
-
+      
       // // Download the WAV file
       // const blobUrl = URL.createObjectURL(audioBlob2);
       // const link = document.createElement("a");
@@ -197,7 +193,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
         formData.append("audio", audioBlob);
 
-        await saveAudioBlobAsWAV(formData, id);
+        await saveAudio(formData, id);
         setAudioBlob(null);
         setId(null);
       }

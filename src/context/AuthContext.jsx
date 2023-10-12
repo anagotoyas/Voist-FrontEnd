@@ -1,7 +1,16 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import axios from "../api/axios";
-import Cookie from 'js-cookie'
+import Cookie from 'js-cookie';
+import {
+  getAllFiles,
+  getFileById,
+  createFile,
+  updateFile,
+  deleteFile,
+  saveAudioBlobAsWAV
+ 
+} from "../api/files.api";
 
 export const AuthContext = createContext();
 
@@ -17,7 +26,8 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isAuth, setIsAuth] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [files, setFiles] = useState([]);
 
   const signup = async (data) => {
     setLoading(true)
@@ -70,6 +80,57 @@ export function AuthProvider({ children }) {
     setIsAuth(false)
   }
 
+  //File
+
+  const loadFile = async id =>{
+    const res = await getFileById(id)
+    return res.data
+  }
+
+  const loadAllFiles = async () =>{
+    const res = await getAllFiles()
+    return res.data
+  }
+  const deleteFiles = async (id) =>{
+    const res = await deleteFile(id)
+    if(res.status===204){
+      setFiles(files.filter(file=>file.id!==id))
+    }
+  }
+  const createFiles = async (file)=>{
+    try{
+      const res = await createFile(file);
+      setFiles([...files, res.data]);
+      return res.data
+    } catch (error){
+      if(error.response){
+        setErrors(error.response.data)
+      }
+    }
+  }
+
+  const updateFiles = async (id,data)=>{
+    try{
+      const res = await updateFile(id,data)
+      return res.data
+    } catch(error){
+      if(error.response){
+        setErrors(error.response.data.message)
+      }
+    }
+  }
+
+  const saveAudio = async (formData, id)=>{
+    try {
+      const res = await saveAudioBlobAsWAV(formData,id)
+      return res.data;
+    } catch (error) {
+      if(error.response){
+        setErrors(error.response.data.message)
+      }
+    }
+  }
+
   useEffect(()=>{
     // setLoading(true)
     if(Cookie.get('token')){
@@ -98,7 +159,13 @@ export function AuthProvider({ children }) {
         signup,
         signin,
         signout,
-        loading
+        loading,
+        loadAllFiles,
+        loadFile,
+        createFiles,
+        updateFiles,
+        deleteFiles,
+        saveAudio,
       }}
     >
       {children}

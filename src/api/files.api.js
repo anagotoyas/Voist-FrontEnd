@@ -32,13 +32,9 @@ export const setFilePath = async (fileId, filePath) => {
   axios.put(`/set-file-path/${fileId}`, { filePath });
 };
 
-export const saveAudioBlobAsWAV = async (fileId, audioBlob) => {
-  return axios.post("/save-audio-blob-as-wav", {
-    fileId,
-    audioBlob,
-  });
-};
 
-export const saveAudioFile = async (base64String) => {
-  return axios.post("/save-wav", { audioData: base64String });
+export const saveAudioBlobAsWAV = async (formData, id) => {
+  return axios.post(`/save-file/${id}`, formData,{ headers: {
+    'Content-Type': 'multipart/form-data',
+  }})
 };

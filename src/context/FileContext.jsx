@@ -7,13 +7,14 @@ import {
   createFile,
   updateFile,
   deleteFile,
+  saveAudioBlobAsWAV
  
 } from "../api/files.api";
 
 
 export const FileContext = createContext();
 
-export const useAuth = () => {
+export const useFile = () => {
   const context = useContext(FileContext);
   if (!context) {
     throw new Error("useAuth must be used within an FileContext");
@@ -64,6 +65,17 @@ export function FileProvider({ children }) {
     }
   }
 
+  const saveAudio = async (formData, id)=>{
+    try {
+      const res = await saveAudioBlobAsWAV(formData,id)
+      return res.data;
+    } catch (error) {
+      if(error.response){
+        setErrors(error.response.data.message)
+      }
+    }
+  }
+
  
 
   return (
@@ -75,6 +87,7 @@ export function FileProvider({ children }) {
         createFiles,
         updateFiles,
         deleteFiles,
+        saveAudio,
         errors
       }}
     >

@@ -9,7 +9,7 @@ import axios from "../api/axios";
 export const getAllFiles = async () => {
   
   try {
-    const response = await axios.get(`/all-files/${4}`);
+    const response = await axios.get(`/all-files/`);
     return response.data;
   } catch (error) {
     console.error("Error fetching files:", error);
