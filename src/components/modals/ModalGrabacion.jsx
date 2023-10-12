@@ -2,15 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 import { Input } from "../ui/index";
 import { RiCloseLine } from "react-icons/ri";
-import { saveAudioFile, createFile } from "../../services/FileService";
-
+import { createFile, saveAudioBlobAsWAV } from "../../services/FileService";
+import audioBufferToWav from "audiobuffer-to-wav";
 
 export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [recording, setRecording] = useState(false);
   const [audioBlob, setAudioBlob] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [base64String, setBase64String] = useState("");
   const [id, setId] = useState(null);
 
   const mediaRecorder = useRef(null);
@@ -96,6 +95,8 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   }, [recording]);
 
   const startRecording = () => {
+    setAudioBlob(null);
+    setId(null);
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
@@ -128,15 +129,11 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   };
 
   const stopRecording = async () => {
-    const { res } = await crearFile();
-    setId(res.id);
-
+    let chunks = [];
     if (mediaRecorder.current) {
       mediaRecorder.current.stop();
       audioStream.current.getTracks().forEach((track) => track.stop());
     }
-
-    let chunks = [];
 
     mediaRecorder.current.ondataavailable = (event) => {
       if (event.data.size > 0) {
@@ -145,26 +142,36 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
     };
 
     mediaRecorder.current.onstop = async () => {
-      const audioBlob = new Blob(chunks, { type: "audio/wav" });
+      // Convert the recorded audio chunks into an ArrayBuffer
+      const audioData = new Blob(chunks, { type: "audio/wav" });
+      const arrayBuffer = await audioData.arrayBuffer();
 
-      setAudioBlob(audioBlob);
+      // Create an AudioBuffer from the ArrayBuffer
+      const audioContext = new AudioContext();
+      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
 
-      const reader = new FileReader();
+      // Convert the AudioBuffer to WAV using the audioBufferToWav function
+      const wavBlob = audioBufferToWav(audioBuffer);
 
-      reader.onload = function () {
-        setBase64String(reader.result.split(",")[1]);
-      };
+      // Create a Blob from the WAV data
+      const audioBlob2 = new Blob([wavBlob], { type: "audio/wav" });
+      setAudioBlob(audioBlob2);
 
-      reader.readAsDataURL(audioBlob);
+      const res = await createFile(inputValue);
 
-      // try {
-      //   const res = await createFile(inputValue)
-      //   console.log(res)
-      // } catch (error) {
-      //   console.log(error)
+      const nuevoId = res.id;
+      setId(nuevoId);
+
+      // const formData = new FormData();
+
+      // formData.append("audio", audioBlob2);
+
+      // if(id!==null){
+      //   await saveAudioBlobAsWAV(formData, id);
       // }
 
-      // const blobUrl = URL.createObjectURL(audioBlob);
+      // // Download the WAV file
+      // const blobUrl = URL.createObjectURL(audioBlob2);
       // const link = document.createElement("a");
       // link.href = blobUrl;
       // link.download = "audio.wav";
@@ -173,8 +180,8 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
       setIsFinished(true);
       setRecording(false);
-      setBase64String("");
       setInputValue("");
+
       onClose();
     };
   };
@@ -184,27 +191,19 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   };
 
   useEffect(() => {
-    const api = async (id) => {
+    const guardarFile = async () => {
       if (id !== null) {
-        try {
-          await saveAudioFile(base64String, id);
-        } catch (error) {
-          console.log(error);
-        }
+        const formData = new FormData();
+
+        formData.append("audio", audioBlob);
+
+        await saveAudioBlobAsWAV(formData, id);
+        setAudioBlob(null);
+        setId(null);
       }
     };
-
-    api(id);
-  }, [base64String, id]);
-
-  const crearFile = async () => {
-    try {
-      const res = await createFile(inputValue);
-      return { res };
-    } catch (error) {
-      console.log(error);
-    }
-  };
+    guardarFile();
+  }, [id, audioBlob]);
 
   return (
     <div

@@ -88,12 +88,11 @@ export const setFilePath = async (fileId, filePath) => {
   }
 };
 
-export const saveAudioBlobAsWAV = async (fileId, audioBlob) => {
+export const saveAudioBlobAsWAV = async (formData,id) => {
   try {
-    const response = await axios.post("/save-audio-blob-as-wav", {
-      fileId,
-      audioBlob,
-    });
+    const response = await axios.post(`/save-file/${id}`, formData,{ headers: {
+      'Content-Type': 'multipart/form-data',
+    }})
     return response.data;
   } catch (error) {
     console.error("Error saving audio as WAV:", error);
@@ -101,14 +100,3 @@ export const saveAudioBlobAsWAV = async (fileId, audioBlob) => {
   }
 };
 
-export const saveAudioFile = async (base64String, id) => {
-  
-  try {
-    const response = await axios.post("/save-wav", { audioData: base64String, name:id },
-    );
-    return response.data;
-  } catch (error) {
-    console.error("Error saving audio file:", error);
-    return null;
-  }
-};
