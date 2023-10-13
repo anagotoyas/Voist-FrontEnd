@@ -15,7 +15,7 @@ import { NavPage } from "./components/NavPage";
 
 function App() {
   const { isAuth, loading } = useAuth();
-  console.log(`is auth app: ${isAuth}`);
+  // console.log(`is auth app: ${isAuth}`);
 
   if (loading) {
     return (
@@ -59,9 +59,11 @@ function App() {
           <Route path="/home" element={<NavPage />} >
            
             </Route>
-            <Route path="/home/detail-file" element={<NavPage />} />
+            <Route path="/detail-file" element={<NavPage />} />
           <Route path="/compartido" element={<NavPage />} />
           <Route path="/contactos" element={<NavPage />} />
+          <Route path="/carpetas" element={<NavPage />} />
+          <Route path="/detail-folder" element={<NavPage />} />
         </Route>
       </Route>
 

@@ -6,6 +6,7 @@ import audioBufferToWav from "audiobuffer-to-wav";
 import { Spin } from "antd";
 
 import { useAuth } from "../../context/AuthContext";
+import { useLocation } from "react-router-dom";
 
 
 export const ModalGrabacion = ({ isOpen, onClose, children }) => {
@@ -19,7 +20,21 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const audioStream = useRef(null);
   const canvasRef = useRef(null);
 
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const id_folder = searchParams.get("idCarpeta");
+
+  
+  
+
   const { createFiles, saveAudio } = useAuth();
+
+  const cerrarModal = ()=>{
+    setRecording(false);
+      setInputValue("");
+    onClose()
+
+  }
 
   useEffect(() => {
     if (!isOpen) {
@@ -163,7 +178,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       const audioBlob2 = new Blob([wavBlob], { type: "audio/wav" });
       setAudioBlob(audioBlob2);
 
-      const res = await createFiles(inputValue);
+      const res = await createFiles(inputValue, id_folder);
 
       const nuevoId = res.id;
       setId(nuevoId);
@@ -189,7 +204,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
   useEffect(() => {
     const guardarFile = async () => {
-      console.log(id);
+      // console.log(id);
       if (id !== null) {
         const formData = new FormData();
 
@@ -217,7 +232,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       <div className="relative bg-white w-96 p-4 rounded-lg shadow-lg">
         <RiCloseLine
           className="absolute top-2 right-2 text-gray-600 hover:text-red-500 hover:bg-gray-200 rounded-full text-2xl"
-          onClick={onClose}
+          onClick={cerrarModal}
         />
 
         <div className="p-4 flex items-center flex-col justify-center h-[15rem]">

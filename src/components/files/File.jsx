@@ -40,7 +40,7 @@ export const File = (props) => {
                     <div>
                         <Menu.Item>
                             <button
-                                onClick={() => {}}
+                                onClick={() => {console.log('first')}}
                                 className="flex items-center gap-4 p-2 rounded-lg  transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
                             >
                                 <RiEyeFill /> Ver detalle

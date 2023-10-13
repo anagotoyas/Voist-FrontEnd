@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 function PDFViewer({ title, content }) {
   return (
     <ReactPDFViewer className="h-full lg:w-[70%] w-[45rem] md:mt-10 md:pl-[5rem]  lg:p-8 p-4">
-       <Document>
+       <Document title={`${title}`}>
       <Page
         size="A4"
         style={{
@@ -56,8 +56,8 @@ function PDFViewer({ title, content }) {
 }
 
 PDFViewer.propTypes = {
-  title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  content: PropTypes.string,
 };
 
 export default PDFViewer;

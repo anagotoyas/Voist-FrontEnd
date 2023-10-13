@@ -2,12 +2,13 @@ import { useState } from "react";
 import {
   RiCloudLine,
   RiContactsBookLine,
-  RiHome5Line,
   RiMenu3Fill,
   RiCloseLine,
   RiArrowDownSLine,
   RiLogoutCircleRLine,
   RiUser3Line,
+  RiFolder2Line,
+  RiFile3Line,
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -56,11 +57,20 @@ export const Sidebar = () => {
                 to="/home"
                 className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/home' ? "bg-primary text-white" : "bg-white"}`}
               >
-                <RiHome5Line className="text-xl" />
-                Mi unidad
+                <RiFile3Line className="text-xl" />
+                Mis archivos
               </Link>
             </li>
           
+            <li>
+              <Link
+                to="/carpetas"
+                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/carpetas' ? "bg-primary text-white" : "bg-white"}`}
+              >
+                <RiFolder2Line className="text-lg" />
+                Mis carpetas
+              </Link>
+            </li>
             <li>
               <Link
                 to="/compartido"

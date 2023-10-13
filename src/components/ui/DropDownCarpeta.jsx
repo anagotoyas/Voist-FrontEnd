@@ -1,30 +1,24 @@
 import { Menu, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { RiAddLine, RiVoiceprintLine } from "react-icons/ri";
+import { RiAddLine, RiFolderAddLine } from "react-icons/ri";
+import { ModalCarpeta } from "../modals/ModalCarpeta";
 
-import { Link } from "react-router-dom";
-
-import { ModalGrabacion } from "../modals/modalGrabacion";
-
-
-export const DropDownNuevo = () => {
- 
-  const [isModalGrabacionOpen, setIsModalGrabacionOpen] = useState(false);
+export const DropDownCarpeta = () => {
+  const [isModalCarpetaOpen, setIsModalCarpetaOpen] = useState(false);
 
   const handleClick = (e) => {
-    e.preventDefault(); // Evita la actualización de la página
-    openModalGrabacion();
+    e.preventDefault(); 
+    openModalCarpeta();
   };
 
-   const openModalGrabacion = () => {
-   
-    setIsModalGrabacionOpen(true);
-    // Cierra el ModalNuevo al abrir el ModalGrabacion
+  const openModalCarpeta = () => {
+    setIsModalCarpetaOpen(true);
   };
 
-  const closeModalGrabacion = () => {
-    setIsModalGrabacionOpen(false);
+  const closeModalCarpeta = () => {
+    setIsModalCarpetaOpen(false);
   };
+
   return (
     <>
       <Menu as="div">
@@ -47,24 +41,21 @@ export const DropDownNuevo = () => {
           >
             <div>
               <Menu.Item>
-                <Link
+                <button
                   onClick={handleClick}
-                  className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
+                  className="flex items-center gap-4 p-2 rounded-lg  transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
                 >
-                  <RiVoiceprintLine /> Iniciar grabación
-                </Link>
+                  <RiFolderAddLine /> Crear carpeta
+                </button>
               </Menu.Item>
-
-             
             </div>
           </Menu.Items>
         </Transition>
       </Menu>
-     
-      <ModalGrabacion isOpen={isModalGrabacionOpen} onClose={closeModalGrabacion}>
-        
-        </ModalGrabacion>
-
+      <ModalCarpeta
+        isOpen={isModalCarpetaOpen}
+        onClose={closeModalCarpeta}
+      ></ModalCarpeta>
     </>
   );
 };

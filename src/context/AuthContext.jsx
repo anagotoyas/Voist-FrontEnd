@@ -4,12 +4,17 @@ import axios from "../api/axios";
 import Cookie from "js-cookie";
 import {
   getAllFiles,
+  getAllFilesByFolder,
+  getAllFilesByKeyword,
   getFileById,
   createFile,
   updateFile,
   deleteFile,
   saveAudioBlobAsWAV,
 } from "../api/files.api";
+import {
+  getAllFolders
+} from "../api/folder.api";
 
 export const AuthContext = createContext();
 
@@ -26,7 +31,10 @@ export function AuthProvider({ children }) {
   const [isAuth, setIsAuth] = useState(false);
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+ 
+
   const [files, setFiles] = useState([]);
+  const [folders, setFolders] = useState([]);
 
   const signup = async (data) => {
     setLoading(true);
@@ -78,30 +86,46 @@ export function AuthProvider({ children }) {
     Cookie.remove("token");
     setUser(null);
     setIsAuth(false);
+    
     localStorage.removeItem("userID");
   };
 
   //File
 
   const loadFile = async (id) => {
+    
     const res = await getFileById(id);
+    
     return res.data;
   };
 
   const loadAllFiles = async () => {
+   
     const res = await getAllFiles(localStorage.getItem("userID"));
-    console.log(res.data);
+    
     setFiles(res.data);
+    
+   
   };
+
+  const loadAllFilesByFolder = async (idFolder) => {
+    const res = await getAllFilesByFolder(localStorage.getItem("userID"), idFolder);
+    return res.data;
+  };
+  const loadAllFilesByKeyword = async (keyword) => {
+    const res = await getAllFilesByKeyword(localStorage.getItem("userID"), keyword);
+    return res.data;
+  };
+
   const deleteFiles = async (id) => {
     const res = await deleteFile(id);
     if (res.status === 204) {
       setFiles(files.filter((file) => file.id !== id));
     }
   };
-  const createFiles = async (file) => {
+  const createFiles = async (file, idFolder) => {
     try {
-      const res = await createFile(file);
+      const res = await createFile(file, idFolder);
       setFiles([...files, res]);
       return res.data;
     } catch (error) {
@@ -137,11 +161,21 @@ export function AuthProvider({ children }) {
     }
   };
 
+  //Folder
+
+  const loadAllFolders = async () => {
+    const res = await getAllFolders(localStorage.getItem("userID"));
+    setFolders(res.data);
+  };
+
+
+
   useEffect(() => {
     // setLoading(true)
-    if (Cookie.get("token")) {
+    const userID = localStorage.getItem("userID");
+    if (userID!==null) {
       axios
-        .get("/profile")
+        .get(`/profile/${userID}`)
         .then((res) => {
           setUser(res.data);
           console.log(res.data);
@@ -175,7 +209,12 @@ export function AuthProvider({ children }) {
         updateFiles,
         deleteFiles,
         saveAudio,
-        files
+        files,
+        loadAllFilesByFolder,
+        loadAllFolders,
+        loadAllFilesByKeyword,
+        folders,
+        
       }}
     >
       {children}
