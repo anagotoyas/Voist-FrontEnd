@@ -14,7 +14,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
   const [audioBlob, setAudioBlob] = useState(null);
   const [isFinished, setIsFinished] = useState(false);
   const [inputValue, setInputValue] = useState("");
-  const [id, setId] = useState(null);
+  
 
   const mediaRecorder = useRef(null);
   const audioStream = useRef(null);
@@ -116,7 +116,8 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
   const startRecording = () => {
     setAudioBlob(null);
-    setId(null);
+    
+
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
@@ -178,10 +179,8 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       const audioBlob2 = new Blob([wavBlob], { type: "audio/wav" });
       setAudioBlob(audioBlob2);
 
-      const res = await createFiles(inputValue, id_folder);
-
-      const nuevoId = res.id;
-      setId(nuevoId);
+      
+      
 
       // // Download the WAV file
       // const blobUrl = URL.createObjectURL(audioBlob2);
@@ -191,10 +190,10 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
       // link.click();
       // URL.revokeObjectURL(blobUrl);
 
-      setRecording(false);
-      setInputValue("");
+      
+      
 
-      onClose();
+     
     };
   };
 
@@ -204,19 +203,25 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
 
   useEffect(() => {
     const guardarFile = async () => {
-      // console.log(id);
-      if (id !== null) {
+      if (audioBlob ) {
+       
         const formData = new FormData();
-
         formData.append("audio", audioBlob);
-
-        await saveAudio(formData, id);
+  
+        const res = await createFiles(inputValue, id_folder);
+        await saveAudio(formData, res.id);
+  
+      
         setAudioBlob(null);
-        setId(null);
+        setInputValue("");
+        setRecording(false);
+        
+        onClose();
       }
     };
+  
     guardarFile();
-  }, [id, audioBlob]);
+  }, [ audioBlob]);
 
   return (
     <div
@@ -264,7 +269,7 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
           )}
           {recording && (
             <button
-              className="text-white px-4 py-2 mt-4 border rounded-md bg-red-500 order-1"
+              className={`text-white px-4 py-2 mt-4 border rounded-md order-1 ${ isFinished ? "bg-gray-500" : "bg-red-500"}`}
               onClick={stopRecording}
             >
               Detener Grabación

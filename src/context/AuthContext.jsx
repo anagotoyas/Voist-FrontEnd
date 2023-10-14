@@ -13,7 +13,8 @@ import {
   saveAudioBlobAsWAV,
 } from "../api/files.api";
 import {
-  getAllFolders
+  getAllFolders,
+  createFolder
 } from "../api/folder.api";
 
 export const AuthContext = createContext();
@@ -86,6 +87,7 @@ export function AuthProvider({ children }) {
     Cookie.remove("token");
     setUser(null);
     setIsAuth(false);
+    setErrors(null)
     
     localStorage.removeItem("userID");
   };
@@ -168,6 +170,18 @@ export function AuthProvider({ children }) {
     setFolders(res.data);
   };
 
+  const saveFolder = async (title) => {
+    try {
+      const res = await createFolder(title);
+      setFolders([...folders, res]);
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data);
+      }
+    }
+  }
+
 
 
   useEffect(() => {
@@ -214,7 +228,7 @@ export function AuthProvider({ children }) {
         loadAllFolders,
         loadAllFilesByKeyword,
         folders,
-        
+        saveFolder
       }}
     >
       {children}

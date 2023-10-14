@@ -22,23 +22,44 @@ export const DetailFile = () => {
 
   const publicUrl = window.location.origin;
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const fetchData = async () => {
+    try {
       const { transcript, duration, date_created, title } = await loadFile(id);
       setTranscription(transcript);
       setDuration(duration);
       setDateCreated(date_created);
       setTitle(title);
       setIsLoading(false);
+    } catch (error) {
+      console.error("Error al cargar los datos del archivo:", error);
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const pollForTranscription = () => {
+      if (transcription === null || transcription === undefined || transcription ==='Por procesar...') {
+        setTranscription('Por procesar...');
+        setDuration('Por procesar...');
+        fetchData();
+      }
     };
 
-    fetchData();
-  }, [id]);
+    const intervalId = setInterval(pollForTranscription, 500);
 
-  if(location.state){
-    console.log(location.state.idCarpeta)
-    console.log(location.state.tituloCarpeta)
-  }
+    if (transcription !== null && transcription !== undefined || transcription ==='Por procesar...') {
+      clearInterval(intervalId);
+    }
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [transcription, id]);
+
+  // if(location.state){
+  //   console.log(location.state.idCarpeta)
+  //   console.log(location.state.tituloCarpeta)
+  // }
 
   const [selectedButton, setSelectedButton] = useState("resumen");
 
@@ -48,62 +69,69 @@ export const DetailFile = () => {
 
   return (
     <>
-    {
-      location.state ? (<Breadcrumb
-        className="text-[1rem] font-quicksand flex  items-center"
-        items={[
-          {
-            title: (
-              <Link to={{
-                pathname: "/carpetas",
-               
-              }} className="flex items-center">
-                <FolderOpenOutlined className="" /> 
-                <span> Mis carpetas</span>
-              </Link>
-            ),
-          },
-          {
-            title: (
-              <Link to={{
-                pathname: "/detail-folder",
-                search: `?idCarpeta=${encodeURIComponent(location.state.idCarpeta)}`,
-              }}  state={{ title: `${location.state.tituloCarpeta}` }} className="flex items-center">
-                 
-                <span>{location.state.tituloCarpeta} </span>
-              </Link>
-            ),
-          },
+      {location.state ? (
+        <Breadcrumb
+          className="text-[1rem] font-quicksand flex  items-center"
+          items={[
+            {
+              title: (
+                <Link
+                  to={{
+                    pathname: "/carpetas",
+                  }}
+                  className="flex items-center"
+                >
+                  <FolderOpenOutlined className="" />
+                  <span> Mis carpetas</span>
+                </Link>
+              ),
+            },
+            {
+              title: (
+                <Link
+                  to={{
+                    pathname: "/detail-folder",
+                    search: `?idCarpeta=${encodeURIComponent(
+                      location.state.idCarpeta
+                    )}`,
+                  }}
+                  state={{ title: `${location.state.tituloCarpeta}` }}
+                  className="flex items-center"
+                >
+                  <span>{location.state.tituloCarpeta} </span>
+                </Link>
+              ),
+            },
 
-          {
-            title: <a>{title}</a>,
-          },
-        ]}
-      />) :(<Breadcrumb
-        className="text-[1rem] font-quicksand flex  items-center"
-        items={[
-          {
-            title: (
-              <Link to="/home" className="flex items-center">
-                <FileOutlined className="" /> 
-                <span> Mis archivos</span>
-              </Link>
-            ),
-          },
+            {
+              title: <a>{title}</a>,
+            },
+          ]}
+        />
+      ) : (
+        <Breadcrumb
+          className="text-[1rem] font-quicksand flex  items-center"
+          items={[
+            {
+              title: (
+                <Link to="/home" className="flex items-center">
+                  <FileOutlined className="" />
+                  <span> Mis archivos</span>
+                </Link>
+              ),
+            },
 
-          {
-            title: <a>{title}</a>,
-          },
-        ]}
-      />)
-    }
-      
+            {
+              title: <a>{title}</a>,
+            },
+          ]}
+        />
+      )}
 
       {isLoading ? (
         <div className="flex md:justify-between items-center justify-center h-[calc(100vh-9rem)] w-full flex-wrap ">
           <Spin
             size="large"
-           
             style={{
               position: "absolute",
               top: "50%",

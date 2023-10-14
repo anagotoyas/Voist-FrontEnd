@@ -4,7 +4,7 @@ import { RiAddLine, RiVoiceprintLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 
-import { ModalGrabacion } from "../modals/modalGrabacion";
+import { ModalGrabacion } from "../modals/ModalGrabacion";
 
 
 export const DropDownNuevo = () => {

@@ -4,7 +4,7 @@ import { RiFilter3Fill } from "react-icons/ri";
 import { File } from "../components/files/File";
 import { SearchBar } from "../components/ui/SearchBar";
 import { useAuth } from "../context/AuthContext";
-import { Empty } from "antd";
+import { Divider, Empty } from "antd";
 
 import { Link } from "react-router-dom";
 import { DropDownCarpeta } from "../components/ui/DropDownCarpeta";
@@ -19,7 +19,7 @@ export const Carpetas = () => {
   useEffect(() => {
     loadAllFolders();
     
-  }, []);
+  }, [folders]);
 
   const handleSearch = (value) => {
     setSearchValue(value);
@@ -60,6 +60,12 @@ export const Carpetas = () => {
         </Menu>
       </div>
       <SearchBar className="mt-8" onSearch={handleSearch}/>
+      <div>
+        <h1 className="text-md font-quicksand font-bold mt-8 text-gray-500">
+          Resultados: {displayFolders.length}
+        </h1>
+      </div>
+      <Divider />
       <section className="my-4 pt-4 w-full flex flex-wrap gap-8 justify-center sm:justify-start">
         {displayFolders.length === 0 ? (
           <div className="flex items-center justify-center w-[90%] h-full mt-[5rem]">
