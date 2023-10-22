@@ -1,7 +1,7 @@
 import axios from "./axios";
 
-export const getAllFolders = async (userId) => {
-  return axios.get(`/all-folders/${userId}`);
+export const getAllFolders = async () => {
+  return axios.get(`/all-folders`);
 };
 
 export const getFolderById = async (folderId) => {
@@ -10,7 +10,7 @@ export const getFolderById = async (folderId) => {
 
 export const createFolder = async (title) => {
   
-    return axios.post(`/folders/${localStorage.getItem("userID")}`, { title});
+    return axios.post(`/folders`, { title});
   
   
 };

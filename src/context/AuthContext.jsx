@@ -5,7 +5,6 @@ import Cookie from "js-cookie";
 import {
   getAllFiles,
   getAllFilesByFolder,
-  getAllFilesByKeyword,
   getFileById,
   createFile,
   updateFile,
@@ -43,7 +42,7 @@ export function AuthProvider({ children }) {
       const res = await axios.post("/signup", data);
       setUser(res.data);
       setIsAuth(true);
-      localStorage.setItem("userID", res.data.id);
+     
 
       return res.data;
     } catch (error) {
@@ -66,7 +65,7 @@ export function AuthProvider({ children }) {
       setUser(res.data);
       setIsAuth(true);
 
-      localStorage.setItem("userID", res.data.id);
+     
 
       return res.data;
     } catch (error) {
@@ -89,7 +88,7 @@ export function AuthProvider({ children }) {
     setIsAuth(false);
     setErrors(null)
     
-    localStorage.removeItem("userID");
+   
   };
 
   //File
@@ -103,7 +102,7 @@ export function AuthProvider({ children }) {
 
   const loadAllFiles = async () => {
    
-    const res = await getAllFiles(localStorage.getItem("userID"));
+    const res = await getAllFiles();
     
     setFiles(res.data);
     
@@ -111,11 +110,7 @@ export function AuthProvider({ children }) {
   };
 
   const loadAllFilesByFolder = async (idFolder) => {
-    const res = await getAllFilesByFolder(localStorage.getItem("userID"), idFolder);
-    return res.data;
-  };
-  const loadAllFilesByKeyword = async (keyword) => {
-    const res = await getAllFilesByKeyword(localStorage.getItem("userID"), keyword);
+    const res = await getAllFilesByFolder( idFolder);
     return res.data;
   };
 
@@ -166,7 +161,7 @@ export function AuthProvider({ children }) {
   //Folder
 
   const loadAllFolders = async () => {
-    const res = await getAllFolders(localStorage.getItem("userID"));
+    const res = await getAllFolders();
     setFolders(res.data);
   };
 
@@ -186,10 +181,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // setLoading(true)
-    const userID = localStorage.getItem("userID");
-    if (userID!==null) {
+    
+    if (Cookie.get('token')) {
       axios
-        .get(`/profile/${userID}`)
+        .get(`/profile`)
         .then((res) => {
           setUser(res.data);
           console.log(res.data);
@@ -226,7 +221,6 @@ export function AuthProvider({ children }) {
         files,
         loadAllFilesByFolder,
         loadAllFolders,
-        loadAllFilesByKeyword,
         folders,
         saveFolder
       }}

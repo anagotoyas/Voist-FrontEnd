@@ -1,14 +1,12 @@
 import axios from "./axios";
 
-export const getAllFiles = async (userId) => {
-  return axios.get(`/all-files/${userId}`);
+export const getAllFiles = async () => {
+  return axios.get(`/all-files/`);
 };
-export const getAllFilesByFolder = async (userId, folderId) => {
-  return axios.get(`/all-files/${userId}/${folderId}`);
+export const getAllFilesByFolder = async ( folderId) => {
+  return axios.get(`/all-files/${folderId}`);
 };
-export const getAllFilesByKeyword = async (userId, keyword) => {
-  return axios.get(`/all-files/${userId}/${keyword}`);
-};
+
 
 export const getFileById = async (fileId) => {
   return axios.get(`/files/${fileId}`);
@@ -16,7 +14,7 @@ export const getFileById = async (fileId) => {
 
 export const createFile = async (title, idFolder) => {
   
-    return axios.post(`/files/${localStorage.getItem("userID")}`, { title, idFolder});
+    return axios.post(`/files`, { title, idFolder});
   
   
 };

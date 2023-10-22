@@ -5,7 +5,6 @@ const client = axios.create({
     // baseURL: 'http://localhost:3000/api',
     // baseURL: 'https://voist-backend.onrender.com/api',
     baseURL: 'https://seal-app-tgr7c.ondigitalocean.app/api',
-
     withCredentials:true
 })
 
