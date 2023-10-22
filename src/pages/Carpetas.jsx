@@ -19,7 +19,7 @@ export const Carpetas = () => {
   useEffect(() => {
     loadAllFolders();
     
-  }, [folders]);
+  }, []);
 
   const handleSearch = (value) => {
     setSearchValue(value);
