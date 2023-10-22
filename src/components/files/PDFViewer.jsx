@@ -1,63 +1,20 @@
-import {
-  Document,
-  Page,
-  Text,
-  View,
-  PDFViewer as ReactPDFViewer,
-} from "@react-pdf/renderer";
+
 
 import PropTypes from "prop-types";
 
-function PDFViewer({ title, content }) {
+function PDFViewer({ url }) {
+  console.log(url)
   return (
-    <ReactPDFViewer className="h-full lg:w-[70%] w-[45rem] md:mt-10 md:pl-[5rem]  lg:p-8 p-4">
-       <Document title={`${title}`}>
-      <Page
-        size="A4"
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          
-          alignItems: "center",
-          backgroundColor: "white",
-        }}
-      >
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "white",
-            padding: 10,
-          }}
-        >
-          <Text style={{ color: "#5271FF", fontSize: "26px" , padding: 10, textDecoration: 'underline'}}>
-            {title}
-          </Text>
-          <Text
-            style={{
-              color: "gray",
-              fontStyle: "italic",
-              paddingTop:20,
-              fontSize: "14px",
-            }}
-          >
-            {content}
-          </Text>
-          
-        
-
-        </View>
-      </Page>
-    </Document>
-    </ReactPDFViewer>
+    <div className="h-full lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4">
+    
+        <iframe src={url} width="100%" height="95%" />
+      
+    </div>
   );
 }
 
 PDFViewer.propTypes = {
-  title: PropTypes.string,
-  content: PropTypes.string,
+  url: PropTypes.string,
 };
 
 export default PDFViewer;

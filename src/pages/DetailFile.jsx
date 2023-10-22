@@ -63,6 +63,8 @@ export const DetailFile = () => {
 
   const [selectedButton, setSelectedButton] = useState("resumen");
 
+  
+
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
   };
@@ -142,7 +144,7 @@ export const DetailFile = () => {
           />
         </div>
       ) : (
-        <div className="flex md:justify-between items-center justify-center h-[calc(100vh-9rem)] w-full flex-wrap">
+        <div className="flex md:justify-between items-center justify-center h-[calc(100vh-10rem)] w-full flex-wrap">
           <section className="flex md:items-start items-center flex-col  h-full lg:w-[30%] w-[20rem] mt-10 pl-8">
             <div className="bg-gray-200  rounded-md mt-10 p-8 w-[90%]">
               <h2 className="text-primary font-bold pb-4 leading-3">
@@ -200,16 +202,16 @@ export const DetailFile = () => {
 
           {selectedButton === "resumen" && (
             <PDFViewer
-              title={title}
+              url={transcription}
               className="md:mt-10"
-              content={transcription}
+              
             />
           )}
           {selectedButton === "transcripcion" && (
             <PDFViewer
-              title={title}
+               
               className="md:mt-10"
-              content={transcription}
+              url={transcription}
             />
           )}
           {selectedButton === "chat" && (
