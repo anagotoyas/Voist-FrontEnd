@@ -45,3 +45,9 @@ export const saveAudioBlobAsWAV = async (formData, id) => {
     'Content-Type': 'multipart/form-data',
   }})
 };
+
+export const uploadAudio = async (formData,fileName)=>{
+  return axios.post(`/upload/${fileName}`, formData,{ headers: {
+    'Content-Type': 'multipart/form-data',
+  }})
+}

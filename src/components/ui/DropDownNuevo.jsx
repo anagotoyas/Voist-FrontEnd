@@ -1,30 +1,44 @@
 import { Menu, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { RiAddLine, RiVoiceprintLine } from "react-icons/ri";
+import { RiAddLine, RiUpload2Line, RiVoiceprintLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 
 import { ModalGrabacion } from "../modals/ModalGrabacion";
 
+import { ModalUploadAudio } from "../modals/ModalUploadAudio";
 
 export const DropDownNuevo = () => {
- 
   const [isModalGrabacionOpen, setIsModalGrabacionOpen] = useState(false);
-
+  const [isModalUploadOpen, setIsModalUploadOpen] = useState(false);
+  
   const handleClick = (e) => {
-    e.preventDefault(); // Evita la actualización de la página
+    e.preventDefault();
     openModalGrabacion();
   };
 
-   const openModalGrabacion = () => {
-   
+  const openModalGrabacion = () => {
     setIsModalGrabacionOpen(true);
-    // Cierra el ModalNuevo al abrir el ModalGrabacion
+    
   };
 
   const closeModalGrabacion = () => {
     setIsModalGrabacionOpen(false);
   };
+
+  const handleClickUpload = (e) => {
+    e.preventDefault();
+    openModalUpload();
+  };
+
+  const openModalUpload = () => {
+    setIsModalUploadOpen(true);
+  }
+  const closeModalUpload = () =>{
+    setIsModalUploadOpen(false);
+  }
+
+
   return (
     <>
       <Menu as="div">
@@ -54,17 +68,28 @@ export const DropDownNuevo = () => {
                   <RiVoiceprintLine /> Iniciar grabación
                 </Link>
               </Menu.Item>
-
-             
+              <Menu.Item>
+                <Link
+                  onClick={handleClickUpload}
+                  className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
+                >
+                  <RiUpload2Line /> Subir audio
+                </Link>
+              </Menu.Item>
             </div>
           </Menu.Items>
         </Transition>
       </Menu>
-     
-      <ModalGrabacion isOpen={isModalGrabacionOpen} onClose={closeModalGrabacion}>
-        
-        </ModalGrabacion>
 
+      <ModalGrabacion
+        isOpen={isModalGrabacionOpen}
+        onClose={closeModalGrabacion}
+      ></ModalGrabacion>
+
+      <ModalUploadAudio
+       isOpen={isModalUploadOpen}
+       onClose={closeModalUpload}
+      ></ModalUploadAudio>
     </>
   );
 };

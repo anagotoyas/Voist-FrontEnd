@@ -10,6 +10,7 @@ import {
   updateFile,
   deleteFile,
   saveAudioBlobAsWAV,
+  uploadAudio
 } from "../api/files.api";
 import {
   getAllFolders,
@@ -157,6 +158,20 @@ export function AuthProvider({ children }) {
       setLoading(false);
     }
   };
+  const uploadAudioWav = async (formData, fileName) => {
+    console.log(`upload audio`);
+    setLoading(true);
+    try {
+      const res = await uploadAudio(formData, fileName);
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   //Folder
 
@@ -222,7 +237,8 @@ export function AuthProvider({ children }) {
         loadAllFilesByFolder,
         loadAllFolders,
         folders,
-        saveFolder
+        saveFolder,
+        uploadAudioWav
       }}
     >
       {children}

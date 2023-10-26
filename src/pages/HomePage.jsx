@@ -18,7 +18,7 @@ export const HomePage = () => {
   useEffect(() => {
     loadAllFiles();
     // console.log(files)
-  }, [files]);
+  }, []);
 
   const handleSearch = (value) => {
     setSearchValue(value);
