@@ -19,7 +19,7 @@ export const Carpetas = () => {
   useEffect(() => {
     loadAllFolders();
     
-  }, [folders]);
+  }, []);
 
   const handleSearch = (value) => {
     setSearchValue(value);
@@ -85,6 +85,7 @@ export const Carpetas = () => {
                   title={item.title}
                   date={item.date_created}
                   type={"folder"}
+                  item={item}      
                 />
               </Link>
             </div>

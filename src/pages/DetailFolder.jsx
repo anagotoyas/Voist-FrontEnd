@@ -39,6 +39,7 @@ export const DetailFolder = () => {
     fetchFiles();
   }, []);
 
+
   const handleSearch = (value) => {
     setSearchValue(value);
     console.log(value);
@@ -144,6 +145,8 @@ export const DetailFolder = () => {
                       title={item.title}
                       date={item.date_created}
                       type={"file"}
+                      item={item}
+                     
                     />
                   </Link>
                 </div>

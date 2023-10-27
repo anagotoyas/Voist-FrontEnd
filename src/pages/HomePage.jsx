@@ -22,7 +22,7 @@ export const HomePage = () => {
 
   const handleSearch = (value) => {
     setSearchValue(value);
-    console.log(value);
+   
 
     const filteredFiles = files.filter((item) =>
       item.title.toLowerCase().includes(value.toLowerCase())
@@ -78,7 +78,7 @@ export const HomePage = () => {
                   search: `?id=${encodeURIComponent(item.id)}`,
                 }}
               >
-                <File title={item.title} date={item.date_created} type="file" />
+                <File title={item.title} date={item.date_created} type="file" item={item}/>
               </Link>
             </div>
           ))

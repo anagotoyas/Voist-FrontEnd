@@ -101,7 +101,7 @@ export const Compartido = () => {
       <section className="my-4 pt-4 w-full flex flex-wrap gap-8 justify-center sm:justify-start">
         {data.map((item)=>(
 
-          <File key={item.id} title={item.title} date={item.date} type={item.type} />
+          <File key={item.id} title={item.title} date={item.date} type={item.type} item={item} />
         
         ))}
       </section>

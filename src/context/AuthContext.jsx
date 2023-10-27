@@ -14,7 +14,8 @@ import {
 } from "../api/files.api";
 import {
   getAllFolders,
-  createFolder
+  createFolder,
+  deleteFolder,
 } from "../api/folder.api";
 
 export const AuthContext = createContext();
@@ -116,10 +117,12 @@ export function AuthProvider({ children }) {
   };
 
   const deleteFiles = async (id) => {
+    setLoading(true);
     const res = await deleteFile(id);
     if (res.status === 204) {
       setFiles(files.filter((file) => file.id !== id));
     }
+    setLoading(false);
   };
   const createFiles = async (file, idFolder) => {
     try {
@@ -181,16 +184,28 @@ export function AuthProvider({ children }) {
   };
 
   const saveFolder = async (title) => {
+    setLoading(true);
     try {
       const res = await createFolder(title);
-      setFolders([...folders, res]);
+      setFolders([...folders, res.data]);
+      setLoading(false);
       return res.data;
     } catch (error) {
       if (error.response) {
         setErrors(error.response.data);
       }
     }
+    
   }
+
+  const deleteFolders = async (id) => {
+    setLoading(true);
+    const res = await deleteFolder(id);
+    if (res.status === 204) {
+      setFolders(files.filter((file) => file.id !== id));
+    }
+    setLoading(false);
+  };
 
 
 
@@ -238,7 +253,8 @@ export function AuthProvider({ children }) {
         loadAllFolders,
         folders,
         saveFolder,
-        uploadAudioWav
+        uploadAudioWav,
+        deleteFolders
       }}
     >
       {children}

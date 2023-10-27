@@ -82,7 +82,6 @@ export const ModalUploadAudio = ({ isOpen, onClose }) => {
           placeholder="Titulo de la grabación"
           className="mt-5 text-md"
           value={audioFileName}
-          archivo
           onChange={(e) => setAudioFileName(e.target.value)}
         />
         <Upload
