@@ -12,6 +12,7 @@ import {
 import { ModalInfo } from "../modals/ModalInfo";
 import { useState } from "react";
 import { ContenidoEliminarFile } from "../modals/ContenidoEliminarFile";
+import { ContenidoActualizarFile } from "../modals/ContenidoActualizarFile";
 
 
 
@@ -32,9 +33,18 @@ export const File = (props) => {
 
     return `${day}-${month}-${year}, ${hours}:${minutes}:${seconds}`;
   }
+  // function formatDate(dateTimeString) {
+  //   const dateObj = new Date(dateTimeString);
+  //   const day = dateObj.getDate().toString().padStart(2, "0");
+  //   const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+  //   const year = dateObj.getFullYear();
+   
+  //   return `${day}-${month}-${year}`;
+  // }
 
   const formattedCreatedAt = formatDateTime(created_at);
   const formattedUpdatedAt = formatDateTime(updated_at);
+  // const formattedUpdatedDate = formatDate(updated_at);
 
 
   const handleClickInfo = (e) => {
@@ -81,13 +91,24 @@ export const File = (props) => {
 
     openModalInfo();
   };
+  const handleUpdateConfig = (e) => {
+    e.preventDefault();
+    setModalContent({
+      
+      title: `Actualizar título`
+      ,content:<ContenidoActualizarFile id={id} title={title} onClose={closeModalInfo} type={props.type} />});
+    openModalInfo();
+  };
 
   
   const openModalInfo = () => {
     setIsOpenModalInfo(true);
   };
   const closeModalInfo = (e) => {
-    e.preventDefault()
+    if(e){
+      e.preventDefault()
+    }
+    
     setIsOpenModalInfo(false);
   };
   
@@ -128,10 +149,10 @@ export const File = (props) => {
             </Menu.Item>
             <Menu.Item>
               <button
-                onClick={() => {console.log('seconf')}}
+                onClick={handleUpdateConfig}
                 className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
               >
-                <RiPencilFill /> Editar configuración
+                <RiPencilFill /> Editar título
               </button>
             </Menu.Item>
             {

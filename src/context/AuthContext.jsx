@@ -16,6 +16,7 @@ import {
   getAllFolders,
   createFolder,
   deleteFolder,
+  updateFolder
 } from "../api/folder.api";
 
 export const AuthContext = createContext();
@@ -138,13 +139,14 @@ export function AuthProvider({ children }) {
 
   const updateFiles = async (id, data) => {
     try {
-      const res = await updateFile(id, data);
-      return res.data;
+      setLoading(true);
+      await updateFile(id, data);
     } catch (error) {
       if (error.response) {
         setErrors(error.response.data.message);
       }
     }
+    setLoading(false);
   };
 
   const saveAudio = async (formData, id) => {
@@ -207,6 +209,13 @@ export function AuthProvider({ children }) {
     setLoading(false);
   };
 
+  const renameFolder = async (id, title) => {
+    setLoading(true);
+    await updateFolder(id, title);
+    
+    setLoading(false);
+  };
+
 
 
   useEffect(() => {
@@ -254,7 +263,8 @@ export function AuthProvider({ children }) {
         folders,
         saveFolder,
         uploadAudioWav,
-        deleteFolders
+        deleteFolders,
+        renameFolder
       }}
     >
       {children}

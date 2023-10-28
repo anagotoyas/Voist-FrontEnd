@@ -35,8 +35,8 @@ export const HomePage = () => {
 
   if (isOrdered) {
     displayFiles = [...displayFiles].sort((a, b) => {
-      const dateA = new Date(a.created_at);
-      const dateB = new Date(b.created_at);
+      const dateA = new Date(a.updated_at);
+      const dateB = new Date(b.updated_at);
       return dateB - dateA;
     });
   }
