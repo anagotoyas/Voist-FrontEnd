@@ -53,7 +53,7 @@ export const ModalAgregarContacto = ({ isOpen, onClose, children }) => {
         </h1>
         <SearchBar onSearch={handleSearch} />
 
-        <div className="overflow-y-auto max-h-[400px]">
+        <div className="overflow-y-auto max-h-[800px]">
           {displayContacts.length === 0 ? (
             <div className="mt-20">
               <Empty />
