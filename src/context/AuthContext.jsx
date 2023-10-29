@@ -18,6 +18,10 @@ import {
   deleteFolder,
   updateFolder
 } from "../api/folder.api";
+import {
+  getContactList,
+  deleteContact
+} from "../api/contact.api";
 
 export const AuthContext = createContext();
 
@@ -38,6 +42,7 @@ export function AuthProvider({ children }) {
 
   const [files, setFiles] = useState([]);
   const [folders, setFolders] = useState([]);
+  const [contacts, setContacts] = useState([]);
 
   const signup = async (data) => {
     setLoading(true);
@@ -216,6 +221,22 @@ export function AuthProvider({ children }) {
     setLoading(false);
   };
 
+  //Contacts
+
+  const loadAllContacts = async (id) => {
+    const res = await getContactList(id);
+    setContacts(res.data);
+  };
+
+  const deleteContacts = async (id,owner) => {
+    setLoading(true);
+    const res = await deleteContact(id, owner);
+    if (res.status === 204) {
+      setContacts(contacts.filter((contact) => contact.contact_id !== id));
+    }
+    setLoading(false);
+  };
+
 
 
   useEffect(() => {
@@ -264,7 +285,10 @@ export function AuthProvider({ children }) {
         saveFolder,
         uploadAudioWav,
         deleteFolders,
-        renameFolder
+        renameFolder,
+        loadAllContacts,
+        contacts,
+        deleteContacts
       }}
     >
       {children}

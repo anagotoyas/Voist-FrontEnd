@@ -2,7 +2,7 @@ import { RiCloseLine } from 'react-icons/ri';
 import PropTypes from "prop-types";
 
 
-export const ModalDeleteConfirm = (isOpen, onClose, children) => {
+export const ModalDeleteConfirm = ({isOpen, onClose, children}) => {
     const stopPropagation = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -30,7 +30,7 @@ export const ModalDeleteConfirm = (isOpen, onClose, children) => {
               className="absolute top-2 right-2 text-gray-600 hover:text-red-500 hover-bg-gray-200 rounded-full text-2xl"
               onClick={onClose}
             />
-    
+     
             {children}
             
           </div>
