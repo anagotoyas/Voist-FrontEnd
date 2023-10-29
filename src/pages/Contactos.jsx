@@ -4,6 +4,7 @@ import { Contact } from "../components/contacts/Contact";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useState } from "react";
 import { Empty } from "antd";
+import { ModalAgregarContacto } from "../components/modals/ModalAgregarContacto";
 
 
 export const Contactos = () => {
@@ -11,6 +12,7 @@ export const Contactos = () => {
   
   const [filteredContacts, setFilteredContacts] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [isOpenModalAdd, setIsOpenModalAdd] = useState(false)
 
   useEffect(() => {
     if (user && user.id) {
@@ -30,14 +32,23 @@ export const Contactos = () => {
 
   let displayContacts = searchValue ? filteredContacts : contacts;
 
-  
+  const closeModalAdd = (e) => {
+    if(e){
+      e.preventDefault()
+    }
+    
+    setIsOpenModalAdd(false);
+  };
 
   return (
     <div className="w-full">
       <h3 className="font-quicksand text-xl">Mis Contactos</h3>
       <section className="flex justify-between items-center md:gap-8 gap-4 flex-wrap md:flex-nowrap mt-6">
         <SearchBar className="" onSearch={handleSearch} />
-        <button className="bg-primary text-white rounded-full flex w-[15rem] justify-center items-center gap-4 py-2 m-auto">
+        <button className="bg-primary text-white rounded-full flex w-[15rem] justify-center items-center gap-4 py-2 m-auto"
+        onClick={()=>{setIsOpenModalAdd(true)}}
+        
+        >
           <RiUserAddLine /> Agregar contacto
         </button>
       </section>
@@ -47,7 +58,9 @@ export const Contactos = () => {
             <Empty />
           </div>
         ) : (
-          displayContacts.map((item) =>   (
+          displayContacts.map((item) => {
+          
+            return (
               <Contact
                 key={item.contact_id}
                 image={item.contact_gravatar}
@@ -55,12 +68,16 @@ export const Contactos = () => {
                 name={item.contact_name}
                 contact_id={item.contact_id}
                 owner_id={item.owner_id}
-              
               />
-            )
-          )
+            );
+          })
         )}
       </section>
+
+      <ModalAgregarContacto   isOpen={isOpenModalAdd}
+        onClose={closeModalAdd}>
+
+      </ModalAgregarContacto>
 
      
     </div>

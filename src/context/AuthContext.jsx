@@ -20,7 +20,8 @@ import {
 } from "../api/folder.api";
 import {
   getContactList,
-  deleteContact
+  deleteContact,
+  getUsersWithStatus
 } from "../api/contact.api";
 
 export const AuthContext = createContext();
@@ -43,6 +44,7 @@ export function AuthProvider({ children }) {
   const [files, setFiles] = useState([]);
   const [folders, setFolders] = useState([]);
   const [contacts, setContacts] = useState([]);
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   const signup = async (data) => {
     setLoading(true);
@@ -237,6 +239,12 @@ export function AuthProvider({ children }) {
     setLoading(false);
   };
 
+  const getContactsWithStatus = async (id) => {
+   
+    const res=await getUsersWithStatus(id);
+    setFilteredUsers(res.data);
+   
+  };
 
 
   useEffect(() => {
@@ -288,7 +296,9 @@ export function AuthProvider({ children }) {
         renameFolder,
         loadAllContacts,
         contacts,
-        deleteContacts
+        deleteContacts,
+        getContactsWithStatus,
+        filteredUsers
       }}
     >
       {children}
