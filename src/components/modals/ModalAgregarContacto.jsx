@@ -18,20 +18,20 @@ export const ModalAgregarContacto = ({ isOpen, onClose, children }) => {
     }
   }, [user]);
 
- 
 
-    const handleSearch = (value) => {
-      setSearchValue(value);
+  
+  const handleSearch = (value) => {
+    setSearchValue(value);
 
-      const filteredContacts = filteredUsers.filter((item) =>
-        item.name.toLowerCase().includes(value.toLowerCase())
-      );
+    const filteredContacts = filteredUsers.filter((item) =>
+      item.name.toLowerCase().includes(value.toLowerCase())
+    );
 
-      setFilteredContacts(filteredContacts);
-    };
+    setFilteredContacts(filteredContacts);
+  };
 
-    let displayContacts = searchValue ? filteredContacts : filteredUsers;
-  //   console.log(displayContacts);
+  let displayContacts = searchValue ? filteredContacts : filteredUsers;
+    // console.log(displayContacts);
 
   return (
     <div
@@ -43,7 +43,7 @@ export const ModalAgregarContacto = ({ isOpen, onClose, children }) => {
     >
       <div className="fixed inset-0 bg-black opacity-50"></div>
 
-      <div className="relative bg-white w-[80%] p-4 rounded-lg shadow-lg flex flex-col">
+      <div className="relative bg-white w-[90%] md:w-[80%] p-4 rounded-lg shadow-lg flex flex-col">
         <RiCloseLine
           className="absolute top-2 right-2 text-gray-600 hover:text-red-500 hover:bg-gray-200 rounded-full text-2xl"
           onClick={onClose}
@@ -54,22 +54,22 @@ export const ModalAgregarContacto = ({ isOpen, onClose, children }) => {
         <SearchBar onSearch={handleSearch} />
 
         <div className="overflow-y-auto max-h-[400px]">
-
-        {displayContacts.length === 0 ? (
-          <div className="mt-20">
-            <Empty />
-          </div>
-        ) : (
-          displayContacts.map((contact) => (
-            <ListContact
-              key={contact.id}
-              id={contact.id}
-              name={contact.name}
-              gravatar={contact.gravatar}
-              email={contact.email}
-              is_contact={contact.is_contact}
-            />
-          )))}
+          {displayContacts.length === 0 ? (
+            <div className="mt-20">
+              <Empty />
+            </div>
+          ) : (
+            displayContacts.map((contact) => (
+              <ListContact
+                key={contact.id}
+                id={contact.id}
+                name={contact.name}
+                gravatar={contact.gravatar}
+                email={contact.email}
+                is_contact={contact.is_contact}
+              />
+            ))
+          )}
         </div>
         {children}
       </div>

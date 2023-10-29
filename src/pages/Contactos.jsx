@@ -39,6 +39,7 @@ export const Contactos = () => {
     
     setIsOpenModalAdd(false);
   };
+  // console.log(displayContacts)
 
   return (
     <div className="w-full">
@@ -62,7 +63,7 @@ export const Contactos = () => {
           
             return (
               <Contact
-                key={item.contact_id}
+                key={item.id}
                 image={item.contact_gravatar}
                 email={item.contact_email}
                 name={item.contact_name}

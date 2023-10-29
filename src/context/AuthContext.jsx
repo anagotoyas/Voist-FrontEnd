@@ -21,7 +21,8 @@ import {
 import {
   getContactList,
   deleteContact,
-  getUsersWithStatus
+  getUsersWithStatus,
+  addContact
 } from "../api/contact.api";
 
 export const AuthContext = createContext();
@@ -246,6 +247,20 @@ export function AuthProvider({ children }) {
    
   };
 
+  const createContact = async (data) => {
+    setLoading(true);
+    try {
+      const res = await addContact(data);
+      setContacts([...contacts, res]);
+     
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data);
+      }
+    }
+    setLoading(false);
+  };
+
 
   useEffect(() => {
     // setLoading(true)
@@ -298,7 +313,8 @@ export function AuthProvider({ children }) {
         contacts,
         deleteContacts,
         getContactsWithStatus,
-        filteredUsers
+        filteredUsers,
+        createContact
       }}
     >
       {children}
