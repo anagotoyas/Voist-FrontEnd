@@ -24,6 +24,12 @@ import {
   getUsersWithStatus,
   addContact
 } from "../api/contact.api";
+import {
+  infoFile,
+  contactsStatus,
+  shareContact,
+  unshareContact
+} from "../api/shared_file.api";
 
 export const AuthContext = createContext();
 
@@ -47,6 +53,7 @@ export function AuthProvider({ children }) {
   const [contacts, setContacts] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
+  
   const signup = async (data) => {
     setLoading(true);
     try {
@@ -261,6 +268,32 @@ export function AuthProvider({ children }) {
     setLoading(false);
   };
 
+  //shared files
+
+  const loadContactsShared = async (id) => {
+    const res = await infoFile(id);
+    return res.data;
+  }
+  const loadContactsStatus = async (id) => {
+    const res = await contactsStatus(id);
+    return res.data
+  }
+  const shareFile = async (idFile,id) => {
+    setLoading(true);
+
+    const res = await shareContact(idFile,id);
+    setLoading(false);
+    return res.data
+
+  }
+  const unshareFile = async (idFile,id) => {
+    setLoading(true)
+    const res = await unshareContact(idFile,id);
+    setLoading(false)
+    return res.data
+  }
+
+
 
   useEffect(() => {
     // setLoading(true)
@@ -314,7 +347,12 @@ export function AuthProvider({ children }) {
         deleteContacts,
         getContactsWithStatus,
         filteredUsers,
-        createContact
+        createContact,
+        loadContactsShared,
+        loadContactsStatus,
+        shareFile,
+        unshareFile 
+        
       }}
     >
       {children}

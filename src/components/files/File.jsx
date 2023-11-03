@@ -13,14 +13,21 @@ import { ModalInfo } from "../modals/ModalInfo";
 import { useState } from "react";
 import { ContenidoEliminarFile } from "../modals/ContenidoEliminarFile";
 import { ContenidoActualizarFile } from "../modals/ContenidoActualizarFile";
+import { useAuth } from "../../context/AuthContext";
+import { ContactAccess } from "../contacts/ContactAccess";
+import { ModalCompartirAcceso } from "../modals/ModalCompartirAcceso";
+
 
 
 
 export const File = (props) => {
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
   const [modalContent, setModalContent] = useState(null);
+
+
+  const { loadContactsShared } = useAuth();
  
-  const { title, created_at, updated_at, duration, people_access, id } = props.item;
+  const { title, created_at, updated_at, duration, id } = props.item;
 
   function formatDateTime(dateTimeString) {
     const dateObj = new Date(dateTimeString);
@@ -47,9 +54,13 @@ export const File = (props) => {
   // const formattedUpdatedDate = formatDate(updated_at);
 
 
-  const handleClickInfo = (e) => {
+  const handleClickInfo = async(e) => {
+   
+   
     e.preventDefault();
     e.stopPropagation()
+    const contacts=await loadContactsShared(id)
+    // console.log(contacts)
     setModalContent({
       title: "Ver detalle",
       content: (
@@ -69,8 +80,11 @@ export const File = (props) => {
                 <b>Duración:</b> {duration} hrs
               </p>
               <p className="py-2">
-                <b>Acceso de personas:</b> {people_access}
+                <b>Usuarios invitados:</b>
               </p>
+              <div className="overflow-y-auto max-h-[200px] ">
+              <ContactAccess contacts={contacts} color="bg-lightgray"/>
+              </div>
             </div>
           ) : (
             ""
@@ -93,12 +107,24 @@ export const File = (props) => {
   };
   const handleUpdateConfig = (e) => {
     e.preventDefault();
+   
     setModalContent({
       
       title: `Actualizar título`
-      ,content:<ContenidoActualizarFile id={id} title={title} onClose={closeModalInfo} type={props.type} />});
+      ,content:<ContenidoActualizarFile id={id} title={title} onClose={closeModalInfo} type={props.type}  />});
     openModalInfo();
   };
+
+  const handleUpdateColaborators=async(e)=>{
+    e.preventDefault();
+   
+    const contacts=await loadContactsShared(id)
+    setModalContent({
+      
+      title: `Colaboradores`
+      ,content:<ModalCompartirAcceso id={id} title={title} onClose={closeModalInfo} type={props.type}contacts={contacts} />});
+    openModalInfo();
+  }
 
   
   const openModalInfo = () => {
@@ -159,7 +185,7 @@ export const File = (props) => {
               props.type === 'file' &&
               <Menu.Item>
               <button
-                onClick={() => {console.log('first')}}
+                onClick={handleUpdateColaborators}
                 className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
               >
                 <RiUserAddFill /> Añadir participantes
