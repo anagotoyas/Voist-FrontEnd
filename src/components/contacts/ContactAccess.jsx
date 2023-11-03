@@ -2,12 +2,18 @@ import PropTypes from 'prop-types';
 
 export const ContactAccess = ({ contacts, color }) => {
   
-
+  const isSoloAccess = contacts.length === 0; 
 
   return (
     <>
    
-        {contacts.map((contact) => (
+   {isSoloAccess ? (
+    <div className=" bg-lightgray border-full p-4 rounded-md">
+
+      <p className={` ${color}`}>Solo tú tienes acceso.</p>
+    </div>
+      ) : (
+        contacts.map((contact) => (
           <div
             key={contact.id}
             className={`flex w-full items-center ${color} p-2 rounded-lg my-2`}
@@ -22,7 +28,9 @@ export const ContactAccess = ({ contacts, color }) => {
               <p className="text-gray-500">{contact.email}</p>
             </div>
           </div>
-        ))}
+        ))
+      )}
+    
      
     </>
   );

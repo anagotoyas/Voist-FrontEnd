@@ -17,16 +17,12 @@ import { useAuth } from "../../context/AuthContext";
 import { ContactAccess } from "../contacts/ContactAccess";
 import { ModalCompartirAcceso } from "../modals/ModalCompartirAcceso";
 
-
-
-
 export const File = (props) => {
   const [isOpenModalInfo, setIsOpenModalInfo] = useState(false);
   const [modalContent, setModalContent] = useState(null);
 
-
   const { loadContactsShared } = useAuth();
- 
+
   const { title, created_at, updated_at, duration, id } = props.item;
 
   function formatDateTime(dateTimeString) {
@@ -45,7 +41,7 @@ export const File = (props) => {
   //   const day = dateObj.getDate().toString().padStart(2, "0");
   //   const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
   //   const year = dateObj.getFullYear();
-   
+
   //   return `${day}-${month}-${year}`;
   // }
 
@@ -53,13 +49,10 @@ export const File = (props) => {
   const formattedUpdatedAt = formatDateTime(updated_at);
   // const formattedUpdatedDate = formatDate(updated_at);
 
-
-  const handleClickInfo = async(e) => {
-   
-   
+  const handleClickInfo = async (e) => {
     e.preventDefault();
-    e.stopPropagation()
-    const contacts=await loadContactsShared(id)
+    e.stopPropagation();
+    const contacts = await loadContactsShared(id);
     // console.log(contacts)
     setModalContent({
       title: "Ver detalle",
@@ -83,7 +76,7 @@ export const File = (props) => {
                 <b>Usuarios invitados:</b>
               </p>
               <div className="overflow-y-auto max-h-[200px] ">
-              <ContactAccess contacts={contacts} color="bg-lightgray"/>
+                <ContactAccess contacts={contacts} color="bg-lightgray" />
               </div>
             </div>
           ) : (
@@ -98,46 +91,64 @@ export const File = (props) => {
   const handleDeleteConfig = (e) => {
     e.preventDefault();
     setModalContent({
-      
-      title: `¿Estás seguro de que deseas eliminar: ${title}?`
-      ,content:<ContenidoEliminarFile id={id} onClose={closeModalInfo} type={props.type} />});
-    
+      title: `¿Estás seguro de que deseas eliminar: ${title}?`,
+      content: (
+        <ContenidoEliminarFile
+          id={id}
+          onClose={closeModalInfo}
+          type={props.type}
+        />
+      ),
+    });
 
     openModalInfo();
   };
   const handleUpdateConfig = (e) => {
     e.preventDefault();
-   
+
     setModalContent({
-      
-      title: `Actualizar título`
-      ,content:<ContenidoActualizarFile id={id} title={title} onClose={closeModalInfo} type={props.type}  />});
+      title: `Actualizar título`,
+      content: (
+        <ContenidoActualizarFile
+          id={id}
+          title={title}
+          onClose={closeModalInfo}
+          type={props.type}
+        />
+      ),
+    });
     openModalInfo();
   };
 
-  const handleUpdateColaborators=async(e)=>{
+  const handleUpdateColaborators = async (e) => {
     e.preventDefault();
-   
-    const contacts=await loadContactsShared(id)
-    setModalContent({
-      
-      title: `Colaboradores`
-      ,content:<ModalCompartirAcceso id={id} title={title} onClose={closeModalInfo} type={props.type}contacts={contacts} />});
-    openModalInfo();
-  }
 
-  
+    const contacts = await loadContactsShared(id);
+    setModalContent({
+      title: `Colaboradores`,
+      content: (
+        <ModalCompartirAcceso
+          id={id}
+          title={title}
+          onClose={closeModalInfo}
+          type={props.type}
+          contacts={contacts}
+        />
+      ),
+    });
+    openModalInfo();
+  };
+
   const openModalInfo = () => {
     setIsOpenModalInfo(true);
   };
   const closeModalInfo = (e) => {
-    if(e){
-      e.preventDefault()
+    if (e) {
+      e.preventDefault();
     }
-    
+
     setIsOpenModalInfo(false);
   };
-  
 
   return (
     <div className="bg-lightgray w-[18rem] h-[6rem] flex justify-between p-4 font-quicksand rounded-lg hover:bg-gray-200">
@@ -155,62 +166,57 @@ export const File = (props) => {
           {props.date}
         </h3>
       </div>
-      <div className=""></div>
-      <Menu as="div" className="">
-        <Menu.Button className="text-2xl hover:bg-white rounded-full">
-          <RiMore2Fill className="" />
-        </Menu.Button>
-        <Menu.Items
-          as="section"
-          className="right-[12rem] relative bg-gray-100 w-60 rounded-lg shadow-lg p-6 m-auto z-10"
-        >
-          <div>
-            <Menu.Item>
-              <button
-                onClick={handleClickInfo}
-                className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
-              >
-                <RiEyeFill /> Ver detalle
-              </button>
-            </Menu.Item>
-            <Menu.Item>
-              <button
-                onClick={handleUpdateConfig}
-                className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
-              >
-                <RiPencilFill /> Editar título
-              </button>
-            </Menu.Item>
-            {
-              props.type === 'file' &&
+      {props.owner !== false && (
+        <Menu as="div" className="">
+          <Menu.Button className="text-2xl hover:bg-white rounded-full">
+            <RiMore2Fill className="" />
+          </Menu.Button>
+          <Menu.Items
+            as="section"
+            className="right-[12rem] relative bg-gray-100 w-60 rounded-lg shadow-lg p-6 m-auto z-10"
+          >
+            <div>
               <Menu.Item>
-              <button
-                onClick={handleUpdateColaborators}
-                className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
-              >
-                <RiUserAddFill /> Añadir participantes
-              </button>
-            </Menu.Item>
-            }
-            
-            <Menu.Item>
-              <button
-                onClick={handleDeleteConfig}
-                className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-red-500 hover:text-white"
-              >
-                <RiDeleteBin6Fill /> Eliminar
-              </button>
-            </Menu.Item>
-          </div>
-        </Menu.Items>
-      </Menu>
+                <button
+                  onClick={handleClickInfo}
+                  className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
+                >
+                  <RiEyeFill /> Ver detalle
+                </button>
+              </Menu.Item>
+              <Menu.Item>
+                <button
+                  onClick={handleUpdateConfig}
+                  className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
+                >
+                  <RiPencilFill /> Editar título
+                </button>
+              </Menu.Item>
+              {props.type === "file" && (
+                <Menu.Item>
+                  <button
+                    onClick={handleUpdateColaborators}
+                    className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-primary hover:text-white"
+                  >
+                    <RiUserAddFill /> Añadir participantes
+                  </button>
+                </Menu.Item>
+              )}
 
-      
+              <Menu.Item>
+                <button
+                  onClick={handleDeleteConfig}
+                  className="flex items-center gap-4 p-2 rounded-lg transition-colors text-base font-quicksand w-full hover:bg-red-500 hover:text-white"
+                >
+                  <RiDeleteBin6Fill /> Eliminar
+                </button>
+              </Menu.Item>
+            </div>
+          </Menu.Items>
+        </Menu>
+      )}
 
-      <ModalInfo
-        isOpen={isOpenModalInfo}
-        onClose={closeModalInfo}
-      >
+      <ModalInfo isOpen={isOpenModalInfo} onClose={closeModalInfo}>
         <div className="p-3">
           <h1 className="text-lg font-bold text-center text-primary mb-4">
             {modalContent ? modalContent.title : ""}
@@ -228,4 +234,5 @@ File.propTypes = {
   type: PropTypes.string,
   onClick: PropTypes.func,
   item: PropTypes.any,
+  owner:PropTypes.any
 };

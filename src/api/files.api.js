@@ -11,6 +11,9 @@ export const getAllFilesByFolder = async ( folderId) => {
 export const getFileById = async (fileId) => {
   return axios.get(`/files/${fileId}`);
 };
+export const getFileByContact = async () => {
+  return axios.get(`/files-contact`);
+};
 
 export const createFile = async (title, idFolder) => {
   

@@ -11,7 +11,7 @@ export const ModalInfo = ({ isOpen, onClose, children }) => {
     <div
       className={
         isOpen
-          ? "fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ease-in-out"
+          ? "fixed inset-0 flex items-center justify-center z-50 transition-opacity duration-300 ease-in-out overflow-x-hidden overflow-y-hidden"
           : "hidden"
       }
       onClick={onClose} 

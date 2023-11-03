@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FolderOpenOutlined, FileOutlined } from "@ant-design/icons";
+import { FolderOpenOutlined, FileOutlined ,CloudOutlined} from "@ant-design/icons";
 import { Breadcrumb } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { Spin } from "antd";
@@ -21,6 +21,7 @@ export const DetailFile = () => {
   const id = searchParams.get("id");
 
   const publicUrl = window.location.origin;
+  // console.log(location.state["tituloCarpeta"]);
 
   const fetchData = async () => {
     try {
@@ -38,16 +39,23 @@ export const DetailFile = () => {
 
   useEffect(() => {
     const pollForTranscription = () => {
-      if (transcription === null || transcription === undefined || transcription ==='Por procesar...') {
-        setTranscription('Por procesar...');
-        setDuration('Por procesar...');
+      if (
+        transcription === null ||
+        transcription === undefined ||
+        transcription === "Por procesar..."
+      ) {
+        setTranscription("Por procesar...");
+        setDuration("Por procesar...");
         fetchData();
       }
     };
 
     const intervalId = setInterval(pollForTranscription, 500);
 
-    if (transcription !== null && transcription !== undefined || transcription ==='Por procesar...') {
+    if (
+      (transcription !== null && transcription !== undefined) ||
+      transcription === "Por procesar..."
+    ) {
       clearInterval(intervalId);
     }
 
@@ -63,15 +71,30 @@ export const DetailFile = () => {
 
   const [selectedButton, setSelectedButton] = useState("resumen");
 
-  
-
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
   };
 
   return (
     <>
-      {location.state ? (
+      {!location.state ? (
+        <Breadcrumb
+          className="text-[1rem] font-quicksand flex  items-center"
+          items={[
+            {
+              title: (
+                <Link to="/home" className="flex items-center">
+                  <FileOutlined className="" />
+                  <span> Mis archivos</span>
+                </Link>
+              ),
+            },
+            {
+              title: <a>{title}</a>,
+            },
+          ]}
+        />
+      ) : location.state["tituloCarpeta"] ? (
         <Breadcrumb
           className="text-[1rem] font-quicksand flex  items-center"
           items={[
@@ -104,31 +127,29 @@ export const DetailFile = () => {
                 </Link>
               ),
             },
-
             {
               title: <a>{title}</a>,
             },
           ]}
         />
-      ) : (
+      ) : location.state["compartido"] ? (
         <Breadcrumb
           className="text-[1rem] font-quicksand flex  items-center"
           items={[
             {
               title: (
-                <Link to="/home" className="flex items-center">
-                  <FileOutlined className="" />
-                  <span> Mis archivos</span>
+                <Link to="/compartido" className="flex items-center">
+                  <CloudOutlined />
+                <span> Compartido conmigo</span> 
                 </Link>
               ),
             },
-
             {
               title: <a>{title}</a>,
             },
           ]}
         />
-      )}
+      ) :''}
 
       {isLoading ? (
         <div className="flex md:justify-between items-center justify-center h-[calc(100vh-9rem)] w-full flex-wrap ">
@@ -201,18 +222,10 @@ export const DetailFile = () => {
           </section>
 
           {selectedButton === "resumen" && (
-            <PDFViewer
-              url={transcription}
-              className="md:mt-10"
-              
-            />
+            <PDFViewer url={transcription} className="md:mt-10" />
           )}
           {selectedButton === "transcripcion" && (
-            <PDFViewer
-               
-              className="md:mt-10"
-              url={transcription}
-            />
+            <PDFViewer className="md:mt-10" url={transcription} />
           )}
           {selectedButton === "chat" && (
             <section className="flex items-center justify-start m-auto w-[25rem]">

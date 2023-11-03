@@ -9,10 +9,10 @@ export const SearchResultContacts = ({ results,idFile }) => {
 
     const permisos = (agregado,id) =>{
         if(agregado){
-            console.log('eliminado',idFile,id)
+            // console.log('eliminado',idFile,id)
             unshareFile(idFile,id)
         } else{
-            console.log('agregado',idFile,id)
+            // console.log('agregado',idFile,id)
             shareFile(idFile,id)
         }
     }

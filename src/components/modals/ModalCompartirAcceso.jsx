@@ -8,10 +8,10 @@ export const ModalCompartirAcceso = ({ id, contacts }) => {
   const [searchValue, setSearchValue] = useState("");
   const [results, setResults] = useState([]);
 
-  console.log("id file ", id);
+
 
   return (
-    <div>
+    <div className="h-[15rem]">
       <SearchContact
         id={id}
         setResults={setResults}

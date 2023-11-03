@@ -10,7 +10,8 @@ import {
   updateFile,
   deleteFile,
   saveAudioBlobAsWAV,
-  uploadAudio
+  uploadAudio,
+  getFileByContact
 } from "../api/files.api";
 import {
   getAllFolders,
@@ -49,6 +50,7 @@ export function AuthProvider({ children }) {
  
 
   const [files, setFiles] = useState([]);
+  const [filesShared, setFilesShared] = useState([]);
   const [folders, setFolders] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -123,6 +125,14 @@ export function AuthProvider({ children }) {
     const res = await getAllFiles();
     
     setFiles(res.data);
+    
+   
+  };
+  const loadAllFilesShared = async () => {
+   
+    const res = await getFileByContact();
+    
+    setFilesShared(res.data);
     
    
   };
@@ -271,7 +281,7 @@ export function AuthProvider({ children }) {
   //shared files
 
   const loadContactsShared = async (id) => {
-    const res = await infoFile(id);
+    const res = await infoFile(Number(id));
     return res.data;
   }
   const loadContactsStatus = async (id) => {
@@ -351,7 +361,9 @@ export function AuthProvider({ children }) {
         loadContactsShared,
         loadContactsStatus,
         shareFile,
-        unshareFile 
+        unshareFile ,
+        loadAllFilesShared,
+        filesShared
         
       }}
     >
