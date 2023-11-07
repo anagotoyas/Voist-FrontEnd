@@ -1,36 +1,78 @@
 import { useEffect, useState } from "react";
-import { FolderOpenOutlined, FileOutlined ,CloudOutlined} from "@ant-design/icons";
+import {
+  FolderOpenOutlined,
+  FileOutlined,
+  CloudOutlined,
+} from "@ant-design/icons";
 import { Breadcrumb } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { Spin } from "antd";
+import { Typography } from "antd";
+
+const { Text } = Typography;
 
 import { RiChatVoiceLine, RiMenuFill, RiVoiceprintFill } from "react-icons/ri";
 import PDFViewer from "../components/files/PDFViewer";
 import { useAuth } from "../context/AuthContext";
 
+
 export const DetailFile = () => {
-  const { loadFile } = useAuth();
+  const { loadFile,createResume,saveResume } = useAuth();
   const [transcription, setTranscription] = useState(null);
+  const [summary, setSummary] = useState(null);
   const [duration, setDuration] = useState(null);
   const [dateCreated, setDateCreated] = useState(null);
   const [title, setTitle] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [count, setCount] = useState(0);
+
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
   const publicUrl = window.location.origin;
-  // console.log(location.state["tituloCarpeta"]);
+ 
 
-  const fetchData = async () => {
+  const makeRequest = async () => {
     try {
-      const { transcript, duration, date_created, title } = await loadFile(id);
-      setTranscription(transcript);
+      const { transcript: newTranscript, duration, date_created, title,summary } = await loadFile(id);
       setDuration(duration);
       setDateCreated(date_created);
       setTitle(title);
-      setIsLoading(false);
+      setTranscription(newTranscript);
+      setSummary(summary);
+
+      if (newTranscript !== null) {
+        
+        const data = {
+          url_pdf: newTranscript
+        };
+        const res = await createResume(data);
+       
+
+        const data2 = {
+          content: res.answer,
+          id: id,
+          bucket: "resumen"
+        };
+
+        const res2 =await saveResume(data2);
+
+        if (summary===null){
+          setSummary(res2.pdfUrl)
+        }
+        
+       
+        setIsLoading(false);
+      
+      }
+      else{
+        setTimeout(() => {
+          setCount(count + 1);
+        }, 5000);
+      }
+     
     } catch (error) {
       console.error("Error al cargar los datos del archivo:", error);
       setIsLoading(false);
@@ -38,36 +80,9 @@ export const DetailFile = () => {
   };
 
   useEffect(() => {
-    const pollForTranscription = () => {
-      if (
-        transcription === null ||
-        transcription === undefined ||
-        transcription === "Por procesar..."
-      ) {
-        setTranscription("Por procesar...");
-        setDuration("Por procesar...");
-        fetchData();
-      }
-    };
-
-    const intervalId = setInterval(pollForTranscription, 500);
-
-    if (
-      (transcription !== null && transcription !== undefined) ||
-      transcription === "Por procesar..."
-    ) {
-      clearInterval(intervalId);
-    }
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [transcription, id]);
-
-  // if(location.state){
-  //   console.log(location.state.idCarpeta)
-  //   console.log(location.state.tituloCarpeta)
-  // }
+    makeRequest(); 
+    
+  }, [count]);
 
   const [selectedButton, setSelectedButton] = useState("resumen");
 
@@ -140,7 +155,7 @@ export const DetailFile = () => {
               title: (
                 <Link to="/compartido" className="flex items-center">
                   <CloudOutlined />
-                <span> Compartido conmigo</span> 
+                  <span> Compartido conmigo</span>
                 </Link>
               ),
             },
@@ -149,20 +164,16 @@ export const DetailFile = () => {
             },
           ]}
         />
-      ) :''}
+      ) : (
+        ""
+      )}
 
       {isLoading ? (
-        <div className="flex md:justify-between items-center justify-center h-[calc(100vh-9rem)] w-full flex-wrap ">
-          <Spin
-            size="large"
-            style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-20%, -50%)",
-              zIndex: "999",
-            }}
-          />
+        <div className="flex md:justify-center items-center justify-center h-[calc(100vh-9rem)] w-full flex-wrap flex-col ">
+          <Text italic className="font-bold text-md">
+            Procesando...
+          </Text>
+          <Spin className="mt-10" size="large" />
         </div>
       ) : (
         <div className="flex md:justify-between items-center justify-center h-[calc(100vh-10rem)] w-full flex-wrap">
@@ -222,7 +233,7 @@ export const DetailFile = () => {
           </section>
 
           {selectedButton === "resumen" && (
-            <PDFViewer url={transcription} className="md:mt-10" />
+            <PDFViewer url={summary} className="md:mt-10" />
           )}
           {selectedButton === "transcripcion" && (
             <PDFViewer className="md:mt-10" url={transcription} />

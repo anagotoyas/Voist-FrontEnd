@@ -1,4 +1,5 @@
 import axios from "./axios";
+import axios_flask from './axios_flask'
 
 export const getAllFiles = async () => {
   return axios.get(`/all-files/`);
@@ -54,3 +55,12 @@ export const uploadAudio = async (formData,fileName)=>{
     'Content-Type': 'multipart/form-data',
   }})
 }
+
+export const createSummary = async (data)=>{
+  return axios_flask.post(`/resume`, data)
+}
+
+export const saveSummary = async (data)=>{
+  return axios.post(`/createSummary`, data)
+}
+

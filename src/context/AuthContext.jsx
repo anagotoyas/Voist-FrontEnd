@@ -11,7 +11,9 @@ import {
   deleteFile,
   saveAudioBlobAsWAV,
   uploadAudio,
-  getFileByContact
+  getFileByContact,
+  createSummary,
+  saveSummary
 } from "../api/files.api";
 import {
   getAllFolders,
@@ -54,6 +56,8 @@ export function AuthProvider({ children }) {
   const [folders, setFolders] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const [transcript, setTranscript] = useState(null);
 
   
   const signup = async (data) => {
@@ -116,6 +120,7 @@ export function AuthProvider({ children }) {
   const loadFile = async (id) => {
     
     const res = await getFileById(id);
+    setTranscript(res.data.transcript)
     
     return res.data;
   };
@@ -200,6 +205,29 @@ export function AuthProvider({ children }) {
       }
     } finally {
       setLoading(false);
+    }
+  };
+
+  const createResume = async (data) => {
+    try {
+      const res = await createSummary(data);
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data);
+      }
+    }
+  };
+
+  const saveResume = async (data) => {
+    try {
+      const res = await saveSummary(data);
+  
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data);
+      }
     }
   };
 
@@ -363,7 +391,10 @@ export function AuthProvider({ children }) {
         shareFile,
         unshareFile ,
         loadAllFilesShared,
-        filesShared
+        filesShared,
+        transcript,
+        createResume,
+        saveResume
         
       }}
     >
