@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const client_flask = axios.create({
     
-    baseURL: 'http://137.184.45.104',
+    baseURL: 'https://flask-api-chat-e946f8beffac.herokuapp.com',
     withCredentials:false
 })
 
