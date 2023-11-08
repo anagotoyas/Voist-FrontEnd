@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const client_flask = axios.create({
     
-    baseURL: 'https://flask-api-chat-e946f8beffac.herokuapp.com',
+    baseURL: 'https://jellyfish-app-xwb5l.ondigitalocean.app/flask-api2',
     withCredentials:false
 })
 
