@@ -9,7 +9,7 @@ import { Empty } from "antd";
 
 export const Compartido = () => {
   const [isOrdered, setIsOrdered] = useState(false);
-  const { loadAllFilesShared, filesShared } = useAuth([]);
+  const { loadAllFilesShared, filesShared } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
   const [filteredFiles, setFilteredFiles] = useState([]);

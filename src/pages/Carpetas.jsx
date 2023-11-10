@@ -14,7 +14,7 @@ export const Carpetas = () => {
   const { loadAllFolders, folders } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
-  const [filteredFolders, setFilteredFolders] = useState([]);
+  const [filteredFolders, setFilteredFolders] = useState();
 
   useEffect(() => {
     loadAllFolders();

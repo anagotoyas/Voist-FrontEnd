@@ -10,7 +10,7 @@ import { Divider, Empty } from "antd";
 
 export const HomePage = () => {
   const [isOrdered, setIsOrdered] = useState(false);
-  const { loadAllFiles, files } = useAuth([]);
+  const { loadAllFiles, files } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
   const [filteredFiles, setFilteredFiles] = useState([]);
