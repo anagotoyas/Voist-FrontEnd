@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Message } from "./message/Message";
 import { useAuth } from "../../context/AuthContext";
 import { RiSendPlaneFill } from "react-icons/ri";
+import { Spin } from "antd";
 
 export const Chat = (props) => {
   const { classId, url_pdf } = props;
@@ -14,15 +15,22 @@ export const Chat = (props) => {
 
   const [isLoadingRequest, setIsLoadingRequest] = useState(false);
 
+  const [loading, setLoading] = useState(false)
+
   const messagesContainerRef = useRef(null);
 
   const refetchConversations = async () => {
     try {
+      setLoading(true)
       const data = await loadConversation(classId);
       setConversations(data);
+    
     } catch (error) {
       // Manejar el error si es necesario
       toast.warning(getErrorResponse(error));
+    }
+    finally{
+      setLoading(false)
     }
   };
 
@@ -36,6 +44,12 @@ export const Chat = (props) => {
         messagesContainerRef.current.scrollHeight;
     }
   }, [isLoadingRequest]);
+  useEffect(() => {
+    if (messagesContainerRef.current) {
+      messagesContainerRef.current.scrollTop =
+        messagesContainerRef.current.scrollHeight;
+    }
+  }, [conversations]); 
 
   const handleChangeInput = (e) => {
     setQuestion(e.target.value);
@@ -43,7 +57,7 @@ export const Chat = (props) => {
 
   const handleKeyBoardInput = (e) => {
     if (isLoadingRequest) return;
-    if (e.key === "Enter" ) {
+    if (e.key === "Enter") {
       createConversation(question);
     }
   };
@@ -83,6 +97,10 @@ export const Chat = (props) => {
 
   return (
     <div className="mt-10 border-gray-300 border-2 rounded-lg p-4 flex flex-col gap-8 justify-start lg:w-[70%] md:w-[60%] ">
+      {loading ? (
+        <Spin/>
+      ):(
+      <>
       <div
         ref={messagesContainerRef}
         className="pr-5 overflow-y-auto overflow-x-hidden min-h-[60vh] max-h-[60vh]"
@@ -128,9 +146,18 @@ export const Chat = (props) => {
           onChange={handleChangeInput}
           className="rounded-xl border-2 border-gray-300 p-2 w-full"
         />
-         <RiSendPlaneFill className="w-[2rem] text-primary text-[1.2rem] absolute m-auto top-[.8rem] right-4 cursor-pointer hover:text-grey"/>
-       
+        <RiSendPlaneFill
+          onClick={() => {
+            if (isLoadingRequest) return;
+            if (question !== "" ) {
+              createConversation(question);
+            }
+          }}
+          className="w-[2rem] text-primary text-[1.2rem] absolute m-auto top-[.8rem] right-4 cursor-pointer hover:text-grey"
+        />
       </div>
+      </>)}
+      
     </div>
   );
 };
