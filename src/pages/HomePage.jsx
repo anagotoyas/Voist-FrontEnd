@@ -10,15 +10,18 @@ import { Divider, Empty } from "antd";
 
 export const HomePage = () => {
   const [isOrdered, setIsOrdered] = useState(false);
-  const { loadAllFiles, files } = useAuth();
+  const { user, loadAllFiles, files } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
   const [filteredFiles, setFilteredFiles] = useState([]);
 
   useEffect(() => {
-    loadAllFiles();
+    if (user && user.id) {
+      loadAllFiles();
+    }
+    
     // console.log(files)
-  }, []);
+  }, [user]);
 
   const handleSearch = (value) => {
     setSearchValue(value);

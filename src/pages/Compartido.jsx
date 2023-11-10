@@ -9,14 +9,15 @@ import { Empty } from "antd";
 
 export const Compartido = () => {
   const [isOrdered, setIsOrdered] = useState(false);
-  const { loadAllFilesShared, filesShared } = useAuth();
+  const {user, loadAllFilesShared, filesShared } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
   const [filteredFiles, setFilteredFiles] = useState([]);
 
   useEffect(() => {
+    if (user && user.id)
     loadAllFilesShared();
-  }, []);
+  }, [user]);
 
   const handleSearch = (value) => {
     setSearchValue(value);

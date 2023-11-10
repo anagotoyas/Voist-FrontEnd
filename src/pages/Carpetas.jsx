@@ -11,15 +11,18 @@ import { DropDownCarpeta } from "../components/ui/DropDownCarpeta";
 
 export const Carpetas = () => {
   const [isOrdered, setIsOrdered] = useState(false);
-  const { loadAllFolders, folders } = useAuth();
+  const { user, loadAllFolders, folders } = useAuth();
 
   const [searchValue, setSearchValue] = useState("");
   const [filteredFolders, setFilteredFolders] = useState();
 
   useEffect(() => {
-    loadAllFolders();
+    if(user && user.id){
+      loadAllFolders();
+    }
     
-  }, []);
+    
+  }, [user]);
 
   const handleSearch = (value) => {
     setSearchValue(value);
