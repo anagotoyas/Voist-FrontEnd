@@ -33,6 +33,11 @@ import {
   shareContact,
   unshareContact
 } from "../api/shared_file.api";
+import {
+  getConversation,
+  createConversation,
+  askQuestion,
+} from '../api/conversation.api'
 
 export const AuthContext = createContext();
 
@@ -331,6 +336,25 @@ export function AuthProvider({ children }) {
     return res.data
   }
 
+  //conversation
+
+  const loadConversation = async (id) => {  
+    const res = await getConversation(id);
+    return res.data;
+  }
+
+  const createConversations = async (classId, question, answer) => {
+    const res = await createConversation(classId, question, answer);
+    return res.data;
+  }
+
+  const askQuestions = async (urlPdf,question) => {
+    const res = await askQuestion(urlPdf,question);
+    return res.data;
+  }
+
+
+
 
 
   useEffect(() => {
@@ -394,7 +418,10 @@ export function AuthProvider({ children }) {
         filesShared,
         transcript,
         createResume,
-        saveResume
+        saveResume,
+        loadConversation,
+        createConversations,
+        askQuestions
         
       }}
     >

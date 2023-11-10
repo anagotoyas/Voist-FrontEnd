@@ -14,10 +14,10 @@ const { Text } = Typography;
 import { RiChatVoiceLine, RiMenuFill, RiVoiceprintFill } from "react-icons/ri";
 import PDFViewer from "../components/files/PDFViewer";
 import { useAuth } from "../context/AuthContext";
-
+import { Chat } from "../components/chat/Chat";
 
 export const DetailFile = () => {
-  const { loadFile,createResume,saveResume } = useAuth();
+  const { loadFile, createResume, saveResume } = useAuth();
   const [transcription, setTranscription] = useState(null);
   const [summary, setSummary] = useState(null);
   const [duration, setDuration] = useState(null);
@@ -26,17 +26,21 @@ export const DetailFile = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [count, setCount] = useState(0);
 
-
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
-  const publicUrl = window.location.origin;
- 
+  // const publicUrl = window.location.origin;
 
   const makeRequest = async () => {
     try {
-      const { transcript: newTranscript, duration, date_created, title,summary } = await loadFile(id);
+      const {
+        transcript: newTranscript,
+        duration,
+        date_created,
+        title,
+        summary,
+      } = await loadFile(id);
       setDuration(duration);
       setDateCreated(date_created);
       setTitle(title);
@@ -44,35 +48,29 @@ export const DetailFile = () => {
       setSummary(summary);
 
       if (newTranscript !== null) {
-        
         const data = {
-          url_pdf: newTranscript
-        };
-        const res = await createResume(data);
-       
-
-        const data2 = {
-          content: res.answer,
-          id: id,
-          bucket: "resumen"
+          url_pdf: newTranscript,
         };
 
-        const res2 =await saveResume(data2);
+        if (summary === null) {
+          const res = await createResume(data);
 
-        if (summary===null){
-          setSummary(res2.pdfUrl)
+          const data2 = {
+            content: res.answer,
+            id: id,
+            bucket: "resumen",
+          };
+
+          const res2 = await saveResume(data2);
+          setSummary(res2.pdfUrl);
         }
-        
-       
+
         setIsLoading(false);
-      
-      }
-      else{
+      } else {
         setTimeout(() => {
           setCount(count + 1);
         }, 5000);
       }
-     
     } catch (error) {
       console.error("Error al cargar los datos del archivo:", error);
       setIsLoading(false);
@@ -80,8 +78,7 @@ export const DetailFile = () => {
   };
 
   useEffect(() => {
-    makeRequest(); 
-    
+    makeRequest();
   }, [count]);
 
   const [selectedButton, setSelectedButton] = useState("resumen");
@@ -169,7 +166,7 @@ export const DetailFile = () => {
       )}
 
       {isLoading ? (
-        <div className="flex md:justify-center items-center justify-center h-[calc(100vh-9rem)] w-full flex-wrap flex-col ">
+        <div className="flex lg:justify-center items-center justify-center h-[calc(100vh)] w-full  flex-wrap flex-col ">
           <Text italic className="font-bold text-md">
             Procesando...
           </Text>
@@ -177,7 +174,7 @@ export const DetailFile = () => {
         </div>
       ) : (
         <div className="flex md:justify-between items-center justify-center h-[calc(100vh-10rem)] w-full flex-wrap">
-          <section className="flex md:items-start items-center flex-col  h-full lg:w-[30%] w-[20rem] mt-10 pl-8">
+          <section className="flex md:items-start items-center flex-col  mb-10 lg:w-[30%] w-[20rem] mt-10 ">
             <div className="bg-gray-200  rounded-md mt-10 p-8 w-[90%]">
               <h2 className="text-primary font-bold pb-4 leading-3">
                 Datos de la sesión
@@ -239,9 +236,7 @@ export const DetailFile = () => {
             <PDFViewer className="md:mt-10" url={transcription} />
           )}
           {selectedButton === "chat" && (
-            <section className="flex items-center justify-start m-auto w-[25rem]">
-              <img src={`${publicUrl}/chat-img.png`} alt="chat" />
-            </section>
+            <Chat url_pdf={transcription} classId={id}></Chat>
           )}
         </div>
       )}
