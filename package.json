@@ -33,6 +33,7 @@
     "react-hook-form": "^7.46.2",
     "react-icons": "^4.11.0",
     "react-loader-spinner": "^5.4.5",
+    "react-loading-dot": "^1.0.6",
     "react-pdf": "^7.5.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.17.0",
