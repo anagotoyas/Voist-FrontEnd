@@ -31,7 +31,7 @@ export const WebsocketComponent = (props) => {
         // Evento cuando el usuario se desconecta
         socket.on("disconnect", () => {
           console.log(
-            "Desconexión del servidor WebSocket" + user.id + socket
+            "Desconexión del servidor WebSocket" 
           );
         });
       }
