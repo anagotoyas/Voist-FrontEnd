@@ -20,7 +20,11 @@ export const WebsocketComponent = (props) => {
           token: user,
           user: user,
         },
+        reconnection: true,  // Enable reconnection
+        reconnectionAttempts: 5,  // Number of reconnection attempts
+        reconnectionDelay: 1000,  // Delay between reconnection attempts (in milliseconds)
       });
+      
 
       if (socket!==undefined && socket!==null) {
         console.log(socket.id)
