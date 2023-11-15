@@ -23,6 +23,7 @@ export const WebsocketComponent = (props) => {
       });
 
       if (socket!==undefined && socket!==null) {
+        console.log(socket.id)
         // Evento cuando la conexión se establece
         socket.on("connect", () => {
           console.log("Conexión establecida con el servidor WebSocket");
