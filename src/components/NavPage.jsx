@@ -6,6 +6,8 @@ import { Contactos } from "../pages/Contactos";
 import { DetailFile } from "../pages/DetailFile";
 import { Carpetas } from "../pages/Carpetas";
 import { DetailFolder } from "../pages/DetailFolder";
+import { AdminHome } from "../pages/AdminHome";
+import { ListUsers } from "../pages/ListUsers";
 
 export const NavPage = () => {
   // const { isAuth } = useAuth();
@@ -15,6 +17,8 @@ export const NavPage = () => {
     <>
       <Routes>
         <Route path="/home" element={<HomePage />} />
+        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/users" element={<ListUsers />} />
 
         <Route path="/detail-file" element={<DetailFile />}/>
         <Route path="/compartido" element={<Compartido />} />

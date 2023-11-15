@@ -63,4 +63,11 @@ export const createSummary = async (data)=>{
 export const saveSummary = async (data)=>{
   return axios.post(`/createSummary`, data)
 }
+export const countFilesMonth = async ()=>{
+  return axios.get(`/files-month`)
+}
+export const countFiles = async ()=>{
+  return axios.get(`/files-count`)
+}
+
 

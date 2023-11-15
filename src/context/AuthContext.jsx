@@ -13,7 +13,9 @@ import {
   uploadAudio,
   getFileByContact,
   createSummary,
-  saveSummary
+  saveSummary,
+  countFiles,
+  countFilesMonth
 } from "../api/files.api";
 import {
   getAllFolders,
@@ -118,6 +120,20 @@ export function AuthProvider({ children }) {
     setErrors(null)
     
    
+  };
+
+  const usersCount = async () => {
+    const res = await axios.get("/users-count");
+    return res.data
+  };
+
+  const usersNew = async () => {
+    const res = await axios.get("/users-new"); 
+    return res.data
+  };
+  const findUsers = async (filter,page,limit) => {
+    const res = await axios.get(`/users?filter=${filter}&page=${page}&limit=${limit}`); 
+    return res.data
   };
 
   //File
@@ -235,6 +251,18 @@ export function AuthProvider({ children }) {
       }
     }
   };
+
+  const countFilesStored = async () => {
+    const res = await countFiles();
+    return res.data;
+  }
+
+  const countFilesStoredMonth = async () => {
+    const res = await countFilesMonth();
+    return res.data;
+  }
+
+
 
   //Folder
 
@@ -421,7 +449,12 @@ export function AuthProvider({ children }) {
         saveResume,
         loadConversation,
         createConversations,
-        askQuestions
+        askQuestions,
+        usersCount,
+        usersNew,
+        countFilesStored,
+        countFilesStoredMonth,
+        findUsers
         
       }}
     >

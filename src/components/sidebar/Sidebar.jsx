@@ -9,6 +9,8 @@ import {
   RiUser3Line,
   RiFolder2Line,
   RiFile3Line,
+  RiHome4Line,
+  RiGroupLine
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -20,28 +22,20 @@ export const Sidebar = () => {
 
   const publicUrl = window.location.origin;
 
-  
-
   const { signout, user } = useAuth();
-  
-  const navigate = useNavigate();
-  
-  
-  const salir = (async () => {
-    await signout();
-    navigate('/login')
-    
-  });
-  const location = useLocation();
 
- 
-  
+  const navigate = useNavigate();
+
+  const salir = async () => {
+    await signout();
+    navigate("/login");
+  };
+  const location = useLocation();
 
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
 
-  
   return (
     <div className="min-h-screen">
       <div
@@ -50,45 +44,98 @@ export const Sidebar = () => {
         }`}
       >
         <div className="">
-          <img src={`${publicUrl}/Logo.png`} alt="Logo" className="m-auto mt-5 w-[9rem]" />
+          <img
+            src={`${publicUrl}/Logo.png`}
+            alt="Logo"
+            className="m-auto mt-5 w-[9rem]"
+          />
           <ul className={`mt-8 font-quicksand`}>
-            <li>
-              <Link
-                to="/home"
-                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/home' ? "bg-primary text-white" : "bg-white"}`}
-              >
-                <RiFile3Line className="text-xl" />
-                Mis archivos
-              </Link>
-            </li>
-          
-            <li>
-              <Link
-                to="/carpetas"
-                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/carpetas' ? "bg-primary text-white" : "bg-white"}`}
-              >
-                <RiFolder2Line className="text-lg" />
-                Mis carpetas
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/compartido"
-                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/compartido' ? "bg-primary text-white" : "bg-white"}`}
-              >
-                <RiCloudLine className="text-lg" />
-                Compartido conmigo
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/contactos"
-                className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${location.pathname==='/contactos' ? "bg-primary text-white" : "bg-white"}`}
-              >
-                <RiContactsBookLine className="text-lg" />
-                Mis contactos
-              </Link>
-            </li>
+            {user.role === 2 ? (
+              <>
+                <li>
+                  <Link
+                    to="/home"
+                    className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${
+                      location.pathname === "/home"
+                        ? "bg-primary text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    <RiFile3Line className="text-xl" />
+                    Mis archivos
+                  </Link>
+                </li>
+
+                <li>
+                  <Link
+                    to="/carpetas"
+                    className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${
+                      location.pathname === "/carpetas"
+                        ? "bg-primary text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    <RiFolder2Line className="text-lg" />
+                    Mis carpetas
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/compartido"
+                    className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${
+                      location.pathname === "/compartido"
+                        ? "bg-primary text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    <RiCloudLine className="text-lg" />
+                    Compartido conmigo
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contactos"
+                    className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${
+                      location.pathname === "/contactos"
+                        ? "bg-primary text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    <RiContactsBookLine className="text-lg" />
+                    Mis contactos
+                  </Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to="/admin"
+                    className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${
+                      location.pathname === "/admin"
+                        ? "bg-primary text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    <RiHome4Line className="text-lg" />
+                    Inicio
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/users"
+                    className={`flex items-center gap-4 hover:bg-primary hover:text-white transition-colors py-2 px-4 rounded-xl ${
+                      location.pathname === "/users"
+                        ? "bg-primary text-white"
+                        : "bg-white"
+                    }`}
+                  >
+                    <RiGroupLine className="text-lg" />
+                    Usuarios
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </div>
       </div>
@@ -133,7 +180,9 @@ export const Sidebar = () => {
 
                 <Menu.Item>
                   <button
-                    onClick={()=>{salir()}}
+                    onClick={() => {
+                      salir();
+                    }}
                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-red-500 hover:text-white transition-colors text-base font-quicksand w-full"
                   >
                     <RiLogoutCircleRLine /> Cerrar sesión
@@ -143,10 +192,9 @@ export const Sidebar = () => {
             </Menu.Items>
           </Transition>
         </Menu>
-      
       </header>
-      <main className="xl:pl-[17rem] pt-[5rem] px-8">
-        <NavPage/>
+      <main className="xl:pl-[17rem] pt-[5rem] px-8 h-[calc(100vh-4rem)]">
+        <NavPage />
       </main>
     </div>
   );

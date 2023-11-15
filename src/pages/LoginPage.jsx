@@ -11,8 +11,10 @@ function LoginPage() {
 
   const onSubmit = handleSubmit(async (data) => {
     const user = await signin(data);
-    if (user) {
+    if (user && user.role==2) {
       navigate("/home");
+    } else if (user && user.role===1 ) {
+      navigate("/admin");
     }
   });
 

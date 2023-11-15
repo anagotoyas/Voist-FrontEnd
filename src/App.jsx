@@ -14,7 +14,15 @@ import { Sidebar } from "./components/sidebar/Sidebar";
 import { NavPage } from "./components/NavPage";
 
 function App() {
-  const { isAuth, loading } = useAuth();
+  const { isAuth, loading, user } = useAuth();
+
+  
+  let admin = false;
+  if (user) {
+    console.log(`Role del usuario: ${user.role}`);
+     admin = user.role === 1 ? true : false;
+  }
+  console.log(admin)
   // console.log(`is auth app: ${isAuth}`);
 
   if (loading) {
@@ -36,17 +44,13 @@ function App() {
     );
   }
 
-  
-
   return (
     <Routes>
-      <Route
-        element={<ProtectedRoute isAllowed={!isAuth} redirectTo="/home" />}
-      >
+     
         <Route path="/*" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-      </Route>
+     
 
       <Route
         element={
@@ -55,15 +59,20 @@ function App() {
           </>
         }
       >
-        <Route element={<Sidebar/>}>
-          <Route path="/home" element={<NavPage />} >
-           
-            </Route>
-            <Route path="/detail-file" element={<NavPage />} />
+        <Route element={<Sidebar />}>
+          <Route element={<ProtectedRoute isAllowed={admin} redirectTo="/login" />}>
+            <Route path="/admin" element={<NavPage />} />
+            <Route path="/users" element={<NavPage />} />
+          </Route>
+
+          <Route element={<ProtectedRoute isAllowed={!admin} redirectTo="/login" />}>
+          <Route path="/home" element={<NavPage />} />
+          <Route path="/detail-file" element={<NavPage />} />
           <Route path="/compartido" element={<NavPage />} />
           <Route path="/contactos" element={<NavPage />} />
           <Route path="/carpetas" element={<NavPage />} />
           <Route path="/detail-folder" element={<NavPage />} />
+          </Route>
         </Route>
       </Route>
 
