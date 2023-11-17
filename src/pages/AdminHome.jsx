@@ -22,10 +22,9 @@ export const AdminHome = () => {
         setClassesCountMonth(data.map((item) => parseInt(item.file_count)));
         setMonths(data.map((item) => item.month.replace("T00:00:00.000Z", "")));
       }
-      console.log(`count files stored per month ${classesCountMonth}`);
-      console.log(`months ${months}`);
+      
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -36,9 +35,8 @@ export const AdminHome = () => {
         setCountClass(data.file_count);
       }
 
-      console.log(`count files stored ${countClass}`);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -48,9 +46,8 @@ export const AdminHome = () => {
       if (data) {
         setCountUsers(data.count);
       }
-      console.log(`count users ${countUsers}`);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 
@@ -60,9 +57,8 @@ export const AdminHome = () => {
       if (res) {
         setCountNewUsers(res.count);
       }
-      console.log(`count new users ${countNewUsers}`);
     } catch (error) {
-      console.log(error);
+      console.log(error.message);
     }
   };
 

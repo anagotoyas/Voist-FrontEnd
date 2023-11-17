@@ -19,11 +19,10 @@ function App() {
   
   let admin = false;
   if (user) {
-    console.log(`Role del usuario: ${user.role}`);
+   
      admin = user.role === 1 ? true : false;
   }
-  console.log(admin)
-  // console.log(`is auth app: ${isAuth}`);
+  
 
   if (loading) {
     return (
@@ -63,6 +62,7 @@ function App() {
           <Route element={<ProtectedRoute isAllowed={admin} redirectTo="/login" />}>
             <Route path="/admin" element={<NavPage />} />
             <Route path="/users" element={<NavPage />} />
+            <Route path="/panel-user" element={<NavPage />} />
           </Route>
 
           <Route element={<ProtectedRoute isAllowed={!admin} redirectTo="/login" />}>

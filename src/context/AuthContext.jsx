@@ -136,6 +136,16 @@ export function AuthProvider({ children }) {
     return res.data
   };
 
+  const findUser = async (id) => {
+    const res = await axios.get(`/users/${id}`); 
+    return res.data
+  };
+
+  const findTimeByUser = async (user) => {  
+    const res = await axios.get(`/users/${user}/time`);
+    return res.data;
+  }
+
   //File
 
   const loadFile = async (id) => {
@@ -454,7 +464,9 @@ export function AuthProvider({ children }) {
         usersNew,
         countFilesStored,
         countFilesStoredMonth,
-        findUsers
+        findUsers,
+        findUser,
+        findTimeByUser
         
       }}
     >

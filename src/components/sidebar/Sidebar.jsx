@@ -131,7 +131,7 @@ export const Sidebar = () => {
                     }`}
                   >
                     <RiGroupLine className="text-lg" />
-                    Usuarios
+                    Gestión de Usuarios
                   </Link>
                 </li>
               </>

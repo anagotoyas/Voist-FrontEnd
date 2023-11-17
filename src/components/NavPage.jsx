@@ -8,6 +8,7 @@ import { Carpetas } from "../pages/Carpetas";
 import { DetailFolder } from "../pages/DetailFolder";
 import { AdminHome } from "../pages/AdminHome";
 import { ListUsers } from "../pages/ListUsers";
+import { PanelUser } from "../pages/PanelUser";
 
 export const NavPage = () => {
   // const { isAuth } = useAuth();
@@ -19,6 +20,7 @@ export const NavPage = () => {
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/users" element={<ListUsers />} />
+        <Route path="/panel-user" element={<PanelUser />} />
 
         <Route path="/detail-file" element={<DetailFile />}/>
         <Route path="/compartido" element={<Compartido />} />

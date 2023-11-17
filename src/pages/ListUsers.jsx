@@ -3,9 +3,12 @@ import { useAuth } from "../context/AuthContext";
 import { TableUsers } from "../components/table/TableUsers";
 import { SearchBar } from "../components/ui/SearchBar";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+
 
 
 export const ListUsers = () => {
+
   const { findUsers } = useAuth();
   const [users, setUsers] = useState([]);
   const [count, setCount] = useState(0);
@@ -44,19 +47,22 @@ export const ListUsers = () => {
     { Header: 'Email', accessor: 'email' },
     {
       Header: 'Action',
-      accessor: 'id', // assuming user objects have an 'id' property
+      accessor: 'id',
       Cell: ({ row }) => (
-        <button onClick={() => handleAction(row.original.id)}className="bg-primary px-5 py-1 rounded-full text-white">Ver más</button>
-        // replace handleAction with your actual action handling function
+        <Link
+        to={{
+          pathname: "/panel-user",
+          search: `?idUsuario=${encodeURIComponent(row.original.id)}`,
+        }}
+       
+      >
+        <button className="bg-primary px-5 py-1 rounded-full text-white hover:bg-gray-500">Ver más</button></Link>
+        
       ),
     },
   ];
 
-  const handleAction = (userId) => {
-    // Implement your action handling logic here
-    console.log(`Edit user with ID ${userId}`);
-  };
-
+ 
   
     
 
@@ -80,15 +86,15 @@ export const ListUsers = () => {
   )}
 
   ListUsers.propTypes = {
-    columns: PropTypes.array.isRequired,
-    data: PropTypes.array.isRequired,
-    pageCount: PropTypes.number.isRequired,
-    pageIndex: PropTypes.number.isRequired,
-    gotoPage: PropTypes.func.isRequired,
-    nextPage: PropTypes.func.isRequired,
-    previousPage: PropTypes.func.isRequired,
-    setPageSize: PropTypes.func.isRequired,
-    pageSize: PropTypes.number.isRequired,
-    value: PropTypes.string.isRequired,
-    row: PropTypes.array.isRequired,
+    columns: PropTypes.array,
+    data: PropTypes.array,
+    pageCount: PropTypes.number,
+    pageIndex: PropTypes.number,
+    gotoPage: PropTypes.func,
+    nextPage: PropTypes.func,
+    previousPage: PropTypes.func,
+    setPageSize: PropTypes.func,
+    pageSize: PropTypes.number,
+    value: PropTypes.string,
+    row: PropTypes.array,
   };

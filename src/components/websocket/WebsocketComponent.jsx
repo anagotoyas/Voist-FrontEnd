@@ -12,22 +12,21 @@ export const WebsocketComponent = (props) => {
     let socket;
 
     if (user && user.id) {
-      // Esperar 2 segundos antes de intentar establecer la conexión
 
-      // Establecer la conexión WebSocket
-      socket = io(DOMAIN, {
-        auth: {
-          token: user,
-          user: user,
-        },
-        reconnection: true,  // Enable reconnection
-        reconnectionAttempts: 5,  // Number of reconnection attempts
-        reconnectionDelay: 1000,  // Delay between reconnection attempts (in milliseconds)
-      });
+    
+        socket = io(DOMAIN, {
+          auth: {
+            token: user,
+            user: user,
+          }
+        });
+      
+    
+    
       
 
-      if (socket!==undefined && socket!==null) {
-        console.log(socket.id)
+      if (socket) {
+       
         // Evento cuando la conexión se establece
         socket.on("connect", () => {
           console.log("Conexión establecida con el servidor WebSocket");
@@ -50,7 +49,7 @@ export const WebsocketComponent = (props) => {
         }
       };
     } else {
-      console.log("nada");
+     
       return;
     }
   }, [user]);

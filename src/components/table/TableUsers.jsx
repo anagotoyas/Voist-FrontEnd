@@ -56,7 +56,7 @@ export const TableUsers = ({
             return (
               <tr
                 {...row.getRowProps()}
-                key={row.id}
+                key={row.index}
                 className="border-b rounded-full "
               >
                 {row.cells.map((cell) => (
