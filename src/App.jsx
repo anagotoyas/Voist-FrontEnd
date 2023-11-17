@@ -16,13 +16,10 @@ import { NavPage } from "./components/NavPage";
 function App() {
   const { isAuth, loading, user } = useAuth();
 
-  
   let admin = false;
   if (user) {
-   
-     admin = user.role === 1 ? true : false;
+    admin = user.role === 1 ? true : false;
   }
-  
 
   if (loading) {
     return (
@@ -45,11 +42,9 @@ function App() {
 
   return (
     <Routes>
-     
-        <Route path="/*" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-     
+      <Route path="/*" element={<LandingPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
 
       <Route
         element={
@@ -59,19 +54,25 @@ function App() {
         }
       >
         <Route element={<Sidebar />}>
-          <Route element={<ProtectedRoute isAllowed={admin} redirectTo="/login" />}>
+          <Route
+            element={<ProtectedRoute isAllowed={admin} redirectTo="/login" />}
+          >
             <Route path="/admin" element={<NavPage />} />
             <Route path="/users" element={<NavPage />} />
             <Route path="/panel-user" element={<NavPage />} />
+            <Route path="/profile" element={<NavPage />} />
           </Route>
 
-          <Route element={<ProtectedRoute isAllowed={!admin} redirectTo="/login" />}>
-          <Route path="/home" element={<NavPage />} />
-          <Route path="/detail-file" element={<NavPage />} />
-          <Route path="/compartido" element={<NavPage />} />
-          <Route path="/contactos" element={<NavPage />} />
-          <Route path="/carpetas" element={<NavPage />} />
-          <Route path="/detail-folder" element={<NavPage />} />
+          <Route
+            element={<ProtectedRoute isAllowed={!admin} redirectTo="/login" />}
+          >
+            <Route path="/home" element={<NavPage />} />
+            <Route path="/detail-file" element={<NavPage />} />
+            <Route path="/compartido" element={<NavPage />} />
+            <Route path="/contactos" element={<NavPage />} />
+            <Route path="/carpetas" element={<NavPage />} />
+            <Route path="/detail-folder" element={<NavPage />} />
+            <Route path="/profile" element={<NavPage />} />
           </Route>
         </Route>
       </Route>

@@ -13,11 +13,14 @@ import {
   RiGroupLine
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
+
+
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavPage } from "../NavPage";
 import { useAuth } from "../../context/AuthContext";
 
 export const Sidebar = () => {
+ 
   const [showMenu, setShowMenu] = useState(false);
 
   const publicUrl = window.location.origin;
@@ -35,6 +38,14 @@ export const Sidebar = () => {
   const toggleMenu = () => {
     setShowMenu(!showMenu);
   };
+
+  const handleClick = () => {
+    window.history.pushState({}, '', '/profile');
+
+    // Dispatch a popstate event to ensure the URL is updated
+    const popStateEvent = new PopStateEvent('popstate');
+    window.dispatchEvent(popStateEvent);
+  }
 
   return (
     <div className="min-h-screen">
@@ -169,13 +180,31 @@ export const Sidebar = () => {
               className="absolute top-2 right-0 bg-gray-100 w-72 rounded-lg shadow-lg p-4 z-100"
             >
               <div>
-                <Menu.Item>
+                {/* <Menu.Item>
                   <Link
-                    href="#"
+                    href="/profile"
+                  >
+                    <button
+                    onClick={() => {
+                      handleClick()
+                    }}
                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
+
                   >
                     <RiUser3Line /> Gestionar cuenta
+                  </button>
+                    
                   </Link>
+                </Menu.Item> */}
+                 <Menu.Item>
+                  <button
+                    onClick={() => {
+                     handleClick()
+                    }}
+                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand w-full"
+                  >
+                     <RiUser3Line /> Gestionar cuenta
+                  </button>
                 </Menu.Item>
 
                 <Menu.Item>
@@ -188,6 +217,7 @@ export const Sidebar = () => {
                     <RiLogoutCircleRLine /> Cerrar sesión
                   </button>
                 </Menu.Item>
+               
               </div>
             </Menu.Items>
           </Transition>
