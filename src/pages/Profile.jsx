@@ -22,7 +22,7 @@ export const Profile = () => {
   return (
     <div className="flex justify-center flex-col ">
       <div className="w-full flex">
-        <h3 className="font-quicksand text-xl">Gestión de Usuarios</h3>
+        <h3 className="font-quicksand text-xl">Mi perfil</h3>
       
       </div>
       <div className="grid grid-cols-2 bg-lightgray px-8 py-4 mt-5 rounded-lg">
