@@ -7,6 +7,8 @@ export const Profile = () => {
   const { user } = useAuth();
   const [imageUrl, setImageUrl] = useState(user.gravatar);
   const inputRef = useRef(null);
+  const [userName, setUserName] = useState(user.name)
+  const [userEmail, setUserEmail] = useState(user.email)
 
   // Función para manejar el cambio de imagen al seleccionar un archivo
   const handleImageChange = (event) => {
@@ -19,13 +21,20 @@ export const Profile = () => {
     }
   };
 
+  const handleNameChange = (event) => {
+    setUserName(event.target.value)
+  }
+  const handleEmailChange = (event) => {
+    setUserEmail(event.target.value)
+  }
+
   return (
     <div className="flex justify-center flex-col ">
       <div className="w-full flex">
         <h3 className="font-quicksand text-xl">Mi perfil</h3>
       
       </div>
-      <div className="grid grid-cols-2 bg-lightgray px-8 py-4 mt-5 rounded-lg">
+      <div className="grid grid-col-1 md:grid-cols-2 bg-lightgray px-8 py-4 mt-5 rounded-lg ">
         <div className="leading-10 col-span-1 pt-4">
           <h5 className="text-md text-gray-700 font-semibold pb-4 font-quicksand w-auto">
             Imágen de perfil
@@ -66,7 +75,8 @@ export const Profile = () => {
             <input
               type="text"
               className="border border-gray-300 rounded-md px-3 py-1"
-              value={user.name}
+              value={userName}
+              onChange={handleNameChange}
               
             />
           </div>
@@ -77,7 +87,8 @@ export const Profile = () => {
             <input
               type="text"
               className="border border-gray-300 rounded-md px-3 py-1 "
-              value={user.email}
+              value={userEmail}
+              onChange={handleEmailChange}
               
             />
           </div>
