@@ -147,6 +147,10 @@ export function AuthProvider({ children }) {
     const res = await axios.get(`/users/${user}/time`);
     return res.data;
   }
+  const changePassword = async (currentPassword,newPassword) => {  
+    const res = await axios.put(`/password`, { currentPassword, newPassword });
+    return res.data;
+  }
   const editProfile = async (user) => {  
     setLoading(true)
     const res = await editProfiles(user);
@@ -476,7 +480,8 @@ export function AuthProvider({ children }) {
         findUser,
         findTimeByUser,
         editProfile,
-        setUser
+        setUser,
+        changePassword
         
       }}
     >

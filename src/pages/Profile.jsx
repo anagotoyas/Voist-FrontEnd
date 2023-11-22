@@ -78,14 +78,14 @@ export const Profile = () => {
   });
 
   return (
-    <div className="flex justify-center flex-col ">
+    <div className="flex justify-center flex-col ww-full items-center">
       <div className="w-full flex">
         <h3 className="font-quicksand text-xl">Mi perfil</h3>
       </div>
 
       <form
         onSubmit={saveChanges}
-        className="grid grid-col-1 md:grid-cols-2 bg-lightgray px-8 py-4 mt-5 rounded-lg "
+        className="grid grid-col-1 md:grid-cols-2 bg-lightgray px-8 py-4 mt-5 rounded-lg max-w-[70rem] w-full gap-4"
       >
         {loading && <Spin className="col-span-2"/>}
         {
