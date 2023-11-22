@@ -10,7 +10,8 @@ import {
   RiFolder2Line,
   RiFile3Line,
   RiHome4Line,
-  RiGroupLine
+  RiGroupLine,
+  RiLockPasswordLine
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
 
@@ -41,6 +42,13 @@ export const Sidebar = () => {
 
   const handleClick = () => {
     window.history.pushState({}, '', '/profile');
+
+    // Dispatch a popstate event to ensure the URL is updated
+    const popStateEvent = new PopStateEvent('popstate');
+    window.dispatchEvent(popStateEvent);
+  }
+  const handleClickPassword = () => {
+    window.history.pushState({}, '', '/password');
 
     // Dispatch a popstate event to ensure the URL is updated
     const popStateEvent = new PopStateEvent('popstate');
@@ -204,6 +212,16 @@ export const Sidebar = () => {
                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand w-full"
                   >
                      <RiUser3Line /> Gestionar cuenta
+                  </button>
+                </Menu.Item>
+                 <Menu.Item>
+                  <button
+                    onClick={() => {
+                     handleClickPassword()
+                    }}
+                    className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand w-full"
+                  >
+                     <RiLockPasswordLine /> Cambiar contraseña
                   </button>
                 </Menu.Item>
 

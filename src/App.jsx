@@ -60,7 +60,7 @@ function App() {
             <Route path="/admin" element={<NavPage />} />
             <Route path="/users" element={<NavPage />} />
             <Route path="/panel-user" element={<NavPage />} />
-            <Route path="/profile" element={<NavPage />} />
+            <Route path="/password" element={<NavPage />} />
           </Route>
 
           <Route
@@ -73,6 +73,7 @@ function App() {
             <Route path="/carpetas" element={<NavPage />} />
             <Route path="/detail-folder" element={<NavPage />} />
             <Route path="/profile" element={<NavPage />} />
+            <Route path="/password" element={<NavPage />} />
           </Route>
         </Route>
       </Route>

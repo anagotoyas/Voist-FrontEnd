@@ -10,6 +10,7 @@ import { AdminHome } from "../pages/AdminHome";
 import { ListUsers } from "../pages/ListUsers";
 import { PanelUser } from "../pages/PanelUser";
 import { Profile } from "../pages/Profile";
+import { ChagePassword } from "../pages/ChagePassword";
 
 export const NavPage = () => {
   // const { isAuth } = useAuth();
@@ -29,6 +30,8 @@ export const NavPage = () => {
         <Route path="/carpetas" element={<Carpetas />} />
         <Route path="/detail-folder" element={<DetailFolder />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/password" element={<ChagePassword />} />
+
       </Routes>
     </>
   );

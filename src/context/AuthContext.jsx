@@ -27,7 +27,8 @@ import {
   getContactList,
   deleteContact,
   getUsersWithStatus,
-  addContact
+  addContact,
+  editProfiles
 } from "../api/contact.api";
 import {
   infoFile,
@@ -40,6 +41,7 @@ import {
   createConversation,
   askQuestion,
 } from '../api/conversation.api'
+
 
 export const AuthContext = createContext();
 
@@ -144,6 +146,12 @@ export function AuthProvider({ children }) {
   const findTimeByUser = async (user) => {  
     const res = await axios.get(`/users/${user}/time`);
     return res.data;
+  }
+  const editProfile = async (user) => {  
+    setLoading(true)
+    const res = await editProfiles(user);
+    setLoading(false)
+    return res;
   }
 
   //File
@@ -466,7 +474,9 @@ export function AuthProvider({ children }) {
         countFilesStoredMonth,
         findUsers,
         findUser,
-        findTimeByUser
+        findTimeByUser,
+        editProfile,
+        setUser
         
       }}
     >
