@@ -40,6 +40,11 @@ export const ChagePassword = () => {
       setError("Las contraseñas nuevas no coinciden");
       return;
     }
+
+    if (newPassword.length < 6) {
+      setError("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
     try {
       const res = await changePassword(currentPassword,newPassword)
       console.log(res)

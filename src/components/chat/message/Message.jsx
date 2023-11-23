@@ -39,9 +39,9 @@ export const Message = (props) => {
 };
 
 Message.propTypes = {
-    content: PropTypes.string.isRequired,
-    created_at: PropTypes.string.isRequired,
-    isUserMessage: PropTypes.bool.isRequired,
+    content: PropTypes.string,
+    created_at: PropTypes.string,
+    isUserMessage: PropTypes.bool,
     className: PropTypes.string,
     children: PropTypes.any
 

@@ -43,28 +43,32 @@ export const ListContact = (props) => {
             </div>
 
             <div className="w-full md:w-auto flex justify-center mt-4 md:mt-0">
-              <button
-                className={`px-3 py-2 rounded-lg text-white text-sm flex items-center ${
-                  props.is_contact
-                    ? "bg-red-500 hover:bg-gray-400"
-                    : "bg-primary hover:bg-gray-400"
-                }`}
-                onClick={() => {
-                  agregarContacto(props.is_contact, props.id);
-                }}
-              >
-                {props.is_contact ? (
-                  <>
-                    <span>Eliminar</span>{" "}
-                    <RiDeleteBin4Fill className="pl-2 text-[1.5rem]" />
-                  </>
-                ) : (
-                  <>
-                    <span>Agregar</span>
-                    <RiUserAddFill className="pl-2 text-[1.5rem] font-bold" />
-                  </>
-                )}
-              </button>
+              {props.is_you ? (
+                <span className="text-sm text-center px-4 font-bold text-gray-500">Eres tú</span>
+              ) : (
+                <button
+                  className={`px-3 py-2 rounded-lg text-white text-sm flex items-center ${
+                    props.is_contact
+                      ? "bg-red-500 hover:bg-gray-400"
+                      : "bg-primary hover:bg-gray-400"
+                  }`}
+                  onClick={() => {
+                    agregarContacto(props.is_contact, props.id);
+                  }}
+                >
+                  {props.is_contact ? (
+                    <>
+                      <span>Eliminar</span>{" "}
+                      <RiDeleteBin4Fill className="pl-2 text-[1.5rem]" />
+                    </>
+                  ) : (
+                    <>
+                      <span>Agregar</span>
+                      <RiUserAddFill className="pl-2 text-[1.5rem] font-bold" />
+                    </>
+                  )}
+                </button>
+              )}
             </div>
           </div>
         </div>
@@ -78,4 +82,5 @@ ListContact.propTypes = {
   name: PropTypes.string,
   email: PropTypes.string,
   is_contact: PropTypes.bool,
+  is_you: PropTypes.bool,
 };

@@ -67,6 +67,7 @@ export const ModalAgregarContacto = ({ isOpen, onClose, children }) => {
                 gravatar={contact.gravatar}
                 email={contact.email}
                 is_contact={contact.is_contact}
+                is_you={contact.id === user.id}
               />
             ))
           )}

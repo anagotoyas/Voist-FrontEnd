@@ -2,25 +2,32 @@ import { Card, Input, Button, Label, Container } from "../components/ui";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
+import { Checkbox } from "antd";
+import { useState } from "react";
 
 function LoginPage() {
   const { register, handleSubmit } = useForm();
 
   const { signin, errors } = useAuth();
   const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
 
   const onSubmit = handleSubmit(async (data) => {
     const user = await signin(data);
-    if (user && user.role==2) {
+    if (user && user.role == 2) {
       navigate("/home");
-    } else if (user && user.role===1 ) {
+    } else if (user && user.role === 1) {
       navigate("/admin");
     }
   });
+  const onChange = (e) => {
+    setChecked(e.target.checked);
+   
+  };
 
   return (
     <Container className="h-[calc(100vh-5rem)] flex justify-center items-center flex-col">
-      <Link to='/'>
+      <Link to="/">
         <img src="Logo.png" alt="logo" className="w-[9rem] pb-10" />
       </Link>
       <Card>
@@ -56,12 +63,14 @@ function LoginPage() {
 
           <Label htmlFor="password">Contraseña</Label>
           <Input
-            type="password"
+            type={checked ? "text" : "password"}
             placeholder="Contraseña"
             {...register("password", {
               required: true,
             })}
           ></Input>
+
+          <Checkbox onChange={onChange}>Ver contraseña</Checkbox>
 
           <div className="flex items-center justify-center py-4">
             <Button className="w-[100%] justify-center py-2">

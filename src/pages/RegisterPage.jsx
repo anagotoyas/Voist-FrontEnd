@@ -2,6 +2,8 @@ import { Button, Card, Container, Input, Label } from "../components/ui";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Checkbox } from "antd";
 
 function RegisterPage() {
   const {
@@ -12,6 +14,8 @@ function RegisterPage() {
 
   const { signup, errors: signupErrors } = useAuth();
   const navigate = useNavigate();
+  const [checked, setChecked] = useState(false);
+
 
   const onSubmit = handleSubmit(async (data) => {
     const user = await signup(data);
@@ -19,6 +23,11 @@ function RegisterPage() {
       navigate("/home");
     }
   });
+
+  const onChange = (e) => {
+    setChecked(e.target.checked);
+   
+  };
 
   return (
     <Container className="h-[calc(100vh-5rem)] flex items-center justify-center flex-col">
@@ -60,10 +69,12 @@ function RegisterPage() {
 
           <Label htmlFor="password">Contraseña</Label>
           <Input
-            type="password"
+            type={checked ? "text" : "password"}
             placeholder="Contraseña"
             {...register("password", { required: true, minLength: 6 })}
           />
+          <Checkbox onChange={onChange}>Ver contraseña</Checkbox>
+
           {errors.password && errors.password.type === "minLength" && (
             <p className="text-red-500">
               La contraseña debe tener al menos 6 caracteres
