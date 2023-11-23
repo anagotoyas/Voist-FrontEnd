@@ -73,7 +73,7 @@ export const PanelUser = () => {
           <img
             src={user.gravatar}
             alt="profile-pic"
-            className="rounded-full w-[8rem] flex m-auto md:m-0"
+            className="rounded-full w-[8rem] h-[8rem] flex m-auto md:m-0 object-cover"
           />
 
           <div className="datos-personales bg-lightgray p-5 rounded-lg  w-auto ">
