@@ -90,7 +90,7 @@ export const DetailFile = () => {
 
         
 
-        setIsLoading(false);
+        
       }  if (have_files && summaryFiles === null) {
 
         console.log("resumen de archivos");
@@ -107,7 +107,9 @@ export const DetailFile = () => {
         };
         const resp2 = await saveResume(data4);
         setSummaryFiles(resp2.pdfUrl);
+        setIsLoading(false);
       } else {
+
         setTimeout(() => {
           setCount(count + 1);
         }, 5000);
