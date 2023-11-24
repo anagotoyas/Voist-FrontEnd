@@ -80,7 +80,9 @@ export const DetailFile = () => {
         }
         console.log(have_files)
         console.log(summaryFiles)
+
         if(have_files && summaryFiles === null){
+          console.log("resumen de archivos")
           const data3 = {
             url_pdf: content,
           };
