@@ -11,7 +11,12 @@ import { Typography } from "antd";
 
 const { Text } = Typography;
 
-import { RiChatVoiceLine, RiFilePdf2Line, RiMenuFill, RiVoiceprintFill } from "react-icons/ri";
+import {
+  RiChatVoiceLine,
+  RiFilePdf2Line,
+  RiMenuFill,
+  RiVoiceprintFill,
+} from "react-icons/ri";
 import PDFViewer from "../components/files/PDFViewer";
 import { useAuth } from "../context/AuthContext";
 import { Chat } from "../components/chat/Chat";
@@ -22,7 +27,7 @@ export const DetailFile = () => {
   const [totalContent, setTotalContent] = useState(null);
   const [have_files, setHave_files] = useState(false);
   const [summaryFiles, setSummaryFiles] = useState(false);
-  
+
   const [summary, setSummary] = useState(null);
   const [duration, setDuration] = useState(null);
   const [dateCreated, setDateCreated] = useState(null);
@@ -33,7 +38,6 @@ export const DetailFile = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
-
 
   // const publicUrl = window.location.origin;
 
@@ -48,8 +52,7 @@ export const DetailFile = () => {
         summary,
         have_files,
         content,
-        summary_files
-        
+        summary_files,
       } = await loadFile(id);
       setDuration(duration);
       setDateCreated(date_created);
@@ -60,7 +63,8 @@ export const DetailFile = () => {
       setSummary(summary);
       setHave_files(have_files);
 
-     
+      console.log(have_files);
+        console.log(summaryFiles)
 
       if (newTranscript !== null) {
         const data_transcript = {
@@ -80,29 +84,26 @@ export const DetailFile = () => {
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
         }
-        
 
         
-         else if(have_files && summaryFiles === null){
-          console.log("resumen de archivos")
-          const data3 = {
-            url_pdf: content,
-          };
-          const resp = await createResume(data3);
-  
-          const data4 = {
-            content: resp.answer,
-            id: id,
-            bucket: "resumen_files",
-            atributo: "summary_files",
-          };
-          const resp2 = await saveResume(data4);
-          setSummaryFiles(resp2.pdfUrl);
-        }
-        console.log(have_files)
-        console.log(summaryFiles)
 
         setIsLoading(false);
+      } else if (have_files && summaryFiles === null) {
+
+        console.log("resumen de archivos");
+        const data3 = {
+          url_pdf: content,
+        };
+        const resp = await createResume(data3);
+
+        const data4 = {
+          content: resp.answer,
+          id: id,
+          bucket: "resumen_files",
+          atributo: "summary_files",
+        };
+        const resp2 = await saveResume(data4);
+        setSummaryFiles(resp2.pdfUrl);
       } else {
         setTimeout(() => {
           setCount(count + 1);
@@ -243,9 +244,8 @@ export const DetailFile = () => {
               >
                 <RiMenuFill /> Resumen de la transcripción
               </button>
-              {
-                have_files && (
-                  <button
+              {have_files && (
+                <button
                   className={`${
                     selectedButton === "material"
                       ? "bg-primary text-white"
@@ -255,9 +255,8 @@ export const DetailFile = () => {
                 >
                   <RiFilePdf2Line /> Resumen del material
                 </button>
-                )
-              }
-             
+              )}
+
               <button
                 className={`${
                   selectedButton === "transcripcion"
@@ -291,7 +290,7 @@ export const DetailFile = () => {
             <PDFViewer className="md:mt-10" url={transcription} />
           )}
           {selectedButton === "chat" && (
-            <Chat url_pdf={totalContent||transcription} classId={id}></Chat>
+            <Chat url_pdf={totalContent || transcription} classId={id}></Chat>
           )}
         </div>
       )}
