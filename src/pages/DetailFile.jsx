@@ -41,6 +41,9 @@ export const DetailFile = () => {
 
   // const publicUrl = window.location.origin;
 
+  console.log(have_files);
+        console.log(summaryFiles)
+
   const makeRequest = async () => {
     try {
       const {
