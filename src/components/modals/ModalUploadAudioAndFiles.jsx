@@ -82,17 +82,18 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
       });
 
       try {
+          console.log("comienzo createfiles")
         const resp = await createFiles(audioFileName, id_folder);
-        await saveAudio(formData, resp.id);
-
+        console.log("comienzo saveaudio")
+        const pdfUrlTranscript = await saveAudio(formData, resp.id);
+        console.log(pdfUrlTranscript);
+console.log("comienzo subir archivo")
         const res = await subirArchivo(resp.id, formData2 )
         console.log(res);
-        // for (let pair of formData.entries()) {
-        //     console.log(pair[0] + ': ' + pair[1]);
-        //   }
-        for (let pair of formData2.entries()) {
-          console.log(pair[0] + ": " + pair[1]);
-        }
+        
+        // for (let pair of formData2.entries()) {
+        //   console.log(pair[0] + ": " + pair[1]);
+        // }
       } catch (error) {
         console.error("Error uploading the file:", error);
       }
