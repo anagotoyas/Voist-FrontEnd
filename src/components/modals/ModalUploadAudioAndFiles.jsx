@@ -9,7 +9,6 @@ import { Button, message, Upload } from "antd";
 import { Button as Boton } from "../ui/index";
 import Dragger from "antd/es/upload/Dragger";
 import { InboxOutlined } from "@ant-design/icons";
-import axios from "../../api/axios";
 
 export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
   const [audioFileName, setAudioFileName] = useState("");
@@ -18,7 +17,7 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
   const [siguente, setSiguente] = useState(false);
   const [archivosList, setArchivosList] = useState([]);
 
-  const { saveAudio, createFiles } = useAuth();
+  const { saveAudio, createFiles,subirArchivo } = useAuth();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -86,11 +85,7 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
         const resp = await createFiles(audioFileName, id_folder);
         await saveAudio(formData, resp.id);
 
-        const res = await axios.post(`/subir-archivos/${resp.id}`, formData2, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        const res = await subirArchivo(resp.id, formData2 )
         console.log(res);
         // for (let pair of formData.entries()) {
         //     console.log(pair[0] + ': ' + pair[1]);

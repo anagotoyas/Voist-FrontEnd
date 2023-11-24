@@ -56,6 +56,13 @@ export const uploadAudio = async (formData,fileName)=>{
   }})
 }
 
+export const subirArchivos = async (fileName,formData)=>{
+  return axios.post(`/subir-archivos/${fileName}`, formData,{ headers: {
+    'Content-Type': 'multipart/form-data',
+  }})
+}
+
+
 export const createSummary = async (data)=>{
   return axios_flask.post(`/resume`, data)
 }

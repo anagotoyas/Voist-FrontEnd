@@ -15,7 +15,8 @@ import {
   createSummary,
   saveSummary,
   countFiles,
-  countFilesMonth
+  countFilesMonth,
+  subirArchivos
 } from "../api/files.api";
 import {
   getAllFolders,
@@ -241,6 +242,20 @@ export function AuthProvider({ children }) {
     setLoading(true);
     try {
       const res = await uploadAudio(formData, fileName);
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+  const subirArchivo = async (fileName, formData) => {
+    console.log(`upload audio`);
+    setLoading(true);
+    try {
+      const res = await subirArchivos(formData, fileName);
       return res.data;
     } catch (error) {
       if (error.response) {
@@ -481,7 +496,8 @@ export function AuthProvider({ children }) {
         findTimeByUser,
         editProfile,
         setUser,
-        changePassword
+        changePassword,
+        subirArchivo
         
       }}
     >
