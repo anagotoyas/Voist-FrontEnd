@@ -34,6 +34,7 @@ export const DetailFile = () => {
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
+
   // const publicUrl = window.location.origin;
 
   const makeRequest = async () => {
@@ -59,7 +60,6 @@ export const DetailFile = () => {
       setSummary(summary);
       setHave_files(have_files);
 
-      console.log("have_files",have_files)
      
 
       if (newTranscript !== null) {
@@ -80,10 +80,10 @@ export const DetailFile = () => {
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
         }
-        console.log(have_files)
-        console.log(summaryFiles)
+        
 
-        if(have_files && summaryFiles === null){
+        
+         else if(have_files && summaryFiles === null){
           console.log("resumen de archivos")
           const data3 = {
             url_pdf: content,
@@ -99,6 +99,8 @@ export const DetailFile = () => {
           const resp2 = await saveResume(data4);
           setSummaryFiles(resp2.pdfUrl);
         }
+        console.log(have_files)
+        console.log(summaryFiles)
 
         setIsLoading(false);
       } else {
