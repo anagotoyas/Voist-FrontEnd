@@ -91,7 +91,7 @@ export const DetailFile = () => {
         
 
         setIsLoading(false);
-      } else if (have_files && summaryFiles === null) {
+      }  if (have_files && summaryFiles === null) {
 
         console.log("resumen de archivos");
         const data3 = {
