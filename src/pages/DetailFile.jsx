@@ -42,7 +42,7 @@ export const DetailFile = () => {
   // const publicUrl = window.location.origin;
 
   console.log(have_files);
-        console.log(summaryFiles)
+  console.log(summaryFiles);
 
   const makeRequest = async () => {
     try {
@@ -67,7 +67,7 @@ export const DetailFile = () => {
       setHave_files(have_files);
 
       console.log(have_files);
-        console.log(summaryFiles)
+      console.log(summaryFiles);
 
       if (newTranscript !== null) {
         const data_transcript = {
@@ -87,12 +87,8 @@ export const DetailFile = () => {
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
         }
-
-        
-
-        
-      }  if (have_files && summaryFiles === null) {
-
+      }
+      if (have_files && summaryFiles === null) {
         console.log("resumen de archivos");
         const data3 = {
           url_pdf: content,
@@ -107,9 +103,10 @@ export const DetailFile = () => {
         };
         const resp2 = await saveResume(data4);
         setSummaryFiles(resp2.pdfUrl);
+      }
+      if (summary && summaryFiles !== null) {
         setIsLoading(false);
       } else {
-
         setTimeout(() => {
           setCount(count + 1);
         }, 5000);
