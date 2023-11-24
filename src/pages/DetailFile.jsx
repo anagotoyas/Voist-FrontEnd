@@ -58,6 +58,8 @@ export const DetailFile = () => {
       setSummaryFiles(summary_files);
       setSummary(summary);
       setHave_files(have_files);
+
+      console.log("have_files",have_files)
      
 
       if (newTranscript !== null) {
