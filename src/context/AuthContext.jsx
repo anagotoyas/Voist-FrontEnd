@@ -255,7 +255,7 @@ export function AuthProvider({ children }) {
     console.log(`upload audio`);
     setLoading(true);
     try {
-      const res = await subirArchivos(formData, fileName);
+      const res = await subirArchivos( fileName,formData);
       return res.data;
     } catch (error) {
       if (error.response) {
