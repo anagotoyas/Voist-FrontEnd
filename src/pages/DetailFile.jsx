@@ -11,7 +11,7 @@ import { Typography } from "antd";
 
 const { Text } = Typography;
 
-import { RiChatVoiceLine, RiMenuFill, RiVoiceprintFill } from "react-icons/ri";
+import { RiChatVoiceLine, RiFilePdf2Line, RiMenuFill, RiVoiceprintFill } from "react-icons/ri";
 import PDFViewer from "../components/files/PDFViewer";
 import { useAuth } from "../context/AuthContext";
 import { Chat } from "../components/chat/Chat";
@@ -19,6 +19,10 @@ import { Chat } from "../components/chat/Chat";
 export const DetailFile = () => {
   const { loadFile, createResume, saveResume } = useAuth();
   const [transcription, setTranscription] = useState(null);
+  const [totalContent, setTotalContent] = useState(null);
+  const [have_files, setHave_files] = useState(false);
+  const [summaryFiles, setSummaryFiles] = useState(null);
+  
   const [summary, setSummary] = useState(null);
   const [duration, setDuration] = useState(null);
   const [dateCreated, setDateCreated] = useState(null);
@@ -36,33 +40,58 @@ export const DetailFile = () => {
     try {
       const {
         transcript: newTranscript,
+        total_content,
         duration,
         date_created,
         title,
         summary,
+        have_files,
+        content,
+        summary_files
+        
       } = await loadFile(id);
       setDuration(duration);
       setDateCreated(date_created);
       setTitle(title);
       setTranscription(newTranscript);
+      setTotalContent(total_content);
       setSummary(summary);
+      setHave_files(have_files);
+      setSummaryFiles(summary_files);
+     
 
       if (newTranscript !== null) {
-        const data = {
+        const data_transcript = {
           url_pdf: newTranscript,
         };
 
         if (summary === null) {
-          const res = await createResume(data);
+          const res = await createResume(data_transcript);
 
           const data2 = {
             content: res.answer,
             id: id,
             bucket: "resumen",
+            atributo: "summary",
           };
 
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
+        }
+        if(have_files && summaryFiles === null){
+          const data3 = {
+            url_pdf: content,
+          };
+          const resp = await createResume(data3);
+  
+          const data4 = {
+            content: resp.answer,
+            id: id,
+            bucket: "resumen_files",
+            atributo: "summary_files",
+          };
+          const resp2 = await saveResume(data4);
+          setSummaryFiles(resp2.pdfUrl);
         }
 
         setIsLoading(false);
@@ -174,7 +203,7 @@ export const DetailFile = () => {
         </div>
       ) : (
         <div className="flex md:justify-between items-center justify-center h-[calc(100vh-10rem)] w-full flex-wrap">
-          <section className="flex md:items-start items-center flex-col  mb-10 lg:w-[30%] w-[20rem] mt-10 ">
+          <section className="flex md:items-center items-center flex-col justify-center mb-10 lg:w-[30%] w-[20rem] mt-10 ">
             <div className="bg-gray-200  rounded-md mt-10 p-8 w-[90%]">
               <h2 className="text-primary font-bold pb-4 leading-3">
                 Datos de la sesión
@@ -195,7 +224,7 @@ export const DetailFile = () => {
               </div>
             </div>
 
-            <div className="flex flex-col m-auto w-[10rem] justify-center mt-10">
+            <div className="flex flex-col m-auto w-[17rem] justify-center mt-10">
               <button
                 className={`${
                   selectedButton === "resumen"
@@ -204,8 +233,23 @@ export const DetailFile = () => {
                 }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
                 onClick={() => handleButtonClick("resumen")}
               >
-                <RiMenuFill /> Resumen
+                <RiMenuFill /> Resumen de la transcripción
               </button>
+              {
+                have_files && (
+                  <button
+                  className={`${
+                    selectedButton === "material"
+                      ? "bg-primary text-white"
+                      : "bg-white text-primary border border-primary"
+                  }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
+                  onClick={() => handleButtonClick("material")}
+                >
+                  <RiFilePdf2Line /> Resumen del material
+                </button>
+                )
+              }
+             
               <button
                 className={`${
                   selectedButton === "transcripcion"
@@ -232,11 +276,14 @@ export const DetailFile = () => {
           {selectedButton === "resumen" && (
             <PDFViewer url={summary} className="md:mt-10" />
           )}
+          {selectedButton === "material" && (
+            <PDFViewer url={summaryFiles} className="md:mt-10" />
+          )}
           {selectedButton === "transcripcion" && (
             <PDFViewer className="md:mt-10" url={transcription} />
           )}
           {selectedButton === "chat" && (
-            <Chat url_pdf={transcription} classId={id}></Chat>
+            <Chat url_pdf={totalContent||transcription} classId={id}></Chat>
           )}
         </div>
       )}

@@ -1,16 +1,18 @@
 import { Menu, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { RiAddLine, RiUpload2Line, RiVoiceprintLine } from "react-icons/ri";
+import { RiAddLine, RiFilePdf2Line, RiUpload2Line, RiVoiceprintLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 
 import { ModalGrabacion } from "../modals/ModalGrabacion";
 
 import { ModalUploadAudio } from "../modals/ModalUploadAudio";
+import { ModalUploadAudioAndFiles } from "../modals/ModalUploadAudioAndFiles";
 
 export const DropDownNuevo = () => {
   const [isModalGrabacionOpen, setIsModalGrabacionOpen] = useState(false);
   const [isModalUploadOpen, setIsModalUploadOpen] = useState(false);
+  const [isModalUploadOpenFiles, setIsModalUploadOpenFiles] = useState(false);
   
   const handleClick = (e) => {
     e.preventDefault();
@@ -30,12 +32,22 @@ export const DropDownNuevo = () => {
     e.preventDefault();
     openModalUpload();
   };
+  const handleClickUploadFiles = (e) => {
+    e.preventDefault();
+    openModalUploadFiles();
+  };
 
   const openModalUpload = () => {
     setIsModalUploadOpen(true);
   }
   const closeModalUpload = () =>{
     setIsModalUploadOpen(false);
+  }
+  const openModalUploadFiles = () => {
+    setIsModalUploadOpenFiles(true);
+  }
+  const closeModalUploadFiles = () =>{
+    setIsModalUploadOpenFiles(false);
   }
 
 
@@ -76,6 +88,14 @@ export const DropDownNuevo = () => {
                   <RiUpload2Line /> Subir audio
                 </Link>
               </Menu.Item>
+              <Menu.Item>
+                <Link
+                  onClick={handleClickUploadFiles}
+                  className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
+                >
+                  <RiFilePdf2Line /> Subir audio y material
+                </Link>
+              </Menu.Item>
             </div>
           </Menu.Items>
         </Transition>
@@ -90,6 +110,10 @@ export const DropDownNuevo = () => {
        isOpen={isModalUploadOpen}
        onClose={closeModalUpload}
       ></ModalUploadAudio>
+      <ModalUploadAudioAndFiles
+       isOpen={isModalUploadOpenFiles}
+       onClose={closeModalUploadFiles}
+      ></ModalUploadAudioAndFiles>
     </>
   );
 };
