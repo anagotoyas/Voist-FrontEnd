@@ -21,7 +21,7 @@ export const DetailFile = () => {
   const [transcription, setTranscription] = useState(null);
   const [totalContent, setTotalContent] = useState(null);
   const [have_files, setHave_files] = useState(false);
-  const [summaryFiles, setSummaryFiles] = useState(null);
+  const [summaryFiles, setSummaryFiles] = useState(false);
   
   const [summary, setSummary] = useState(null);
   const [duration, setDuration] = useState(null);
@@ -55,9 +55,9 @@ export const DetailFile = () => {
       setTitle(title);
       setTranscription(newTranscript);
       setTotalContent(total_content);
+      setSummaryFiles(summary_files);
       setSummary(summary);
       setHave_files(have_files);
-      setSummaryFiles(summary_files);
      
 
       if (newTranscript !== null) {
@@ -78,6 +78,8 @@ export const DetailFile = () => {
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
         }
+        console.log(have_files)
+        console.log(summaryFiles)
         if(have_files && summaryFiles === null){
           const data3 = {
             url_pdf: content,
