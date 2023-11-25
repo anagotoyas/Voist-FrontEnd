@@ -22,7 +22,7 @@ import { useAuth } from "../context/AuthContext";
 import { Chat } from "../components/chat/Chat";
 
 export const DetailFile = () => {
-  const { loadFile, createResume, saveResume } = useAuth();
+  const { loadFile, createResume, saveResume, juntarTexto } = useAuth();
   const [transcription, setTranscription] = useState(null);
   const [totalContent, setTotalContent] = useState(null);
   const [have_files, setHave_files] = useState(false);
@@ -66,15 +66,20 @@ export const DetailFile = () => {
       setSummary(summary);
       setHave_files(have_files);
 
-      console.log(have_files);
-      console.log(summaryFiles);
+      
+console.log("out")
+console.log(`newTranscript: ${newTranscript}`)
 
       if (newTranscript !== null) {
+        setIsLoading(true);
+          console.log(newTranscript)
         const data_transcript = {
           url_pdf: newTranscript,
         };
 
         if (summary === null) {
+          setIsLoading(true);
+          console.log("if summary===null")
           const res = await createResume(data_transcript);
 
           const data2 = {
@@ -86,34 +91,78 @@ export const DetailFile = () => {
 
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
+          console.log(res2.pdfUrl)
+         
         }
-      }
-      if (have_files && summaryFiles === null) {
-        console.log("resumen de archivos");
-        const data3 = {
-          url_pdf: content,
-        };
-        const resp = await createResume(data3);
 
-        const data4 = {
-          content: resp.answer,
-          id: id,
-          bucket: "resumen_files",
-          atributo: "summary_files",
-        };
-        const resp2 = await saveResume(data4);
-        setSummaryFiles(resp2.pdfUrl);
+        if (have_files && summaryFiles === null) {
+          setIsLoading(true);
+          const contentTotal = await juntarTexto(id);
+          console.log(contentTotal)
+
+          setTotalContent(contentTotal.pdfUrl)
+
+          console.log("resumen de archivos");
+          const data3 = {
+            url_pdf: content,
+          };
+          const resp = await createResume(data3);
+  
+          const data4 = {
+            content: resp.answer,
+            id: id,
+            bucket: "resumen_files",
+            atributo: "summary_files",
+          };
+          const resp2 = await saveResume(data4);
+          setSummaryFiles(resp2.pdfUrl);
+          
+          
+        }
+
+       
+
       }
-      if (summary && summaryFiles !== null) {
+      if (have_files && newTranscript && summaryFiles === null) {
+        setIsLoading(true);
+        const contentTotal = await juntarTexto(id);
+          console.log(contentTotal)
+
+          setTotalContent(contentTotal.pdfUrl)
+
+          console.log("resumen de archivos");
+          const data3 = {
+            url_pdf: content,
+          };
+          const resp = await createResume(data3);
+  
+          const data4 = {
+            content: resp.answer,
+            id: id,
+            bucket: "resumen_files",
+            atributo: "summary_files",
+          };
+          const resp2 = await saveResume(data4);
+          setSummaryFiles(resp2.pdfUrl);
+          console.log(summaryFiles)
+        
+      }
+      if(!have_files && newTranscript && summary) {
         setIsLoading(false);
-      } else {
+      }
+      if(have_files &&  newTranscript && summaryFiles&& summary) {
+        setIsLoading(false);
+      }
+      
+      else {
         setTimeout(() => {
           setCount(count + 1);
         }, 5000);
+        
       }
     } catch (error) {
       console.error("Error al cargar los datos del archivo:", error);
-      setIsLoading(false);
+     
     }
   };
 

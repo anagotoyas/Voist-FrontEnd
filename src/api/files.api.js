@@ -76,5 +76,7 @@ export const countFilesMonth = async ()=>{
 export const countFiles = async ()=>{
   return axios.get(`/files-count`)
 }
-
+export const juntarTextos = async (id) => {
+  return axios.get(`/juntar-textos/${id}`);
+};
 

@@ -16,7 +16,8 @@ import {
   saveSummary,
   countFiles,
   countFilesMonth,
-  subirArchivos
+  subirArchivos,
+  juntarTextos
 } from "../api/files.api";
 import {
   getAllFolders,
@@ -299,6 +300,15 @@ export function AuthProvider({ children }) {
     return res.data;
   }
 
+  const juntarTexto = async (id) => {
+    
+    const res = await juntarTextos(id);
+   
+    
+    return res.data;
+  };
+
+
 
 
   //Folder
@@ -497,7 +507,8 @@ export function AuthProvider({ children }) {
         editProfile,
         setUser,
         changePassword,
-        subirArchivo
+        subirArchivo,
+        juntarTexto
         
       }}
     >
