@@ -8,10 +8,8 @@ export const ModalCompartirAcceso = ({ id, contacts }) => {
   const [searchValue, setSearchValue] = useState("");
   const [results, setResults] = useState([]);
 
-
-
   return (
-    <div className="h-[15rem]">
+    <div className="h-[25rem]">
       <SearchContact
         id={id}
         setResults={setResults}
@@ -25,10 +23,12 @@ export const ModalCompartirAcceso = ({ id, contacts }) => {
         className="absolute"
         idFile={id}
       />
-      <div className="my-5 font-bold">
+      <div className="my-3 font-bold ">
         <h1>Personas que tienen acceso:</h1>
       </div>
-      <ContactAccess contacts={contacts} />
+      <div className="overflow-y-auto max-h-[20rem] ">
+        <ContactAccess contacts={contacts} />
+      </div>
     </div>
   );
 };
