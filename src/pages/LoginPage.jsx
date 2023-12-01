@@ -3,26 +3,36 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Checkbox } from "antd";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function LoginPage() {
   const { register, handleSubmit } = useForm();
-
   const { signin, errors } = useAuth();
   const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
+  const [cookiesEnabled, setCookiesEnabled] = useState(true);
+
+  useEffect(() => {
+    setCookiesEnabled(navigator.cookieEnabled);
+  }, []);
 
   const onSubmit = handleSubmit(async (data) => {
+    if (!cookiesEnabled) {
+      alert("Please enable cookies to log in.");
+      return;
+    }
+
     const user = await signin(data);
-    if (user && user.role == 2) {
+
+    if (user && user.role === 2) {
       navigate("/home");
     } else if (user && user.role === 1) {
       navigate("/admin");
     }
   });
+
   const onChange = (e) => {
     setChecked(e.target.checked);
-   
   };
 
   return (
@@ -31,6 +41,12 @@ function LoginPage() {
         <img src="Logo.png" alt="logo" className="w-[9rem] pb-10" />
       </Link>
       <Card>
+        {!cookiesEnabled && (
+          <p className="bg-red-500 text-white p-2 text-center rounded-full mb-4">
+            Cookies are not enabled. Please enable cookies to proceed.
+          </p>
+        )}
+
         {errors &&
           errors.map((err) => (
             <p

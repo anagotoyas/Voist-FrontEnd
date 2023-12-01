@@ -140,12 +140,12 @@ console.log("comienzo subir archivo")
             <div className={`flex items-center justify-center `}>
               <Boton
                 className={`mt-5 text-center px-5  ${
-                  !audioFileName || !selectedFile
+                  audioFileName.trim().length < 3 || !audioFileName || !selectedFile
                     ? "bg-gray-500 text-white"
                     : ""
                 }`}
                 onClick={handleUpload}
-                disabled={!audioFileName || !selectedFile}
+                disabled={audioFileName.trim().length < 3 || !audioFileName || !selectedFile}
               >
                 Siguiente
               </Boton>

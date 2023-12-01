@@ -258,14 +258,26 @@ export const ModalGrabacion = ({ isOpen, onClose, children }) => {
           </div>
 
           {!recording && (
-            <button
-              className={`text-white px-4 py-2 mt-4 border rounded-md ${
-                inputValue ? "bg-primary" : "bg-gray-400"
-              }`}
-              onClick={inputValue ? startRecording : undefined}
-            >
-              Iniciar Grabación
-            </button>
+            // <button
+            //   className={`text-white px-4 py-2 mt-4 border rounded-md ${
+            //     inputValue ? "bg-primary" : "bg-gray-400"
+            //   }`}
+            //   onClick={inputValue ? startRecording : undefined}
+            // >
+            //   Iniciar Grabación
+            // </button>
+             <button
+             disabled={inputValue.trim().length < 3}
+             className={`text-white px-8 py-2 mt-4 border rounded-md  
+             } ${
+               inputValue.trim().length < 3
+                 ? "cursor-not-allowed bg-gray-400"
+                 : "bg-primary"
+             }`}
+             onClick={inputValue ? startRecording : undefined}
+           >
+             Guardar
+           </button>
           )}
           {recording && (
             <button

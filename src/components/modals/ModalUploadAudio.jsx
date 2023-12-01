@@ -34,7 +34,7 @@ export const ModalUploadAudio = ({ isOpen, onClose }) => {
         setAudioFileName("");
       } else {
         setSelectedFile(file);
-        const newFileList = [ file];
+        const newFileList = [file];
         setFileList(newFileList);
       }
 
@@ -90,14 +90,19 @@ export const ModalUploadAudio = ({ isOpen, onClose }) => {
           className="mt-5"
           maxCount={1}
           fileList={fileList}
-
           accept="audio/wav"
         >
           <Button icon={<UploadOutlined />}>Sube tu archivo wav</Button>
         </Upload>
 
         <div className={`flex items-center justify-center `}>
-          <Boton className={`mt-5 text-center px-5  ${(!audioFileName || !selectedFile) ? 'bg-gray-500 text-white' : ''}`} onClick={handleUpload} disabled={!audioFileName || !selectedFile}>
+          <Boton
+            className={`mt-5 text-center px-5  ${
+              audioFileName.trim().length < 3  || !audioFileName|| !selectedFile ? "bg-gray-500 text-white" : ""
+            }`}
+            onClick={handleUpload}
+            disabled={ audioFileName.trim().length < 3 || !audioFileName || !selectedFile}
+          >
             Crear archivo
           </Boton>
         </div>

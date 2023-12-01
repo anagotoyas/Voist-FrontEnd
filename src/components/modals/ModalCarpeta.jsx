@@ -8,24 +8,30 @@ import { Spin } from "antd";
 export const ModalCarpeta = ({ isOpen, onClose }) => {
   const [inputValue, setInputValue] = useState("");
   const { saveFolder } = useAuth();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
-   
+    setError("");
   };
 
-  const cerrarModal=()=>{
+  const cerrarModal = () => {
     setInputValue("");
-    onClose()
-  }
+    onClose();
+  };
 
-  const guardarCarpeta= async()=>{
-    setLoading(true)
-    await saveFolder(inputValue)
-    setLoading(false)
-    cerrarModal()
-  }
+  const guardarCarpeta = async () => {
+    if (inputValue.trim().length >= 3) {
+      setLoading(true);
+      await saveFolder(inputValue);
+      setLoading(false);
+      cerrarModal();
+    } else {
+      setError("El nombre de la carpeta debe tener al menos 3 caracteres");
+    }
+  };
+
   return (
     <div
       className={
@@ -43,7 +49,7 @@ export const ModalCarpeta = ({ isOpen, onClose }) => {
         />
 
         <div className="p-4 flex items-center flex-col justify-center h-[15rem]">
-        {loading ? <Spin size="small" /> : null}
+          {loading ? <Spin size="small" /> : null}
           <h2 className="text-lg font-medium">
             Ingrese el nombre de su carpeta
           </h2>
@@ -53,10 +59,16 @@ export const ModalCarpeta = ({ isOpen, onClose }) => {
             value={inputValue}
             onChange={handleInputChange}
           ></Input>
+          {error && <p className="text-red-500">{error}</p>}
           <button
-            className={`text-white px-8 py-2 mt-4 border rounded-md ${
-              inputValue ? "bg-primary" : "bg-gray-400" 
-            } ${loading ? "bg-gray-400": "bg-primary"}`}
+            disabled={inputValue.trim().length < 3}
+            className={`text-white px-8 py-2 mt-4 border rounded-md  ${
+              loading ? "bg-gray-400" : ""
+            } ${
+              inputValue.trim().length < 3
+                ? "cursor-not-allowed bg-gray-400"
+                : "bg-primary"
+            }`}
             onClick={guardarCarpeta}
           >
             Guardar
@@ -66,6 +78,7 @@ export const ModalCarpeta = ({ isOpen, onClose }) => {
     </div>
   );
 };
+
 ModalCarpeta.propTypes = {
   isOpen: PropTypes.bool,
   onClose: PropTypes.func,

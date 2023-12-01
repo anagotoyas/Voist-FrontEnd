@@ -23,6 +23,8 @@ export const Profile = () => {
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
 
@@ -35,6 +37,13 @@ export const Profile = () => {
 
   const handleNameChange = (event) => {
     setUserName(event.target.value);
+    if (event.target.value.trim().length >= 3) {
+      setUserName(event.target.value);
+    } else {
+      setErrores(
+        "El nombre debe tener al menos 3 caracteres y no puede consistir solo en espacios en blanco"
+      );
+    }
   };
 
   const handlePasswordChange = (event) => {
@@ -42,7 +51,17 @@ export const Profile = () => {
   };
 
   const handleEmailChange = (event) => {
+    const newEmail = event.target.value;
     setUserEmail(event.target.value);
+
+    if (newEmail.trim().length >= 3 && emailRegex.test(newEmail)) {
+      setUserEmail(newEmail);
+      setErrores("");
+    } else {
+      setErrores(
+        "El email debe tener al menos 3 caracteres, tener un formato válido y no puede consistir solo en espacios en blanco"
+      );
+    }
   };
 
   // console.log(alert)
@@ -50,6 +69,14 @@ export const Profile = () => {
   const saveChanges = handleSubmit(async () => {
     if (currentPassword === "") {
       return setErrores("Contraseña actual es requerida");
+    } else if (userName.trim().length < 3) {
+      setErrores(
+        "El nombre debe tener al menos 3 caracteres y no puede consistir solo en espacios en blanco"
+      );
+    } else if (userEmail.trim().length <= 3 && !emailRegex.test(userEmail)) {
+      setErrores(
+        "El email debe tener un formato válido y no puede consistir solo en espacios en blanco"
+      );
     } else {
       setErrores("");
       const formData = new FormData();
@@ -87,14 +114,12 @@ export const Profile = () => {
         onSubmit={saveChanges}
         className="grid grid-col-1 md:grid-cols-2 bg-lightgray px-8 py-4 mt-5 rounded-lg max-w-[70rem] w-full gap-4"
       >
-        {loading && <Spin className="col-span-2"/>}
-        {
-          success && (
-            <div className="bg-green-500 col-span-2 rounded-lg text-white p-2 text-center">
-              {success}
-            </div>
-          )
-        }
+        {loading && <Spin className="col-span-2" />}
+        {success && (
+          <div className="bg-green-500 col-span-2 rounded-lg text-white p-2 text-center">
+            {success}
+          </div>
+        )}
         {alert && (
           <div className="bg-red-500 col-span-2 rounded-lg text-white p-2 text-center">
             {alert}
@@ -146,7 +171,7 @@ export const Profile = () => {
               Email
             </label>
             <input
-              type="text"
+              type="email"
               className="border border-gray-300 rounded-md px-3 py-1 "
               value={userEmail}
               onChange={handleEmailChange}
