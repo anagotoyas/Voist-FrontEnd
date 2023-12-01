@@ -14,12 +14,14 @@ const { Text } = Typography;
 import {
   RiChatVoiceLine,
   RiFilePdf2Line,
+  RiFolder2Line,
   RiMenuFill,
   RiVoiceprintFill,
 } from "react-icons/ri";
 import PDFViewer from "../components/files/PDFViewer";
 import { useAuth } from "../context/AuthContext";
 import { Chat } from "../components/chat/Chat";
+import ViewFiles from "../components/view_files/ViewFiles";
 
 export const DetailFile = () => {
   const { loadFile, createResume, saveResume, juntarTexto } = useAuth();
@@ -66,20 +68,19 @@ export const DetailFile = () => {
       setSummary(summary);
       setHave_files(have_files);
 
-      
-console.log("out")
-console.log(`newTranscript: ${newTranscript}`)
+      console.log("out");
+      console.log(`newTranscript: ${newTranscript}`);
 
       if (newTranscript !== null) {
         setIsLoading(true);
-          console.log(newTranscript)
+        console.log(newTranscript);
         const data_transcript = {
           url_pdf: newTranscript,
         };
 
         if (summary === null) {
           setIsLoading(true);
-          console.log("if summary===null")
+          console.log("if summary===null");
           const res = await createResume(data_transcript);
 
           const data2 = {
@@ -91,23 +92,22 @@ console.log(`newTranscript: ${newTranscript}`)
 
           const res2 = await saveResume(data2);
           setSummary(res2.pdfUrl);
-          console.log(res2.pdfUrl)
-         
+          console.log(res2.pdfUrl);
         }
 
         if (have_files && summaryFiles === null) {
           setIsLoading(true);
           const contentTotal = await juntarTexto(id);
-          console.log(contentTotal)
+          console.log(contentTotal);
 
-          setTotalContent(contentTotal.pdfUrl)
+          setTotalContent(contentTotal.pdfUrl);
 
           console.log("resumen de archivos");
           const data3 = {
             url_pdf: content,
           };
           const resp = await createResume(data3);
-  
+
           const data4 = {
             content: resp.answer,
             id: id,
@@ -116,53 +116,43 @@ console.log(`newTranscript: ${newTranscript}`)
           };
           const resp2 = await saveResume(data4);
           setSummaryFiles(resp2.pdfUrl);
-          
-          
         }
-
-       
-
       }
       if (have_files && newTranscript && summaryFiles === null) {
         setIsLoading(true);
         const contentTotal = await juntarTexto(id);
-          console.log(contentTotal)
+        console.log(contentTotal);
 
-          setTotalContent(contentTotal.pdfUrl)
+        setTotalContent(contentTotal.pdfUrl);
 
-          console.log("resumen de archivos");
-          const data3 = {
-            url_pdf: content,
-          };
-          const resp = await createResume(data3);
-  
-          const data4 = {
-            content: resp.answer,
-            id: id,
-            bucket: "resumen_files",
-            atributo: "summary_files",
-          };
-          const resp2 = await saveResume(data4);
-          setSummaryFiles(resp2.pdfUrl);
-          console.log(summaryFiles)
-        
+        console.log("resumen de archivos");
+        const data3 = {
+          url_pdf: content,
+        };
+        const resp = await createResume(data3);
+
+        const data4 = {
+          content: resp.answer,
+          id: id,
+          bucket: "resumen_files",
+          atributo: "summary_files",
+        };
+        const resp2 = await saveResume(data4);
+        setSummaryFiles(resp2.pdfUrl);
+        console.log(summaryFiles);
       }
-      if(!have_files && newTranscript && summary) {
+      if (!have_files && newTranscript && summary) {
         setIsLoading(false);
       }
-      if(have_files &&  newTranscript && summaryFiles&& summary) {
+      if (have_files && newTranscript && summaryFiles && summary) {
         setIsLoading(false);
-      }
-      
-      else {
+      } else {
         setTimeout(() => {
           setCount(count + 1);
-        }, 5000);
-        
+        }, 100);
       }
     } catch (error) {
       console.error("Error al cargar los datos del archivo:", error);
-     
     }
   };
 
@@ -296,16 +286,29 @@ console.log(`newTranscript: ${newTranscript}`)
                 <RiMenuFill /> Resumen de la transcripción
               </button>
               {have_files && (
-                <button
-                  className={`${
-                    selectedButton === "material"
-                      ? "bg-primary text-white"
-                      : "bg-white text-primary border border-primary"
-                  }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
-                  onClick={() => handleButtonClick("material")}
-                >
-                  <RiFilePdf2Line /> Resumen del material
-                </button>
+                <>
+                  <button
+                    className={`${
+                      selectedButton === "material"
+                        ? "bg-primary text-white"
+                        : "bg-white text-primary border border-primary"
+                    }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
+                    onClick={() => handleButtonClick("material")}
+                  >
+                    <RiFilePdf2Line /> Resumen del material
+                  </button>
+
+                  <button
+                    className={`${
+                      selectedButton === "material_files"
+                        ? "bg-primary text-white"
+                        : "bg-white text-primary border border-primary"
+                    }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
+                    onClick={() => handleButtonClick("material_files")}
+                  >
+                    <RiFolder2Line /> Archivos adjuntos
+                  </button>
+                </>
               )}
 
               <button
@@ -332,13 +335,16 @@ console.log(`newTranscript: ${newTranscript}`)
           </section>
 
           {selectedButton === "resumen" && (
-            <PDFViewer url={summary} className="md:mt-10" />
+            <PDFViewer url={summary} className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4" />
           )}
           {selectedButton === "material" && (
-            <PDFViewer url={summaryFiles} className="md:mt-10" />
+            <PDFViewer url={summaryFiles} className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4" />
+          )}
+          {selectedButton === "material_files" && (
+            <ViewFiles id={id} className="md:mt-10" />
           )}
           {selectedButton === "transcripcion" && (
-            <PDFViewer className="md:mt-10" url={transcription} />
+            <PDFViewer className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4" url={transcription} />
           )}
           {selectedButton === "chat" && (
             <Chat url_pdf={totalContent || transcription} classId={id}></Chat>

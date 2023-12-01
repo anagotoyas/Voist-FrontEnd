@@ -68,6 +68,7 @@ function App() {
           >
             <Route path="/home" element={<NavPage />} />
             <Route path="/detail-file" element={<NavPage />} />
+            <Route path="/attached-file/:id" exact component={<NavPage/>} />
             <Route path="/compartido" element={<NavPage />} />
             <Route path="/contactos" element={<NavPage />} />
             <Route path="/carpetas" element={<NavPage />} />

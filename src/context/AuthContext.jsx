@@ -44,6 +44,11 @@ import {
   askQuestion,
 } from '../api/conversation.api'
 
+import {
+  getAttachedById
+} from '../api/attached_file.api'
+
+
 
 export const AuthContext = createContext();
 
@@ -428,6 +433,13 @@ export function AuthProvider({ children }) {
     return res.data;
   }
 
+  //attached files
+
+  const loadAttached = async (id) => {  
+    const res = await getAttachedById(id);
+    return res;
+  }
+
 
 
 
@@ -508,7 +520,8 @@ export function AuthProvider({ children }) {
         setUser,
         changePassword,
         subirArchivo,
-        juntarTexto
+        juntarTexto,
+        loadAttached
         
       }}
     >

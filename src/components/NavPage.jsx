@@ -11,6 +11,7 @@ import { ListUsers } from "../pages/ListUsers";
 import { PanelUser } from "../pages/PanelUser";
 import { Profile } from "../pages/Profile";
 import { ChagePassword } from "../pages/ChagePassword";
+import { PDFAttached_File } from "./files/PDFAttached_File";
 
 export const NavPage = () => {
   // const { isAuth } = useAuth();
@@ -29,6 +30,8 @@ export const NavPage = () => {
         <Route path="/contactos" element={<Contactos />} />
         <Route path="/carpetas" element={<Carpetas />} />
         <Route path="/detail-folder" element={<DetailFolder />} />
+        <Route path="/attached-file/:id" exact component={<PDFAttached_File/>} />
+
         <Route path="/profile" element={<Profile />} />
         <Route path="/password" element={<ChagePassword />} />
 

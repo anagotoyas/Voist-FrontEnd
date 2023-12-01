@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <AuthProvider>
         <WebsocketComponent>
           <InactivityDetector>
-          <App />
+          <App/>
           </InactivityDetector>
         </WebsocketComponent>
       </AuthProvider>
