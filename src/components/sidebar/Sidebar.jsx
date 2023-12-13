@@ -241,7 +241,7 @@ export const Sidebar = () => {
           </Transition>
         </Menu>
       </header>
-      <main className="xl:pl-[17rem] pt-[5rem] px-8 h-[calc(100vh-4rem)]">
+      <main className="xl:pl-[17rem] pt-[5rem] px-8 h-[calc(100vh-4rem)] mb-5">
         <NavPage />
       </main>
     </div>
