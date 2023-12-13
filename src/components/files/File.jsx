@@ -53,7 +53,7 @@ export const File = (props) => {
     e.preventDefault();
     e.stopPropagation();
     const contacts = await loadContactsShared(id);
-    // console.log(contacts)
+    
     setModalContent({
       title: "Ver detalle",
       content: (

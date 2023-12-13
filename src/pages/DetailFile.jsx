@@ -27,8 +27,10 @@ export const DetailFile = () => {
   const { loadFile, createResume, saveResume, juntarTexto } = useAuth();
   const [transcription, setTranscription] = useState(null);
   const [totalContent, setTotalContent] = useState(null);
+  const [content, setContent] = useState(null);
   const [have_files, setHave_files] = useState(false);
   const [summaryFiles, setSummaryFiles] = useState(false);
+  const [only_files, setOnly_files] = useState(false);
 
   const [summary, setSummary] = useState(null);
   const [duration, setDuration] = useState(null);
@@ -41,118 +43,146 @@ export const DetailFile = () => {
   const searchParams = new URLSearchParams(location.search);
   const id = searchParams.get("id");
 
-  // const publicUrl = window.location.origin;
-
-  console.log(have_files);
-  console.log(summaryFiles);
-
   const makeRequest = async () => {
     try {
-      const {
-        transcript: newTranscript,
-        total_content,
-        duration,
-        date_created,
-        title,
-        summary,
-        have_files,
-        content,
-        summary_files,
-      } = await loadFile(id);
-      setDuration(duration);
-      setDateCreated(date_created);
-      setTitle(title);
-      setTranscription(newTranscript);
-      setTotalContent(total_content);
-      setSummaryFiles(summary_files);
-      setSummary(summary);
-      setHave_files(have_files);
+      try {
+        const {
+          transcript: newTranscript,
+          total_content,
+          duration,
+          date_created,
+          title,
+          summary,
+          have_files,
+          summary_files,
+          only_files,
+          content,
+        } = await loadFile(id);
+        setDuration(duration);
+        setDateCreated(date_created);
+        setTitle(title);
+        setTranscription(newTranscript);
+        setTotalContent(total_content);
+        setSummaryFiles(summary_files);
+        setSummary(summary);
+        setHave_files(have_files);
+        setOnly_files(only_files);
+        setContent(content);
+       
+      } catch (error) {
+        console.error("Error loading file:", error);
+      }
 
-      console.log("out");
-      console.log(`newTranscript: ${newTranscript}`);
-
-      if (newTranscript !== null) {
-        setIsLoading(true);
-        console.log(newTranscript);
-        const data_transcript = {
-          url_pdf: newTranscript,
-        };
-
-        if (summary === null) {
+      switch (true) {
+        case only_files && summaryFiles !== null:
+          console.log("case 0");
+          setIsLoading(false);
+          break;
+        case have_files &&
+          transcription !== null &&
+          summaryFiles !== null &&
+          summary !== null:
+          console.log("case 1");
+          setIsLoading(false);
+          break;
+        case !have_files && transcription !== null && summary !== null:
+          console.log("case 2");
+          setIsLoading(false);
+          break;
+        case transcription !== null && summary === null:
+          console.log("case 3");
           setIsLoading(true);
-          console.log("if summary===null");
-          const res = await createResume(data_transcript);
 
-          const data2 = {
-            content: res.answer,
-            id: id,
-            bucket: "resumen",
-            atributo: "summary",
-          };
+          try {
+            const data_transcript = {
+              url_pdf: transcription,
+            };
 
-          const res2 = await saveResume(data2);
-          setSummary(res2.pdfUrl);
-          console.log(res2.pdfUrl);
-        }
+            const res = await createResume(data_transcript);
 
-        if (have_files && summaryFiles === null) {
+            const data2 = {
+              content: res.answer,
+              id: id,
+              bucket: "resumen",
+              atributo: "summary",
+            };
+
+            const res2 = await saveResume(data2);
+            setSummary(res2.pdfUrl);
+            setCount(count + 1);
+
+            if (!have_files && summary) {
+              setIsLoading(false);
+            }
+          } catch (error) {
+            console.error("Error creating resume:", error);
+            setCount(count + 1);
+          }
+          break;
+        case have_files && transcription && summaryFiles === null:
+          console.log("case 4");
           setIsLoading(true);
-          const contentTotal = await juntarTexto(id);
-          console.log(contentTotal);
 
-          setTotalContent(contentTotal.pdfUrl);
+          try {
+            const contentTotal = await juntarTexto(id);
 
-          console.log("resumen de archivos");
-          const data3 = {
-            url_pdf: content,
-          };
-          const resp = await createResume(data3);
+            setTotalContent(contentTotal.pdfUrl);
 
-          const data4 = {
-            content: resp.answer,
-            id: id,
-            bucket: "resumen_files",
-            atributo: "summary_files",
-          };
-          const resp2 = await saveResume(data4);
-          setSummaryFiles(resp2.pdfUrl);
-        }
-      }
-      if (have_files && newTranscript && summaryFiles === null) {
-        setIsLoading(true);
-        const contentTotal = await juntarTexto(id);
-        console.log(contentTotal);
+            const data3 = {
+              url_pdf: contentTotal.pdfUrl,
+            };
+            const resp = await createResume(data3);
 
-        setTotalContent(contentTotal.pdfUrl);
+            const data4 = {
+              content: resp.answer,
+              id: id,
+              bucket: "resumen_files",
+              atributo: "summary_files",
+            };
+            const resp2 = await saveResume(data4);
+            setSummaryFiles(resp2.pdfUrl);
 
-        console.log("resumen de archivos");
-        const data3 = {
-          url_pdf: content,
-        };
-        const resp = await createResume(data3);
+            setCount(count + 1);
 
-        const data4 = {
-          content: resp.answer,
-          id: id,
-          bucket: "resumen_files",
-          atributo: "summary_files",
-        };
-        const resp2 = await saveResume(data4);
-        setSummaryFiles(resp2.pdfUrl);
-        console.log(summaryFiles);
-      }
-      if (!have_files && newTranscript && summary) {
-        setIsLoading(false);
-      }
-      if (have_files && newTranscript && summaryFiles && summary) {
-        setIsLoading(false);
-      } else {
-        setTimeout(() => {
+            setIsLoading(false);
+          } catch (error) {
+            console.error("Error processing files:", error);
+            setCount(count + 1);
+          }
+          break;
+
+        case only_files && summaryFiles === null:
+          console.log("case 5");
+        
+          try {
+            const data3 = {
+              url_pdf: content,
+            };
+            const resp = await createResume(data3);
+            const data = {
+              content: resp.answer,
+              id: id,
+              bucket: "resumen_files",
+              atributo: "summary_files",
+            };
+            const res = await saveResume(data);
+            setSummaryFiles(res.pdfUrl);
+            setCount(count + 1);
+
+            setIsLoading(false);
+          } catch (error) {
+            console.error("Error processing files:", error);
+            setCount(count + 1);
+          }
+          break;
+
+        default:
+          console.log("case default");
           setCount(count + 1);
-        }, 100);
+          break;
       }
     } catch (error) {
-      console.error("Error al cargar los datos del archivo:", error);
+      console.error("Error loading file:", error);
     }
   };
 
@@ -160,7 +190,8 @@ export const DetailFile = () => {
     makeRequest();
   }, [count]);
 
-  const [selectedButton, setSelectedButton] = useState("resumen");
+  const [selectedButton, setSelectedButton] = useState("chat");
+  
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
@@ -245,7 +276,7 @@ export const DetailFile = () => {
       )}
 
       {isLoading ? (
-        <div className="flex lg:justify-center items-center justify-center h-[calc(100vh)] w-full  flex-wrap flex-col ">
+        <div className="flex lg:justify-center items-center justify-center h-[calc(100vh-20vh)] w-full  flex-wrap flex-col ">
           <Text italic className="font-bold text-md">
             Procesando...
           </Text>
@@ -275,16 +306,31 @@ export const DetailFile = () => {
             </div>
 
             <div className="flex flex-col m-auto w-[17rem] justify-center mt-10">
-              <button
-                className={`${
-                  selectedButton === "resumen"
-                    ? "bg-primary text-white"
-                    : "bg-white text-primary border border-primary"
-                }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
-                onClick={() => handleButtonClick("resumen")}
-              >
-                <RiMenuFill /> Resumen de la transcripción
-              </button>
+              {!only_files && (
+                <>
+                  <button
+                    className={`${
+                      selectedButton === "resumen"
+                        ? "bg-primary text-white"
+                        : "bg-white text-primary border border-primary"
+                    }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
+                    onClick={() => handleButtonClick("resumen")}
+                  >
+                    <RiMenuFill /> Resumen de la transcripción
+                  </button>
+                  <button
+                    className={`${
+                      selectedButton === "transcripcion"
+                        ? "bg-primary text-white"
+                        : "bg-white text-primary border border-primary"
+                    } flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
+                    onClick={() => handleButtonClick("transcripcion")}
+                  >
+                    <RiVoiceprintFill /> Transcripción
+                  </button>
+                </>
+              )}
+
               {have_files && (
                 <>
                   <button
@@ -313,16 +359,6 @@ export const DetailFile = () => {
 
               <button
                 className={`${
-                  selectedButton === "transcripcion"
-                    ? "bg-primary text-white"
-                    : "bg-white text-primary border border-primary"
-                } flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
-                onClick={() => handleButtonClick("transcripcion")}
-              >
-                <RiVoiceprintFill /> Transcripción
-              </button>
-              <button
-                className={`${
                   selectedButton === "chat"
                     ? "bg-primary text-white"
                     : "bg-white text-primary border border-primary"
@@ -335,19 +371,31 @@ export const DetailFile = () => {
           </section>
 
           {selectedButton === "resumen" && (
-            <PDFViewer url={summary} className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4" />
+            <PDFViewer
+              url={summary}
+              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4"
+            />
           )}
           {selectedButton === "material" && (
-            <PDFViewer url={summaryFiles} className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4" />
+            <PDFViewer
+              url={summaryFiles}
+              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4"
+            />
           )}
           {selectedButton === "material_files" && (
             <ViewFiles id={id} className="md:mt-10" />
           )}
           {selectedButton === "transcripcion" && (
-            <PDFViewer className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4" url={transcription} />
+            <PDFViewer
+              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4"
+              url={transcription}
+            />
           )}
           {selectedButton === "chat" && (
-            <Chat url_pdf={totalContent || transcription} classId={id}></Chat>
+            <Chat
+              url_pdf={totalContent || transcription || content}
+              classId={id}
+            ></Chat>
           )}
         </div>
       )}

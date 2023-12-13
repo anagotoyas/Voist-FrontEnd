@@ -16,9 +16,9 @@ export const getFileByContact = async () => {
   return axios.get(`/files-contact`);
 };
 
-export const createFile = async (title, idFolder) => {
+export const createFile = async (title, idFolder, only_files) => {
   
-    return axios.post(`/files`, { title, idFolder});
+    return axios.post(`/files`, { title, idFolder, only_files});
   
   
 };

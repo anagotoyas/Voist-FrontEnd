@@ -4,20 +4,20 @@ import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useLocation } from "react-router-dom";
 import { Input } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import { Button, message, Upload } from "antd";
+import {  message } from "antd";
 import { Button as Boton } from "../ui/index";
 import Dragger from "antd/es/upload/Dragger";
 import { InboxOutlined } from "@ant-design/icons";
 
-export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
+export const ModalUploadFiles = ({ isOpen, children, onClose }) => {
   const [audioFileName, setAudioFileName] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [fileList, setFileList] = useState([]);
   const [siguente, setSiguente] = useState(false);
   const [archivosList, setArchivosList] = useState([]);
+  
 
-  const { saveAudio, createFiles, subirArchivo } = useAuth();
+  const {  createFiles, subirArchivo } = useAuth();
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -25,28 +25,13 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
 
   const handleClose = () => {
     setAudioFileName("");
-    setSelectedFile(null);
+   
     setFileList([]);
     setArchivosList([]);
     setSiguente(false);
     onClose();
   };
-  const props = {
-    beforeUpload: (file) => {
-      const isWav = file.type === "audio/wav" || file.name.endsWith(".wav");
-      if (!isWav) {
-        message.error(`${file.name} is not a WAV file`);
-        setAudioFileName("");
-      } else {
-        setSelectedFile(file);
-        const newFileList = [file];
-        setFileList(newFileList);
-      }
-
-      isWav || Upload.LIST_IGNORE;
-      return false;
-    },
-  };
+  
   const handleUpload = async () => {
     setSiguente(true);
   };
@@ -69,13 +54,7 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
   };
 
   const handleCreateClick = async () => {
-    if (selectedFile) {
-    
-      let formData = new FormData();
-     
-
-      formData.append("audio", selectedFile);
-
+   
       const formData2 = new FormData();
       archivosList.forEach((file) => {
         formData2.append("files", file.originFileObj);
@@ -83,20 +62,15 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
 
       try {
       
-        const resp = await createFiles(audioFileName, id_folder);
-    
-        await saveAudio(formData, resp.id);
-       
+        const resp = await createFiles(audioFileName, id_folder, true);
+        
+      
          await subirArchivo(resp.id, formData2);
-        
-
-        
+    
       } catch (error) {
         console.error("Error uploading the file:", error);
       }
-    } else {
-      console.error("No se seleccionó ningún archivo de audio");
-    }
+    
   };
   return (
     <div
@@ -114,7 +88,7 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
           onClick={handleClose}
         />
 
-        <h1 className="text-lg font-medium">Subir audio y material de clase</h1>
+        <h1 className="text-lg font-medium">Subir material de clase</h1>
         {!siguente ? (
           <>
             {" "}
@@ -124,30 +98,19 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
               value={audioFileName}
               onChange={(e) => setAudioFileName(e.target.value)}
             />
-            <Upload
-              {...props}
-              customRequest={({ onSuccess }) => onSuccess("ok")}
-              className="mt-5"
-              maxCount={1}
-              fileList={fileList}
-              accept="audio/wav"
-            >
-              <Button icon={<UploadOutlined />}>Sube tu archivo wav</Button>
-            </Upload>
+           
             <div className={`flex items-center justify-center `}>
               <Boton
                 className={`mt-5 text-center px-5  ${
                   audioFileName.trim().length < 3 ||
-                  !audioFileName ||
-                  !selectedFile
+                  !audioFileName 
                     ? "bg-gray-500 text-white"
                     : ""
                 }`}
                 onClick={handleUpload}
                 disabled={
                   audioFileName.trim().length < 3 ||
-                  !audioFileName ||
-                  !selectedFile
+                  !audioFileName 
                 }
               >
                 Siguiente
@@ -193,7 +156,7 @@ export const ModalUploadAudioAndFiles = ({ isOpen, children, onClose }) => {
     </div>
   );
 };
-ModalUploadAudioAndFiles.propTypes = {
+ModalUploadFiles.propTypes = {
   isOpen: PropTypes.bool,
   children: PropTypes.node,
   onClose: PropTypes.func,

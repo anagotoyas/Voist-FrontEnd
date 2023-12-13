@@ -3,7 +3,7 @@
 import PropTypes from "prop-types";
 
 function PDFViewer({ url, className }) {
-  // console.log(url)
+ 
   return (
     <div className={`${className}`}>
     

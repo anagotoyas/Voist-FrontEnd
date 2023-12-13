@@ -205,9 +205,9 @@ export function AuthProvider({ children }) {
     }
     setLoading(false);
   };
-  const createFiles = async (file, idFolder) => {
+  const createFiles = async (file, idFolder, only_files) => {
     try {
-      const res = await createFile(file, idFolder);
+      const res = await createFile(file, idFolder, only_files);
       setFiles([...files, res]);
       return res.data;
     } catch (error) {
@@ -230,7 +230,7 @@ export function AuthProvider({ children }) {
   };
 
   const saveAudio = async (formData, id) => {
-    console.log(`save audio`);
+
     setLoading(true);
     try {
       const res = await saveAudioBlobAsWAV(formData, id);
@@ -244,7 +244,7 @@ export function AuthProvider({ children }) {
     }
   };
   const uploadAudioWav = async (formData, fileName) => {
-    console.log(`upload audio`);
+    
     setLoading(true);
     try {
       const res = await uploadAudio(formData, fileName);
@@ -258,7 +258,7 @@ export function AuthProvider({ children }) {
     }
   };
   const subirArchivo = async (fileName, formData) => {
-    console.log(`upload audio`);
+    
     setLoading(true);
     try {
       const res = await subirArchivos( fileName,formData);
@@ -452,7 +452,7 @@ export function AuthProvider({ children }) {
         .get(`/profile`)
         .then((res) => {
           setUser(res.data);
-          console.log(res.data);
+         
           setIsAuth(true);
           setLoading(false);
         })

@@ -20,7 +20,6 @@ export const HomePage = () => {
       loadAllFiles();
     }
     
-    // console.log(files)
   }, [user]);
 
   const handleSearch = (value) => {

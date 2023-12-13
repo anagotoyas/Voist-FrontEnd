@@ -42,8 +42,7 @@ export const DetailFolder = () => {
 
   const handleSearch = (value) => {
     setSearchValue(value);
-    console.log(value);
-
+  
     const filteredFiles = files.filter((item) =>
       item.title.toLowerCase().includes(value.toLowerCase())
     );

@@ -1,8 +1,7 @@
-"use client";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
-import { useAuth } from "../../context/AuthContext";
 import { DOMAIN } from "../../api/api";
+import { useAuth } from "../../context/AuthContext";
 import PropTypes from "prop-types";
 
 export const WebsocketComponent = (props) => {

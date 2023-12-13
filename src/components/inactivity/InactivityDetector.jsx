@@ -23,7 +23,7 @@ const InactivityDetector = (props) => {
   const [time, setTime] = useState(0)
   const [key, setKey] = useState(0);
  
-// console.log(inactive)
+
 
 const continuar = ()=>{
     setIsModalOpen(false);

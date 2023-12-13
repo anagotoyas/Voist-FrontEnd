@@ -19,7 +19,7 @@ export const Contact = (props) => {
   };
 
   const eliminarContacto=async()=> {
-    // console.log(props.contact_id)
+   
     await deleteContacts(props.contact_id, props.owner_id)
   }
 

@@ -42,7 +42,7 @@ function App() {
 
   return (
     <Routes>
-      <Route path="/*" element={<LandingPage />} />
+      <Route path="*" element={<LandingPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
 
@@ -78,7 +78,7 @@ function App() {
         </Route>
       </Route>
 
-      <Route path="*" element={<NotFound />} />
+      <Route path="/*" element={<NotFound />} />
     </Routes>
   );
 }

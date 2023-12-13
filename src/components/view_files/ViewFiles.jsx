@@ -1,7 +1,6 @@
 import { useAuth } from "../../context/AuthContext";
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Breadcrumb } from "antd";
 import PDFViewer from "../files/PDFViewer";
 import { Listbox } from "@headlessui/react";
 import { RiArrowDownSLine, RiCheckLine } from "react-icons/ri";
@@ -17,11 +16,11 @@ function ViewFiles({ id }) {
 
     setAttached(res.data);
     if (res.data.length > 0) {
-      console.log(res.data[0].link);
+      
       setLink(res.data[0].link);
       setName(res.data[0].file_name);
     }
-    console.log(res.data);
+  
   };
 
   
@@ -31,17 +30,9 @@ function ViewFiles({ id }) {
   }, [id]);
 
   return (
-    <div className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4 border-dashed border-2 border-primary rounded-xl ">
-      <Breadcrumb
-        className="text-[1rem] font-quicksand flex  items-center"
-        items={[
-          {
-            title: (
-              <h3 className=" font-bold text-md">Archivos Adjuntos</h3>
-            ),
-          },
-        ]}
-      />
+    <div className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10  lg:p-8 p-4 border-dashed border-2 border-primary rounded-xl ">
+      <h3 className=" font-bold text-md">Archivos Adjuntos</h3>
+     
       <section className="w-full relative">
         <Listbox
       
@@ -55,7 +46,7 @@ function ViewFiles({ id }) {
             }
           }}
         >
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">{name}
+          <Listbox.Button className="relative w-full h-[2.5rem] cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm truncate">{name}
           <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
               <RiArrowDownSLine
                 className="h-5 w-5 text-gray-400"
@@ -107,7 +98,7 @@ function ViewFiles({ id }) {
         </Listbox>
       </section>
       
-        <PDFViewer url={link} className={"h-[85%] mt-5"}/>
+        <PDFViewer url={link} className={"h-[calc(85%)] mt-5"}/>
       
     </div>
   );

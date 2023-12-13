@@ -13,11 +13,10 @@ import { Profile } from "../pages/Profile";
 import { ChagePassword } from "../pages/ChagePassword";
 
 export const NavPage = () => {
-  // const { isAuth } = useAuth();
-  // console.log(`is auth app: ${isAuth}`);
+ 
 
   return (
-    <>
+   
       <Routes>
         <Route path="/home" element={<HomePage />} />
         <Route path="/admin" element={<AdminHome />} />
@@ -34,6 +33,6 @@ export const NavPage = () => {
         <Route path="/password" element={<ChagePassword />} />
 
       </Routes>
-    </>
+   
   );
 };

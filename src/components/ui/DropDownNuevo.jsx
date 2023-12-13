@@ -1,6 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { RiAddLine, RiFilePdf2Line, RiUpload2Line, RiVoiceprintLine } from "react-icons/ri";
+import { RiAddLine, RiBriefcase5Line, RiFilePdf2Line, RiUpload2Line, RiVoiceprintLine } from "react-icons/ri";
 
 import { Link } from "react-router-dom";
 
@@ -8,11 +8,13 @@ import { ModalGrabacion } from "../modals/ModalGrabacion";
 
 import { ModalUploadAudio } from "../modals/ModalUploadAudio";
 import { ModalUploadAudioAndFiles } from "../modals/ModalUploadAudioAndFiles";
+import { ModalUploadFiles } from "../modals/ModalUploadFiles";
 
 export const DropDownNuevo = () => {
   const [isModalGrabacionOpen, setIsModalGrabacionOpen] = useState(false);
   const [isModalUploadOpen, setIsModalUploadOpen] = useState(false);
   const [isModalUploadOpenFiles, setIsModalUploadOpenFiles] = useState(false);
+  const [isModalUploadFiles, setIsModalUploadFiles] = useState(false);
   
   const handleClick = (e) => {
     e.preventDefault();
@@ -36,6 +38,10 @@ export const DropDownNuevo = () => {
     e.preventDefault();
     openModalUploadFiles();
   };
+  const handleClickUploadOnlyFiles = (e) => {
+    e.preventDefault();
+    openModalUploadOnlyFiles();
+  }
 
   const openModalUpload = () => {
     setIsModalUploadOpen(true);
@@ -48,6 +54,12 @@ export const DropDownNuevo = () => {
   }
   const closeModalUploadFiles = () =>{
     setIsModalUploadOpenFiles(false);
+  }
+  const openModalUploadOnlyFiles = () => {
+    setIsModalUploadFiles(true);
+  }
+  const closeModalUploadOnlyFiles = () =>{
+    setIsModalUploadFiles(false);
   }
 
 
@@ -93,7 +105,15 @@ export const DropDownNuevo = () => {
                   onClick={handleClickUploadFiles}
                   className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
                 >
-                  <RiFilePdf2Line /> Subir audio y material
+                  <RiBriefcase5Line /> Subir audio y material
+                </Link>
+              </Menu.Item>
+              <Menu.Item>
+                <Link
+                 onClick={handleClickUploadOnlyFiles}
+                  className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand"
+                >
+                  <RiFilePdf2Line /> Subir material de clase
                 </Link>
               </Menu.Item>
             </div>
@@ -114,6 +134,10 @@ export const DropDownNuevo = () => {
        isOpen={isModalUploadOpenFiles}
        onClose={closeModalUploadFiles}
       ></ModalUploadAudioAndFiles>
+       <ModalUploadFiles
+       isOpen={isModalUploadFiles}
+       onClose={closeModalUploadOnlyFiles}
+      ></ModalUploadFiles>
     </>
   );
 };

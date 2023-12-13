@@ -33,7 +33,7 @@ export const Profile = () => {
       setImageUrl(imageUrl);
     }
   };
-  // console.log(formErrors.currentPassword?.message)
+
 
   const handleNameChange = (event) => {
     setUserName(event.target.value);
@@ -64,7 +64,7 @@ export const Profile = () => {
     }
   };
 
-  // console.log(alert)
+
 
   const saveChanges = handleSubmit(async () => {
     if (currentPassword === "") {
@@ -93,11 +93,11 @@ export const Profile = () => {
 
       if (res.data.error) {
         setAlert(res.data.error);
-        console.log(res.data.error);
+       
       } else {
         setUser(res.data.user);
         setAlert("");
-        console.log("Perfil actualizado con éxito");
+     
         setSuccess("Perfil actualizado con éxito");
       }
       setLoading(false);

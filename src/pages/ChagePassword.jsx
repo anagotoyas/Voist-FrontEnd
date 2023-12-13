@@ -28,7 +28,7 @@ export const ChagePassword = () => {
   };
 
   const handleSaveChanges = async() => {
-    console.log('click')
+  
     setSuccess("")
     if (!currentPassword || !newPassword || !newPassword2) {
       setError("Todos los campos son obligatorios");
@@ -47,7 +47,7 @@ export const ChagePassword = () => {
     }
     try {
       const res = await changePassword(currentPassword,newPassword)
-      console.log(res)
+
 
       if(res.error){  
         setError("Contraseña actual incorrecta")

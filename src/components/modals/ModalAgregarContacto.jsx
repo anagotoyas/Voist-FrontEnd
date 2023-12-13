@@ -31,7 +31,7 @@ export const ModalAgregarContacto = ({ isOpen, onClose, children }) => {
   };
 
   let displayContacts = searchValue ? filteredContacts : filteredUsers;
-    // console.log(displayContacts);
+    
 
   return (
     <div

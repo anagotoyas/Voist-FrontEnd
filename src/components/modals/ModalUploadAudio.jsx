@@ -45,13 +45,13 @@ export const ModalUploadAudio = ({ isOpen, onClose }) => {
 
   const handleUpload = async () => {
     if (selectedFile) {
-      console.log(audioFileName);
+     
       let formData = new FormData();
 
       formData.append("audio", selectedFile);
 
       try {
-        console.log(formData);
+        
         const resp = await createFiles(audioFileName, id_folder);
         await saveAudio(formData, resp.id);
       } catch (error) {
