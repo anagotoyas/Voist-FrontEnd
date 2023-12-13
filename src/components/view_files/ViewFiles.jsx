@@ -30,7 +30,7 @@ function ViewFiles({ id }) {
   }, [id]);
 
   return (
-    <div className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10  lg:p-8 p-4 border-dashed border-2 border-primary rounded-xl ">
+    <div className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] p-4 border-dashed border-2 border-primary rounded-xl ">
       <h3 className=" font-bold text-md">Archivos Adjuntos</h3>
      
       <section className="w-full relative">

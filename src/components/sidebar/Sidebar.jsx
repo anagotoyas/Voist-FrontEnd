@@ -11,17 +11,16 @@ import {
   RiFile3Line,
   RiHome4Line,
   RiGroupLine,
-  RiLockPasswordLine
+  RiLockPasswordLine,
+  RiQuestionMark,
 } from "react-icons/ri";
 import { Menu, Transition } from "@headlessui/react";
-
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { NavPage } from "../NavPage";
 import { useAuth } from "../../context/AuthContext";
 
 export const Sidebar = () => {
- 
   const [showMenu, setShowMenu] = useState(false);
 
   const publicUrl = window.location.origin;
@@ -41,19 +40,19 @@ export const Sidebar = () => {
   };
 
   const handleClick = () => {
-    window.history.pushState({}, '', '/profile');
+    window.history.pushState({}, "", "/profile");
 
     // Dispatch a popstate event to ensure the URL is updated
-    const popStateEvent = new PopStateEvent('popstate');
+    const popStateEvent = new PopStateEvent("popstate");
     window.dispatchEvent(popStateEvent);
-  }
+  };
   const handleClickPassword = () => {
-    window.history.pushState({}, '', '/password');
+    window.history.pushState({}, "", "/password");
 
     // Dispatch a popstate event to ensure the URL is updated
-    const popStateEvent = new PopStateEvent('popstate');
+    const popStateEvent = new PopStateEvent("popstate");
     window.dispatchEvent(popStateEvent);
-  }
+  };
 
   return (
     <div className="min-h-screen">
@@ -63,11 +62,14 @@ export const Sidebar = () => {
         }`}
       >
         <div className="">
-          <img
-            src={`${publicUrl}/Logo.png`}
-            alt="Logo"
-            className="m-auto mt-5 w-[9rem]"
-          />
+          <Link to="/home">
+            <img
+              src={`${publicUrl}/Logo.png`}
+              alt="Logo"
+              className="m-auto mt-5 w-[9rem]"
+            />
+          </Link>
+
           <ul className={`mt-8 font-quicksand`}>
             {user.role === 2 ? (
               <>
@@ -160,11 +162,20 @@ export const Sidebar = () => {
       </div>
       {/* Btn menu */}
       <button
-        className="xl:hidden fixed bottom-6 right-6 bg-primary p-4 text-white rounded-full z-10"
+        className="xl:hidden fixed bottom-6 right-6 bg-primary hover:bg-gray-400 p-4 text-white rounded-full z-10"
         onClick={toggleMenu}
       >
         {showMenu ? <RiCloseLine /> : <RiMenu3Fill />}
       </button>
+      <Link to="/help">
+        <button
+          className=" fixed bottom-[5rem] xl:bottom-6 right-6 bg-secondary hover:bg-gray-400 p-4 text-white rounded-full z-10"
+          
+        >
+          <RiQuestionMark />
+        </button>
+      </Link>
+
       <header className="fixed  w-full xl:pl-[18rem] flex items-center justify-end p-4  h-[4rem] bg-white top-0 py-4 border z-100000">
         <Menu as="div">
           <Menu.Button className="flex items-center gap-4 hover:bg-gray-200 py-2 px-4 rounded-lg transition-colors  bg-lightgray z-100 static">
@@ -204,24 +215,24 @@ export const Sidebar = () => {
                     
                   </Link>
                 </Menu.Item> */}
-                 <Menu.Item>
+                <Menu.Item>
                   <button
                     onClick={() => {
-                     handleClick()
+                      handleClick();
                     }}
                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand w-full"
                   >
-                     <RiUser3Line /> Gestionar cuenta
+                    <RiUser3Line /> Gestionar cuenta
                   </button>
                 </Menu.Item>
-                 <Menu.Item>
+                <Menu.Item>
                   <button
                     onClick={() => {
-                     handleClickPassword()
+                      handleClickPassword();
                     }}
                     className="flex items-center gap-4 p-2 rounded-lg hover:bg-primary hover:text-white transition-colors text-base font-quicksand w-full"
                   >
-                     <RiLockPasswordLine /> Cambiar contraseña
+                    <RiLockPasswordLine /> Cambiar contraseña
                   </button>
                 </Menu.Item>
 
@@ -235,7 +246,6 @@ export const Sidebar = () => {
                     <RiLogoutCircleRLine /> Cerrar sesión
                   </button>
                 </Menu.Item>
-               
               </div>
             </Menu.Items>
           </Transition>

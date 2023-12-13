@@ -67,6 +67,7 @@ function App() {
             element={<ProtectedRoute isAllowed={!admin} redirectTo="/login" />}
           >
             <Route path="/home" element={<NavPage />} />
+            <Route path="/help" element={<NavPage />} />
             <Route path="/detail-file" element={<NavPage />} />
             <Route path="/compartido" element={<NavPage />} />
             <Route path="/contactos" element={<NavPage />} />

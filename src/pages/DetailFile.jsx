@@ -284,8 +284,8 @@ export const DetailFile = () => {
           <Spin className="mt-10" size="large" />
         </div>
       ) : (
-        <div className="flex md:justify-between items-center justify-center h-[calc(100vh-10rem)] w-full flex-wrap">
-          <section className="flex md:items-center items-center flex-col justify-center mb-10 lg:w-[30%] w-[20rem] mt-10 ">
+        <div className="flex md:justify-between items-center justify-center h-full w-full flex-wrap ">
+          <section className="flex md:items-center items-center flex-col justify-center mb-10 lg:w-[30%] w-[20rem] ">
             <div className="bg-gray-200  rounded-md mt-10 p-8 w-[90%]">
               <h2 className="text-primary font-bold pb-4 leading-3">
                 Datos de la sesión
@@ -308,7 +308,7 @@ export const DetailFile = () => {
               </div>
             </div>
 
-            <div className="flex flex-col m-auto w-[17rem] justify-center mt-5">
+            <div className="flex flex-col m-auto w-[17rem] justify-center my-5">
               {!only_files && (
                 <>
                   <button
@@ -386,21 +386,21 @@ export const DetailFile = () => {
           {selectedButton === "resumen" && (
             <PDFViewer
               url={summary}
-              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4"
+              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem]  md:pl-[4rem] "
             />
           )}
           {selectedButton === "material" && (
             <PDFViewer
               url={summaryFiles}
-              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4"
+              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:pl-[4rem] "
             />
           )}
           {selectedButton === "material_files" && (
-            <ViewFiles id={id} className="md:mt-10" />
+            <ViewFiles id={id} className="" />
           )}
           {selectedButton === "transcripcion" && (
             <PDFViewer
-              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10 md:pl-[4rem]  lg:p-8 p-4"
+              className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:pl-[4rem]  "
               url={transcription}
             />
           )}

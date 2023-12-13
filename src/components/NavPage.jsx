@@ -11,6 +11,7 @@ import { ListUsers } from "../pages/ListUsers";
 import { PanelUser } from "../pages/PanelUser";
 import { Profile } from "../pages/Profile";
 import { ChagePassword } from "../pages/ChagePassword";
+import { HelpPage } from "../pages/HelpPage";
 
 export const NavPage = () => {
  
@@ -28,6 +29,7 @@ export const NavPage = () => {
         <Route path="/contactos" element={<Contactos />} />
         <Route path="/carpetas" element={<Carpetas />} />
         <Route path="/detail-folder" element={<DetailFolder />} />
+        <Route path="/help" element={<HelpPage />} />
 
         <Route path="/profile" element={<Profile />} />
         <Route path="/password" element={<ChagePassword />} />

@@ -34,7 +34,7 @@ export const FlashCards = ({ pdf }) => {
     }
   };
   return (
-    <div className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem] md:mt-10  lg:p-8 p-4 border-dashed border-2 border-primary rounded-xl  overflow-y-auto">
+    <div className="h-[90%] lg:w-[70%] md:w-[60%] w-[40rem]  lg:p-8 p-4 border-dashed border-2 border-primary rounded-xl  overflow-y-auto">
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-md">Flashcards</h3>
         <button
