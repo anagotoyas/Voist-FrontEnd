@@ -308,7 +308,7 @@ export const DetailFile = () => {
               </div>
             </div>
 
-            <div className="flex flex-col m-auto w-[17rem] justify-center mt-10">
+            <div className="flex flex-col m-auto w-[17rem] justify-center mt-5">
               {!only_files && (
                 <>
                   <button
