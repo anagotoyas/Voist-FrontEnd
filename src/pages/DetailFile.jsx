@@ -16,14 +16,17 @@ import {
   RiFilePdf2Line,
   RiFolder2Line,
   RiMenuFill,
+  RiTodoLine,
   RiVoiceprintFill,
 } from "react-icons/ri";
 import PDFViewer from "../components/files/PDFViewer";
 import { useAuth } from "../context/AuthContext";
 import { Chat } from "../components/chat/Chat";
 import ViewFiles from "../components/view_files/ViewFiles";
+import { FlashCards } from "../components/flashcards/FlashCards";
 
 export const DetailFile = () => {
+
   const { loadFile, createResume, saveResume, juntarTexto } = useAuth();
   const [transcription, setTranscription] = useState(null);
   const [totalContent, setTotalContent] = useState(null);
@@ -68,7 +71,6 @@ export const DetailFile = () => {
         setHave_files(have_files);
         setOnly_files(only_files);
         setContent(content);
-       
       } catch (error) {
         console.error("Error loading file:", error);
       }
@@ -153,7 +155,7 @@ export const DetailFile = () => {
 
         case only_files && summaryFiles === null:
           console.log("case 5");
-        
+
           try {
             const data3 = {
               url_pdf: content,
@@ -191,7 +193,6 @@ export const DetailFile = () => {
   }, [count]);
 
   const [selectedButton, setSelectedButton] = useState("chat");
-  
 
   const handleButtonClick = (buttonName) => {
     setSelectedButton(buttonName);
@@ -298,10 +299,12 @@ export const DetailFile = () => {
                   <strong>Fecha: </strong>
                   {dateCreated}
                 </p>
-                <p>
-                  <strong>Duración: </strong>
-                  {duration} hrs
-                </p>
+                {(!only_files) && (
+                  <p>
+                    <strong>Duración: </strong>
+                    {duration} hrs
+                  </p>
+                )}
               </div>
             </div>
 
@@ -367,6 +370,16 @@ export const DetailFile = () => {
               >
                 <RiChatVoiceLine /> Chat IA
               </button>
+              <button
+                className={`${
+                  selectedButton === "flashcards"
+                    ? "bg-primary text-white"
+                    : "bg-white text-primary border border-primary"
+                }  flex items-center px-4 gap-4 py-2 rounded-xl my-2`}
+                onClick={() => handleButtonClick("flashcards")}
+              >
+                <RiTodoLine /> Flashcards
+              </button>
             </div>
           </section>
 
@@ -396,6 +409,9 @@ export const DetailFile = () => {
               url_pdf={totalContent || transcription || content}
               classId={id}
             ></Chat>
+          )}
+          {selectedButton === "flashcards" && (
+            <FlashCards pdf={totalContent || transcription || content} />
           )}
         </div>
       )}

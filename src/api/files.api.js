@@ -67,6 +67,10 @@ export const createSummary = async (data)=>{
   return axios_flask.post(`/resume`, data)
 }
 
+export const createFlashCards = async (data)=>{
+  return axios_flask.post(`/flashcards`, data)
+}
+
 export const saveSummary = async (data)=>{
   return axios.post(`/createSummary`, data)
 }

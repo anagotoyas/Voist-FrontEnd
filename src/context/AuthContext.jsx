@@ -13,6 +13,7 @@ import {
   uploadAudio,
   getFileByContact,
   createSummary,
+  createFlashCards,
   saveSummary,
   countFiles,
   countFilesMonth,
@@ -282,6 +283,16 @@ export function AuthProvider({ children }) {
       }
     }
   };
+  const generateFlashCards = async (data) => {
+    try {
+      const res = await createFlashCards(data);
+      return res.data;
+    } catch (error) {
+      if (error.response) {
+        setErrors(error.response.data);
+      }
+    }
+  };
 
   const saveResume = async (data) => {
     try {
@@ -521,7 +532,8 @@ export function AuthProvider({ children }) {
         changePassword,
         subirArchivo,
         juntarTexto,
-        loadAttached
+        loadAttached,
+        generateFlashCards
         
       }}
     >
