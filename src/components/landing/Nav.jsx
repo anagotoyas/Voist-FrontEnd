@@ -7,11 +7,12 @@ export const Nav = () => {
         <img src="Logo.png" alt="logo" className="w-[15vh]" />
       </a>
       <div className="flex items-center gap-8 leading-[2rem] md:leading-[4rem] pt-3">
+        
+        <a href="#que-es" className="hover:text-primary hover:font-bold text-lg">
+          Voist
+        </a>
         <a href="#info" className="hover:text-primary hover:font-bold text-lg">
           Información
-        </a>
-        <a href="#que-es" className="hover:text-primary hover:font-bold text-lg">
-          ¿Qué es Voist?
         </a>
         <a
           href="#funciones"

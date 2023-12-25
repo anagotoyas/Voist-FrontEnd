@@ -3,7 +3,7 @@ import video from "../../utils/videos/publicitario.mp4";
 export const Video = () => {
   return (
     <div
-      className="bg-graylanding h-[150vh] md:h-[70vh] font-poppins w-full  mt-[1.5rem] md:mt-[0rem]  items-center justify-center justify-items-center px-8 py-8"
+      className="bg-graylanding auto  font-poppins w-full  mt-[1.5rem] md:mt-[0rem]  items-center justify-center justify-items-center px-8 py-8"
       id="que-es"
     >
       <div className=" flex items-center flex-col">
