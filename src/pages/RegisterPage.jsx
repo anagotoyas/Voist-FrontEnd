@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Checkbox } from "antd";
+import { toast } from "react-toastify";
 
 function RegisterPage() {
   const {
@@ -18,10 +19,19 @@ function RegisterPage() {
 
 
   const onSubmit = handleSubmit(async (data) => {
-    const user = await signup(data);
-    if (user) {
-      navigate("/home");
+    try {
+      const user = await signup(data);
+      if (user) {
+        toast.success("Bienvenido!");
+        navigate("/home");
+      }
+      
+    } catch (error) {
+      toast.error("Lo sentimos, la página se encuentra en producción!");
+
+      
     }
+    
   });
 
   const onChange = (e) => {

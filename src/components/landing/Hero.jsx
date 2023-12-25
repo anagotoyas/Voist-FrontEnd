@@ -20,7 +20,7 @@ export const Hero = () => {
         </div>
       </div>
       <div className="flex md:items-center justify-center md:col-span-4">
-        <img src="Hero.png" alt="hero" className=" h-[35vh] md:h-[35vh] xl:h-[60vh] lg:h-[50vh] py-3 box-border mt-[5rem] md:mt-0" />
+        <img src="Hero.png" alt="hero" className=" h-[35vh] md:h-[35vh] xl:h-[60vh] lg:h-[50vh] py-3 box-border mt-[5rem] md:mt-0 object-cover" />
       </div>
     </div>
   );

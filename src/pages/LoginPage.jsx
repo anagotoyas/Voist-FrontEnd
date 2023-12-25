@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../context/AuthContext";
 import { Checkbox } from "antd";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+
 
 function LoginPage() {
   const { register, handleSubmit } = useForm();
@@ -22,12 +24,22 @@ function LoginPage() {
       return;
     }
 
-    const user = await signin(data);
 
-    if (user && user.role === 2) {
-      navigate("/home");
-    } else if (user && user.role === 1) {
-      navigate("/admin");
+    try {
+      const user = await signin(data);
+
+      if (user && user.role === 2) {
+        toast.success("Bienvenido!");
+        navigate("/home");
+      } else if (user && user.role === 1) {
+        toast.success("Bienvenido!");
+
+        navigate("/admin");
+      }
+    } catch (error) {
+
+      toast.error("Lo sentimos, la página se encuentra en producción!");
+      
     }
   });
 
@@ -95,6 +107,7 @@ function LoginPage() {
           </div>
         </form>
       </Card>
+     
     </Container>
   );
 }
